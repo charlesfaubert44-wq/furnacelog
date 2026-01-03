@@ -132,7 +132,7 @@ dist
 .pnp.*
 
 # Database
-data/
+# Note: Don't ignore backend/src/data/ which contains source code
 *.db
 *.sqlite
 
