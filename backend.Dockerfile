@@ -6,15 +6,15 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
+# Copy package files from backend directory
+COPY backend/package*.json ./
 
 # Install dependencies
 RUN npm ci --only=production && \
     npm cache clean --force
 
-# Copy application code
-COPY . .
+# Copy application code from backend directory
+COPY backend/ .
 
 # Build TypeScript (if using TypeScript)
 # RUN npm run build
@@ -34,8 +34,8 @@ WORKDIR /app
 # Copy built node_modules from builder
 COPY --from=builder --chown=nodejs:nodejs /app/node_modules ./node_modules
 
-# Copy application code
-COPY --chown=nodejs:nodejs . .
+# Copy application code from backend directory
+COPY --chown=nodejs:nodejs backend/ .
 
 # If using TypeScript, copy built files instead
 # COPY --from=builder --chown=nodejs:nodejs /app/dist ./dist
