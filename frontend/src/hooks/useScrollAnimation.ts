@@ -83,7 +83,7 @@ export const useScrollPosition = () => {
 /**
  * Hook for staggered list animations
  */
-export const useStaggerAnimation = (itemCount: number, baseDelay: number = 100) => {
+export const useStaggerAnimation = (baseDelay: number = 100) => {
   const getItemDelay = (index: number) => {
     return `${index * baseDelay}ms`;
   };

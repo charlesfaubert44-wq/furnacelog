@@ -59,7 +59,7 @@ api.interceptors.request.use(
         try {
           token = await fetchCsrfToken();
         } catch (error) {
-          logger.warn('Failed to fetch CSRF token', error);
+          logger.warn('Failed to fetch CSRF token', error as Record<string, any>);
         }
       }
 

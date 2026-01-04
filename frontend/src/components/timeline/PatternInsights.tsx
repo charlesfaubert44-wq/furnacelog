@@ -9,7 +9,7 @@ import React from 'react';
 import { PatternInsight, WeatherCorrelation } from '../../services/timeline.service';
 import { Card } from '../ui/card';
 import { Badge } from '../ui/badge';
-import { TrendingUp, Calendar, DollarSign, AlertTriangle, CheckCircle } from 'lucide-react';
+import { TrendingUp, Calendar, AlertTriangle, CheckCircle } from 'lucide-react';
 
 interface PatternInsightsProps {
   patterns: PatternInsight;

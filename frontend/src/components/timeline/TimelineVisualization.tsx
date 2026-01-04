@@ -5,9 +5,9 @@
  * v1.0 implementation with basic zoom/pan controls
  */
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { TimelineDataPoint } from '../../services/timeline.service';
-import { Card } from '../ui/button';
+import { Card } from '../ui/card';
 import { Thermometer, Droplets, Wind, Wrench, DollarSign } from 'lucide-react';
 
 interface TimelineVisualizationProps {
@@ -23,13 +23,12 @@ interface TimelineVisualizationProps {
       totalCost: number;
     };
   };
-  onDateRangeChange: (start: Date, end: Date) => void;
+  onDateRangeChange?: (start: Date, end: Date) => void;
   granularity: 'day' | 'week' | 'month';
 }
 
 const TimelineVisualization: React.FC<TimelineVisualizationProps> = ({
   timelineData,
-  onDateRangeChange,
   granularity
 }) => {
   const [selectedDataPoint, setSelectedDataPoint] = useState<TimelineDataPoint | null>(null);

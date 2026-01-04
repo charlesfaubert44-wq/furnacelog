@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Thermometer, Home, Calendar, AlertTriangle, Snowflake, Flame, Shield, CheckCircle2, ArrowRight, MapPin, Clock, TrendingDown, Plus, FileText, Wrench, Wind, Droplets, Zap, Circle, ChevronRight, LogOut, User } from 'lucide-react';
+import { Thermometer, Home, Calendar, AlertTriangle, Snowflake, Flame, CheckCircle2, ArrowRight, MapPin, Clock, TrendingDown, Plus, FileText, Wrench, Wind, Droplets, Zap, ChevronRight, LogOut, User } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import { AuthModal } from '@/components/auth/AuthModal';
@@ -139,7 +139,7 @@ function HomePage() {
         const data = await response.json();
         setHealth(data);
       } catch (err) {
-        logger.warn('Health check failed', err);
+        logger.warn('Health check failed', err as Record<string, any>);
       } finally {
         setLoading(false);
       }
@@ -155,7 +155,7 @@ function HomePage() {
         const weatherData = await fetchNorthernWeather();
         setWeather(weatherData);
       } catch (err) {
-        logger.warn('Weather fetch failed', err);
+        logger.warn('Weather fetch failed', err as Record<string, any>);
       }
     };
 
