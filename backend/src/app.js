@@ -1,5 +1,4 @@
 import express from 'express';
-import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
 import mongoSanitize from 'express-mongo-sanitize';
@@ -26,30 +25,35 @@ const allowedOrigins = process.env.CORS_ORIGIN
   ? process.env.CORS_ORIGIN.split(',').map(origin => origin.trim())
   : ['http://localhost:5173', 'http://localhost:3000'];
 
-app.use(cors({
-  origin: (origin, callback) => {
-    // Debug logging
-    logger.info(`CORS origin check - Requested origin: ${origin}, Allowed origins: ${JSON.stringify(allowedOrigins)}`);
+// Manual CORS middleware (more control than cors package)
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
 
-    // Allow requests with no origin (like mobile apps, curl, Postman)
-    if (!origin) {
-      logger.info('CORS: No origin provided, allowing request');
-      return callback(null, true);
-    }
+  logger.info(`CORS check - Origin: ${origin}, Allowed: ${JSON.stringify(allowedOrigins)}`);
 
-    if (allowedOrigins.indexOf(origin) !== -1) {
-      // Explicitly return the requesting origin (not true)
-      logger.info(`CORS: Origin ${origin} is allowed, returning it`);
-      callback(null, origin);
-    } else {
-      logger.warn(`CORS blocked request from origin: ${origin}`);
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+  // Check if origin is allowed
+  if (origin && allowedOrigins.indexOf(origin) !== -1) {
+    // Set CORS headers manually
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+    logger.info(`CORS: Set Access-Control-Allow-Origin to ${origin}`);
+  } else if (!origin) {
+    // No origin (server-to-server, Postman, etc.)
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    logger.info('CORS: No origin, allowing all');
+  } else {
+    logger.warn(`CORS: Origin ${origin} not allowed`);
+  }
+
+  // Handle OPTIONS preflight
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+
+  next();
+});
 
 // Rate Limiting
 const limiter = rateLimit({
