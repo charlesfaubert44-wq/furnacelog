@@ -598,6 +598,7 @@ function HomePage() {
             </div>
           </div>
         </div>
+        </div>
       ) : (
         /* MARKETING CONTENT (When Logged Out) */
         <>
