@@ -57,18 +57,20 @@ export const register = async (req, res) => {
 
     // Set httpOnly cookies for tokens (SECURITY FIX)
     const isProduction = process.env.NODE_ENV === 'production';
-
-    res.cookie('accessToken', tokens.accessToken, {
+    const cookieOptions = {
       httpOnly: true,
       secure: isProduction,
-      sameSite: 'strict',
+      sameSite: isProduction ? 'lax' : 'strict', // 'lax' for cross-subdomain in production
+      ...(isProduction && { domain: '.furnacelog.com' }) // Share cookies across subdomains
+    };
+
+    res.cookie('accessToken', tokens.accessToken, {
+      ...cookieOptions,
       maxAge: 15 * 60 * 1000 // 15 minutes
     });
 
     res.cookie('refreshToken', tokens.refreshToken, {
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: 'strict',
+      ...cookieOptions,
       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     });
 
@@ -162,18 +164,20 @@ export const login = async (req, res) => {
     // Set httpOnly cookies for tokens (SECURITY FIX)
     const isProduction = process.env.NODE_ENV === 'production';
     const refreshTokenMaxAge = rememberMe ? 30 * 24 * 60 * 60 * 1000 : 7 * 24 * 60 * 60 * 1000;
-
-    res.cookie('accessToken', tokens.accessToken, {
+    const cookieOptions = {
       httpOnly: true,
       secure: isProduction,
-      sameSite: 'strict',
+      sameSite: isProduction ? 'lax' : 'strict', // 'lax' for cross-subdomain in production
+      ...(isProduction && { domain: '.furnacelog.com' }) // Share cookies across subdomains
+    };
+
+    res.cookie('accessToken', tokens.accessToken, {
+      ...cookieOptions,
       maxAge: 15 * 60 * 1000 // 15 minutes
     });
 
     res.cookie('refreshToken', tokens.refreshToken, {
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: 'strict',
+      ...cookieOptions,
       maxAge: refreshTokenMaxAge
     });
 
@@ -327,18 +331,20 @@ export const refreshToken = async (req, res) => {
 
     // Set new httpOnly cookies for tokens (SECURITY FIX)
     const isProduction = process.env.NODE_ENV === 'production';
-
-    res.cookie('accessToken', tokens.accessToken, {
+    const cookieOptions = {
       httpOnly: true,
       secure: isProduction,
-      sameSite: 'strict',
+      sameSite: isProduction ? 'lax' : 'strict', // 'lax' for cross-subdomain in production
+      ...(isProduction && { domain: '.furnacelog.com' }) // Share cookies across subdomains
+    };
+
+    res.cookie('accessToken', tokens.accessToken, {
+      ...cookieOptions,
       maxAge: 15 * 60 * 1000 // 15 minutes
     });
 
     res.cookie('refreshToken', tokens.refreshToken, {
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: 'strict',
+      ...cookieOptions,
       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     });
 
@@ -419,18 +425,20 @@ export const oauthCallback = async (req, res) => {
 
     // Set httpOnly cookies for tokens (SECURITY FIX: No tokens in URL!)
     const isProduction = process.env.NODE_ENV === 'production';
-
-    res.cookie('accessToken', tokens.accessToken, {
+    const cookieOptions = {
       httpOnly: true,
       secure: isProduction,
-      sameSite: 'lax', // 'lax' for OAuth redirects
+      sameSite: 'lax', // 'lax' for OAuth redirects and cross-subdomain
+      ...(isProduction && { domain: '.furnacelog.com' }) // Share cookies across subdomains
+    };
+
+    res.cookie('accessToken', tokens.accessToken, {
+      ...cookieOptions,
       maxAge: 15 * 60 * 1000 // 15 minutes
     });
 
     res.cookie('refreshToken', tokens.refreshToken, {
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: 'strict',
+      ...cookieOptions,
       maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days for OAuth
     });
 
