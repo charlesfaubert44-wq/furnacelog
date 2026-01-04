@@ -9,6 +9,8 @@ import connectDB from './config/database.js';
 import { connectRedis } from './config/redis.js';
 import authRoutes from './routes/auth.routes.js';
 import userRoutes from './routes/user.routes.js';
+import onboardingRoutes from './routes/onboarding.routes.js';
+import dashboardRoutes from './routes/dashboard.routes.js';
 import homeRoutes from './routes/homeRoutes.js';
 import systemRoutes from './routes/systemRoutes.js';
 import componentRoutes from './routes/componentRoutes.js';
@@ -118,6 +120,8 @@ app.get('/api/v1/auth/csrf-token', (req, res) => {
 // API Routes (SECURITY FIX: CSRF protection applied to state-changing routes)
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', doubleCsrfProtection, userRoutes);
+app.use('/api/v1/onboarding', doubleCsrfProtection, onboardingRoutes);
+app.use('/api/v1/dashboard', dashboardRoutes); // Dashboard (read-only, no CSRF needed)
 app.use('/api/v1/homes', doubleCsrfProtection, homeRoutes);
 app.use('/api/v1/templates', doubleCsrfProtection, templateRoutes);
 app.use('/api/v1/maintenance', doubleCsrfProtection, maintenanceRoutes);

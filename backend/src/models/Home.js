@@ -88,18 +88,29 @@ const homeSchema = new mongoose.Schema({
       default: 1
     }
   },
+  // Onboarding data - stored as flexible JSON for all system configurations
+  onboardingData: {
+    type: mongoose.Schema.Types.Mixed,
+    default: {}
+    // Stores the complete onboarding wizard responses
+    // heating: { primaryHeating, heatingAge, hasHRV, etc. }
+    // water: { waterSource, hotWaterSystem, etc. }
+    // sewage: { sewageSystem, etc. }
+    // electrical: { powerSource, hasGenerator, etc. }
+    // additional: { appliances, specializedSystems, fuelStorage }
+  },
   utilities: {
     waterSource: {
       type: String,
-      enum: ['municipal', 'well', 'trucked']
+      enum: ['municipal', 'well', 'trucked', 'combination']
     },
     sewageSystem: {
       type: String,
-      enum: ['municipal', 'septic', 'holding-tank']
+      enum: ['municipal', 'septic', 'holding-tank', 'combination']
     },
     electricalService: {
       type: String,
-      enum: ['grid', 'generator', 'hybrid']
+      enum: ['grid', 'generator-primary', 'hybrid', 'solar']
     },
     primaryHeatFuel: {
       type: String,

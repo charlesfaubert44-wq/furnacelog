@@ -239,6 +239,110 @@ class WeatherService {
   }
 
   /**
+   * Get weather with system-specific recommendations
+   */
+  async getWeatherWithRecommendations(community, homeSystems = []) {
+    const weather = await this.getCurrentWeather(community);
+    const recommendations = this.generateSystemRecommendations(weather, homeSystems);
+
+    return {
+      weather,
+      recommendations,
+      alerts: weather.extremeEvents || []
+    };
+  }
+
+  /**
+   * Generate system-specific recommendations based on weather
+   */
+  generateSystemRecommendations(weather, systems) {
+    const recommendations = [];
+    const temp = weather.temperature.low;
+
+    // Extreme cold recommendations
+    if (temp <= -35) {
+      // Critical recommendations for extreme cold
+      if (systems.some(s => s.type === 'heat-trace' || s.category === 'freeze-protection')) {
+        recommendations.push({
+          system: 'heat-trace',
+          message: 'Verify heat trace cables are operational - extreme cold warning',
+          priority: 'critical'
+        });
+      }
+
+      if (systems.some(s => s.type === 'well' || s.category === 'plumbing')) {
+        recommendations.push({
+          system: 'plumbing',
+          message: 'Monitor well pump and water lines for freezing',
+          priority: 'critical'
+        });
+      }
+
+      if (systems.some(s => s.category === 'heating')) {
+        recommendations.push({
+          system: 'furnace',
+          message: 'Monitor furnace operation closely - critical heating conditions',
+          priority: 'critical'
+        });
+      }
+
+      if (systems.some(s => s.type === 'generator')) {
+        recommendations.push({
+          system: 'generator',
+          message: 'Ensure generator is ready for emergency use',
+          priority: 'high'
+        });
+      }
+    } else if (temp <= -25) {
+      // Severe cold recommendations
+      if (systems.some(s => s.type === 'heat-trace' || s.category === 'freeze-protection')) {
+        recommendations.push({
+          system: 'heat-trace',
+          message: 'Check heat trace operation',
+          priority: 'high'
+        });
+      }
+
+      if (systems.some(s => s.category === 'heating')) {
+        recommendations.push({
+          system: 'heating',
+          message: 'Ensure heating system is operating efficiently',
+          priority: 'high'
+        });
+      }
+    }
+
+    // Wind chill recommendations
+    if (weather.wind && weather.wind.chill && weather.wind.chill <= -40) {
+      recommendations.push({
+        system: 'general',
+        message: 'Extreme wind chill - minimize outdoor exposure',
+        priority: 'critical'
+      });
+    }
+
+    // HRV recommendations for very cold weather
+    if (temp <= -30 && systems.some(s => s.type === 'hrv')) {
+      recommendations.push({
+        system: 'hrv',
+        message: 'HRV may freeze in extreme cold - monitor for ice buildup',
+        priority: 'medium'
+      });
+    }
+
+    // Precipitation and roof recommendations
+    if (weather.precipitation && weather.precipitation.snowfall > 10) {
+      recommendations.push({
+        system: 'general',
+        message: 'Heavy snowfall - monitor roof load and clear if necessary',
+        priority: 'medium'
+      });
+    }
+
+    return recommendations;
+  }
+
+  /**
    * Analyze weather patterns for timeline
    */
   async analyzeWeatherPatterns(community, startDate, endDate) {

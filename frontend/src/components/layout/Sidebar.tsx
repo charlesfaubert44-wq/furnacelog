@@ -10,6 +10,7 @@ import {
   Settings,
   ChevronLeft,
   Flame,
+  BookOpen,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -26,6 +27,7 @@ const navigation = [
   { name: 'Documents', href: '/documents', icon: FileText },
   { name: 'Providers', href: '/providers', icon: Users },
   { name: 'Reports', href: '/reports', icon: BarChart3 },
+  { name: 'Knowledge Center', href: '/wiki', icon: BookOpen },
   { name: 'Settings', href: '/settings', icon: Settings },
 ];
 

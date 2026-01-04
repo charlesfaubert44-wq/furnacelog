@@ -12,6 +12,7 @@ import { ElectricalSystemsStep } from '@/components/onboarding/steps/ElectricalS
 import { AdditionalSystemsStep } from '@/components/onboarding/steps/AdditionalSystemsStep';
 import { PreferencesStep } from '@/components/onboarding/steps/PreferencesStep';
 import { ReviewStep } from '@/components/onboarding/steps/ReviewStep';
+import { completeOnboarding } from '@/services/onboarding.service';
 import {
   Home,
   Flame,
@@ -215,31 +216,103 @@ export const OnboardingPage: React.FC = () => {
   const handleSubmit = async (data: OnboardingFormData) => {
     try {
       setIsSubmitting(true);
-      console.log('Onboarding data:', data);
+      console.log('Submitting onboarding data...');
 
-      // TODO: Send data to backend API
-      // const response = await fetch('/api/v1/onboarding/complete', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   credentials: 'include',
-      //   body: JSON.stringify(data)
-      // });
-      //
-      // if (!response.ok) {
-      //   throw new Error('Failed to complete onboarding');
-      // }
+      // Transform data to match API format
+      const onboardingData = {
+        home: {
+          name: data.homeName,
+          homeType: data.homeType,
+          community: data.community,
+          territory: data.territory,
+          yearBuilt: data.yearBuilt,
+          bedrooms: data.bedrooms,
+          bathrooms: data.bathrooms
+        },
+        systems: {
+          heating: {
+            primaryHeating: data.primaryHeating,
+            heatingAge: data.heatingAge,
+            heatingBrand: data.heatingBrand,
+            secondaryHeating: data.secondaryHeating,
+            hasHRV: data.hasHRV,
+            hrvBrand: data.hrvBrand,
+            hrvAge: data.hrvAge,
+            hasHeatTrace: data.hasHeatTrace,
+            heatTraceLocations: data.heatTraceLocations
+          },
+          water: {
+            waterSource: data.waterSource,
+            tankCapacity: data.tankCapacity,
+            refillFrequency: data.refillFrequency,
+            refillCost: data.refillCost,
+            enableWaterReminders: data.enableWaterReminders,
+            pumpType: data.pumpType,
+            wellDepth: data.wellDepth,
+            hotWaterSystem: data.hotWaterSystem,
+            tankSize: data.tankSize,
+            tankFuel: data.tankFuel,
+            tankAge: data.tankAge,
+            hasTreatment: data.hasTreatment,
+            treatmentSystems: data.treatmentSystems
+          },
+          sewage: {
+            sewageSystem: data.sewageSystem,
+            septicTankSize: data.septicTankSize,
+            septicLastPumped: data.septicLastPumped,
+            septicFrequency: data.septicFrequency,
+            septicCost: data.septicCost,
+            holdingTankSize: data.holdingTankSize,
+            holdingTankFrequency: data.holdingTankFrequency,
+            holdingTankCost: data.holdingTankCost
+          },
+          electrical: {
+            powerSource: data.powerSource,
+            hasGenerator: data.hasGenerator,
+            generatorType: data.generatorType,
+            generatorFuel: data.generatorFuel,
+            generatorBrand: data.generatorBrand,
+            generatorHours: data.generatorHours,
+            hasAutoTransfer: data.hasAutoTransfer,
+            panelAmperage: data.panelAmperage,
+            panelAge: data.panelAge
+          },
+          additional: {
+            appliances: data.appliances,
+            specializedSystems: data.specializedSystems,
+            fuelStorage: data.fuelStorage
+          }
+        },
+        preferences: {
+          reminderMethods: data.reminderMethods,
+          reminderTiming: data.reminderTiming,
+          autoGenerateChecklists: data.autoGenerateChecklists,
+          diyLevel: data.diyLevel,
+          interestedInProviders: data.interestedInProviders,
+          providerTypes: data.providerTypes
+        }
+      };
 
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Call backend API
+      const response = await completeOnboarding(onboardingData);
 
-      // Show success message
-      alert('🎉 Setup complete! Welcome to FurnaceLog.');
+      console.log('Onboarding completed:', response);
 
-      // Redirect to dashboard
-      navigate('/dashboard');
-    } catch (error) {
+      // Show success message with stats
+      alert(
+        `🎉 ${response.message}\n\n` +
+        `✓ Home: ${response.data.home.name}\n` +
+        `✓ Systems configured: ${response.data.systems.length}\n` +
+        `✓ Maintenance tasks generated: ${response.data.tasksGenerated}\n` +
+        `✓ Seasonal checklist: ${response.data.checklistGenerated ? 'Created' : 'Skipped'}`
+      );
+
+      // Redirect to homepage (dashboard is integrated)
+      navigate('/');
+    } catch (error: any) {
       console.error('Error completing onboarding:', error);
-      alert('There was an error saving your setup. Please try again.');
+      const errorMessage = error?.error?.message || error?.message || 'Unknown error occurred';
+      alert(`There was an error saving your setup:\n\n${errorMessage}\n\nPlease try again.`);
     } finally {
       setIsSubmitting(false);
     }
