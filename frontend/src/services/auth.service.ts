@@ -109,14 +109,19 @@ api.interceptors.response.use(
           status: refreshError.response?.status
         });
 
-        // Store logout reason for user feedback
-        sessionStorage.setItem('logout_reason', 'session_expired');
-
-        // Redirect to login with clear message
+        // Only redirect to login if user is on a protected route
         const currentPath = window.location.pathname;
-        const redirectUrl = currentPath !== '/login' ? `?redirect=${encodeURIComponent(currentPath)}` : '';
+        const publicRoutes = ['/', '/login', '/register', '/auth/callback'];
+        const isPublicRoute = publicRoutes.includes(currentPath);
 
-        window.location.href = `/login${redirectUrl}&session_expired=true`;
+        if (!isPublicRoute) {
+          // Store logout reason for user feedback
+          sessionStorage.setItem('logout_reason', 'session_expired');
+
+          // Redirect to login with clear message
+          const redirectUrl = currentPath !== '/login' ? `?redirect=${encodeURIComponent(currentPath)}` : '';
+          window.location.href = `/login${redirectUrl}&session_expired=true`;
+        }
 
         return Promise.reject(refreshError);
       }
