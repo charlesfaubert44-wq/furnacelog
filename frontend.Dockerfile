@@ -6,14 +6,14 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
+# Copy package files from frontend directory
+COPY frontend/package*.json ./
 
 # Install dependencies
 RUN npm ci
 
-# Copy application code
-COPY . .
+# Copy application code from frontend directory
+COPY frontend/ .
 
 # Build arguments for environment variables
 ARG VITE_API_URL
@@ -32,7 +32,7 @@ FROM nginx:alpine
 # Install dumb-init
 RUN apk add --no-cache dumb-init
 
-# Copy custom nginx config
+# Copy custom nginx config from root directory
 COPY nginx.conf /etc/nginx/nginx.conf
 
 # Copy built files from builder
