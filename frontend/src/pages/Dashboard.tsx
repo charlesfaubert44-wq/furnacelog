@@ -6,19 +6,28 @@ import { SeasonalChecklistWidget } from '@/components/dashboard/SeasonalChecklis
 import { Plus, Home, Calendar, FileText, Wrench } from 'lucide-react';
 
 export const Dashboard: React.FC = () => {
+  const currentDate = new Date().toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric'
+  });
+
   return (
     <div className="space-y-8">
       {/* Page Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-bold text-stone-50 tracking-tight">
-            Dashboard
+          <p className="text-[#d4a373] text-sm font-medium mb-2">
+            {currentDate}
+          </p>
+          <h1 className="text-4xl font-bold text-[#f4e8d8] tracking-tight">
+            Welcome Home
           </h1>
-          <p className="text-stone-400 mt-2">
-            Welcome back! Here's your home maintenance overview.
+          <p className="text-[#d4a373] mt-2">
+            Your home is warm and protected. Here's your maintenance overview.
           </p>
         </div>
-        <button className="px-5 py-2.5 bg-amber-700 hover:bg-amber-600 text-stone-50 text-sm font-semibold rounded-lg transition-all duration-200 shadow-lg shadow-amber-900/30 flex items-center gap-2">
+        <button className="px-6 py-3 bg-gradient-to-br from-[#ff6b35] to-[#f7931e] hover:from-[#f7931e] hover:to-[#ff6b35] text-[#f4e8d8] text-sm font-semibold rounded-xl transition-all duration-300 shadow-[0_4px_16px_rgba(255,107,53,0.4)] hover:shadow-[0_6px_24px_rgba(255,107,53,0.5)] flex items-center gap-2">
           <Plus className="h-4 w-4" />
           Log Maintenance
         </button>
@@ -48,42 +57,42 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* Quick Actions */}
-      <div className="bg-stone-900 border border-stone-800 rounded-2xl p-8">
-        <div className="text-center mb-6">
-          <h3 className="text-xl font-semibold text-stone-50 mb-2">
+      <div className="bg-gradient-to-br from-[#2d1f1a] to-[#1a1412] border border-[#f4e8d8]/10 rounded-2xl p-8 shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:shadow-[0_12px_48px_rgba(255,107,53,0.15)] transition-all duration-300">
+        <div className="text-center mb-8">
+          <h3 className="text-xl font-semibold text-[#f4e8d8] mb-2">
             Quick Actions
           </h3>
-          <p className="text-sm text-stone-400">
+          <p className="text-sm text-[#d4a373]">
             Frequently used actions to manage your home
           </p>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <button className="flex flex-col items-center gap-3 p-4 bg-stone-800 hover:bg-stone-700 border border-stone-700 rounded-xl transition-all duration-200 group">
-            <div className="w-12 h-12 bg-gradient-to-br from-emerald-700 to-emerald-800 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-              <Home className="w-6 h-6 text-emerald-100" />
+          <button className="flex flex-col items-center gap-4 p-6 bg-gradient-to-br from-[#3d3127] to-[#2d1f1a] hover:from-[#6a994e]/20 hover:to-[#7ea88f]/10 border border-[#f4e8d8]/10 hover:border-[#6a994e]/40 rounded-xl transition-all duration-300 group hover:shadow-[0_8px_24px_rgba(106,153,78,0.2)] hover:-translate-y-1">
+            <div className="w-14 h-14 bg-gradient-to-br from-[#6a994e] to-[#7ea88f] rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-[0_4px_16px_rgba(106,153,78,0.4)]">
+              <Home className="w-7 h-7 text-[#f4e8d8]" />
             </div>
-            <span className="text-sm font-medium text-stone-200">Add System</span>
+            <span className="text-sm font-medium text-[#f4e8d8]">Add System</span>
           </button>
 
-          <button className="flex flex-col items-center gap-3 p-4 bg-stone-800 hover:bg-stone-700 border border-stone-700 rounded-xl transition-all duration-200 group">
-            <div className="w-12 h-12 bg-gradient-to-br from-amber-700 to-orange-800 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-              <Calendar className="w-6 h-6 text-amber-100" />
+          <button className="flex flex-col items-center gap-4 p-6 bg-gradient-to-br from-[#3d3127] to-[#2d1f1a] hover:from-[#ff6b35]/20 hover:to-[#f7931e]/10 border border-[#f4e8d8]/10 hover:border-[#ff6b35]/40 rounded-xl transition-all duration-300 group hover:shadow-[0_8px_24px_rgba(255,107,53,0.3)] hover:-translate-y-1">
+            <div className="w-14 h-14 bg-gradient-to-br from-[#ff6b35] to-[#f7931e] rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-[0_4px_16px_rgba(255,107,53,0.4)]">
+              <Calendar className="w-7 h-7 text-[#f4e8d8]" />
             </div>
-            <span className="text-sm font-medium text-stone-200">Schedule Task</span>
+            <span className="text-sm font-medium text-[#f4e8d8]">Schedule Task</span>
           </button>
 
-          <button className="flex flex-col items-center gap-3 p-4 bg-stone-800 hover:bg-stone-700 border border-stone-700 rounded-xl transition-all duration-200 group">
-            <div className="w-12 h-12 bg-gradient-to-br from-sky-700 to-sky-800 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-              <FileText className="w-6 h-6 text-sky-100" />
+          <button className="flex flex-col items-center gap-4 p-6 bg-gradient-to-br from-[#3d3127] to-[#2d1f1a] hover:from-[#5b8fa3]/20 hover:to-[#7ea88f]/10 border border-[#f4e8d8]/10 hover:border-[#5b8fa3]/40 rounded-xl transition-all duration-300 group hover:shadow-[0_8px_24px_rgba(91,143,163,0.2)] hover:-translate-y-1">
+            <div className="w-14 h-14 bg-gradient-to-br from-[#5b8fa3] to-[#7ea88f] rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-[0_4px_16px_rgba(91,143,163,0.4)]">
+              <FileText className="w-7 h-7 text-[#f4e8d8]" />
             </div>
-            <span className="text-sm font-medium text-stone-200">Upload Document</span>
+            <span className="text-sm font-medium text-[#f4e8d8]">Upload Document</span>
           </button>
 
-          <button className="flex flex-col items-center gap-3 p-4 bg-stone-800 hover:bg-stone-700 border border-stone-700 rounded-xl transition-all duration-200 group">
-            <div className="w-12 h-12 bg-gradient-to-br from-violet-700 to-violet-800 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-              <Wrench className="w-6 h-6 text-violet-100" />
+          <button className="flex flex-col items-center gap-4 p-6 bg-gradient-to-br from-[#3d3127] to-[#2d1f1a] hover:from-[#7ea88f]/20 hover:to-[#6a994e]/10 border border-[#f4e8d8]/10 hover:border-[#7ea88f]/40 rounded-xl transition-all duration-300 group hover:shadow-[0_8px_24px_rgba(126,168,143,0.2)] hover:-translate-y-1">
+            <div className="w-14 h-14 bg-gradient-to-br from-[#7ea88f] to-[#6a994e] rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-[0_4px_16px_rgba(126,168,143,0.4)]">
+              <Wrench className="w-7 h-7 text-[#f4e8d8]" />
             </div>
-            <span className="text-sm font-medium text-stone-200">Find Provider</span>
+            <span className="text-sm font-medium text-[#f4e8d8]">Find Provider</span>
           </button>
         </div>
       </div>

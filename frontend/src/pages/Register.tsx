@@ -62,38 +62,45 @@ const Register: React.FC = () => {
   const getStrengthColor = (level: string) => {
     switch (level) {
       case 'weak':
-        return 'bg-red-500';
+        return 'bg-[#d45d4e]';
       case 'fair':
-        return 'bg-orange-500';
+        return 'bg-[#d4734e]';
       case 'good':
-        return 'bg-amber-500';
+        return 'bg-[#f2a541]';
       case 'strong':
-        return 'bg-emerald-500';
+        return 'bg-[#6a994e]';
       default:
-        return 'bg-stone-600';
+        return 'bg-[#3d3127]';
     }
   };
 
   return (
-    <div className="min-h-screen bg-stone-950">
+    <div className="min-h-screen bg-[#1a1412] relative overflow-hidden">
+      {/* Warm Background Gradient Mesh */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#ff6b35]/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-[#f7931e]/12 rounded-full blur-3xl" />
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#c87941]/8 rounded-full blur-3xl" />
+      </div>
+
       {/* Navigation */}
-      <nav className="border-b border-amber-900/20 bg-stone-950">
+      <nav className="relative border-b border-[#d4a373]/10 bg-[#1a1412]/80 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-6 py-5">
           <div className="flex items-center justify-between">
-            <Link to="/" className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-amber-700 to-orange-800 rounded-lg flex items-center justify-center shadow-lg">
-                <Flame className="w-6 h-6 text-amber-100" strokeWidth={2.5} />
+            <Link to="/" className="flex items-center gap-3 group">
+              <div className="w-10 h-10 bg-gradient-to-br from-[#ff6b35] to-[#f7931e] rounded-xl flex items-center justify-center shadow-[0_4px_16px_rgba(255,107,53,0.3)]">
+                <Flame className="w-6 h-6 text-[#f4e8d8]" strokeWidth={2.5} />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-stone-50 tracking-tight">
+                <h1 className="text-xl font-bold text-[#f4e8d8] tracking-tight">
                   FurnaceLog
                 </h1>
-                <p className="text-xs text-stone-400 font-medium">Northern Home Tracker</p>
+                <p className="text-xs text-[#d4a373] font-medium">Northern Home Tracker</p>
               </div>
             </Link>
             <Link
               to="/login"
-              className="px-5 py-2.5 bg-stone-800 hover:bg-stone-700 border border-stone-700 text-stone-100 text-sm font-semibold rounded-lg transition-all duration-200"
+              className="px-5 py-2.5 bg-[#3d3127]/60 hover:bg-[#3d3127] border border-[#d4a373]/30 text-[#f4e8d8] text-sm font-semibold rounded-xl transition-all duration-300"
             >
               Sign In
             </Link>
@@ -102,29 +109,32 @@ const Register: React.FC = () => {
       </nav>
 
       {/* Main Content */}
-      <div className="flex items-center justify-center px-6 py-12">
+      <div className="relative flex items-center justify-center px-6 py-12">
         <div className="max-w-2xl w-full">
           {/* Header */}
-          <div className="text-center mb-8">
-            <h2 className="text-4xl font-bold text-stone-50 mb-3">
-              Create your FurnaceLog account
+          <div className="text-center mb-8 animate-fade-slide-up">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#ff6b35] to-[#f7931e] rounded-2xl shadow-[0_8px_24px_rgba(255,107,53,0.4)] mb-6">
+              <Flame className="w-8 h-8 text-[#f4e8d8]" strokeWidth={2.5} />
+            </div>
+            <h2 className="text-4xl font-bold text-[#f4e8d8] mb-3">
+              Start Protecting Your Home
             </h2>
-            <p className="text-stone-400">
-              Track and maintain your northern home with confidence
+            <p className="text-[#d4a373] text-lg">
+              Create your account to track and maintain your northern sanctuary
             </p>
           </div>
 
           {/* Form Card */}
-          <div className="bg-stone-900 border border-stone-800 rounded-2xl p-8 shadow-2xl">
+          <div className="bg-gradient-to-br from-[#2d1f1a] to-[#1a1412] border border-[#f4e8d8]/10 rounded-2xl p-8 shadow-2xl backdrop-blur-sm animate-scale-in animate-delay-100">
             <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
               {/* Error Alert */}
               {error && (
-                <div className="bg-gradient-to-br from-red-950/60 to-red-900/40 border-2 border-red-800/50 rounded-xl p-4">
+                <div className="bg-gradient-to-br from-[#d45d4e]/20 to-[#d45d4e]/10 border-2 border-[#d45d4e]/40 rounded-xl p-4 animate-slide-down">
                   <div className="flex items-start gap-3">
-                    <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+                    <AlertCircle className="w-5 h-5 text-[#d45d4e] flex-shrink-0 mt-0.5" />
                     <div>
-                      <h3 className="text-sm font-semibold text-red-300 mb-1">Registration failed</h3>
-                      <p className="text-xs text-red-400">{error}</p>
+                      <h3 className="text-sm font-semibold text-[#d45d4e] mb-1">Registration failed</h3>
+                      <p className="text-xs text-[#d45d4e]/90">{error}</p>
                     </div>
                   </div>
                 </div>
@@ -132,28 +142,28 @@ const Register: React.FC = () => {
 
               {/* Email Field */}
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-stone-300 mb-2">
-                  Email address <span className="text-red-400">*</span>
+                <label htmlFor="email" className="block text-sm font-medium text-[#f4e8d8] mb-2">
+                  Email address <span className="text-[#d45d4e]">*</span>
                 </label>
                 <input
                   id="email"
                   type="email"
                   autoComplete="email"
                   {...register('email')}
-                  className={`w-full px-4 py-3 bg-stone-800 border ${
-                    errors.email ? 'border-red-800/50' : 'border-stone-700'
-                  } text-stone-100 placeholder-stone-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-600 focus:border-transparent transition-all`}
+                  className={`w-full px-4 py-3 bg-[#3d3127]/60 border-b-2 ${
+                    errors.email ? 'border-[#d45d4e]' : 'border-[#d4a373]/30'
+                  } text-[#f4e8d8] placeholder-[#d4a373]/50 rounded-t-xl focus:outline-none focus:border-[#ff6b35] focus:shadow-[0_4px_12px_rgba(255,107,53,0.15)] transition-all duration-300`}
                   placeholder="you@example.com"
                 />
                 {errors.email && (
-                  <p className="mt-2 text-sm text-red-400">{errors.email.message}</p>
+                  <p className="mt-2 text-sm text-[#d45d4e]">{errors.email.message}</p>
                 )}
               </div>
 
               {/* Password Field */}
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-stone-300 mb-2">
-                  Password <span className="text-red-400">*</span>
+                <label htmlFor="password" className="block text-sm font-medium text-[#f4e8d8] mb-2">
+                  Password <span className="text-[#d45d4e]">*</span>
                 </label>
                 <div className="relative">
                   <input
@@ -161,15 +171,15 @@ const Register: React.FC = () => {
                     type={showPassword ? 'text' : 'password'}
                     autoComplete="new-password"
                     {...register('password')}
-                    className={`w-full px-4 py-3 bg-stone-800 border ${
-                      errors.password ? 'border-red-800/50' : 'border-stone-700'
-                    } text-stone-100 placeholder-stone-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-600 focus:border-transparent transition-all pr-12`}
+                    className={`w-full px-4 py-3 bg-[#3d3127]/60 border-b-2 ${
+                      errors.password ? 'border-[#d45d4e]' : 'border-[#d4a373]/30'
+                    } text-[#f4e8d8] placeholder-[#d4a373]/50 rounded-t-xl focus:outline-none focus:border-[#ff6b35] focus:shadow-[0_4px_12px_rgba(255,107,53,0.15)] transition-all duration-300 pr-12`}
                     placeholder="Create a strong password"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 pr-4 flex items-center text-stone-400 hover:text-stone-300 transition-colors"
+                    className="absolute inset-y-0 right-0 pr-4 flex items-center text-[#d4a373] hover:text-[#f4e8d8] transition-colors"
                   >
                     {showPassword ? (
                       <EyeOff className="h-5 w-5" />
@@ -179,31 +189,31 @@ const Register: React.FC = () => {
                   </button>
                 </div>
                 {errors.password && (
-                  <p className="mt-2 text-sm text-red-400">{errors.password.message}</p>
+                  <p className="mt-2 text-sm text-[#d45d4e]">{errors.password.message}</p>
                 )}
 
                 {/* Password Strength Indicator */}
                 {passwordStrength && (
-                  <div className="mt-3 p-3 bg-stone-800 border border-stone-700 rounded-lg">
+                  <div className="mt-3 p-4 bg-[#3d3127]/40 border border-[#d4a373]/20 rounded-xl animate-slide-down">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-xs text-stone-400">Password strength:</span>
-                      <span className={`text-xs font-semibold ${
-                        passwordStrength.level === 'strong' ? 'text-emerald-400' :
-                        passwordStrength.level === 'good' ? 'text-amber-400' :
-                        passwordStrength.level === 'fair' ? 'text-orange-400' :
-                        'text-red-400'
+                      <span className="text-xs text-[#d4a373]">Password strength:</span>
+                      <span className={`text-xs font-semibold transition-colors duration-300 ${
+                        passwordStrength.level === 'strong' ? 'text-[#6a994e]' :
+                        passwordStrength.level === 'good' ? 'text-[#f2a541]' :
+                        passwordStrength.level === 'fair' ? 'text-[#d4734e]' :
+                        'text-[#d45d4e]'
                       }`}>
                         {passwordStrength.level.toUpperCase()}
                       </span>
                     </div>
-                    <div className="w-full bg-stone-700 rounded-full h-2">
+                    <div className="w-full bg-[#2d1f1a] rounded-full h-2.5">
                       <div
-                        className={`h-2 rounded-full transition-all ${getStrengthColor(passwordStrength.level)}`}
+                        className={`h-2.5 rounded-full transition-all duration-500 ${getStrengthColor(passwordStrength.level)}`}
                         style={{ width: `${(passwordStrength.score / 7) * 100}%` }}
                       />
                     </div>
                     {passwordStrength.feedback.length > 0 && (
-                      <ul className="mt-2 space-y-1 text-xs text-stone-400">
+                      <ul className="mt-3 space-y-1 text-xs text-[#d4a373]/80">
                         {passwordStrength.feedback.map((tip, index) => (
                           <li key={index}>• {tip}</li>
                         ))}
@@ -215,8 +225,8 @@ const Register: React.FC = () => {
 
               {/* Confirm Password Field */}
               <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-stone-300 mb-2">
-                  Confirm password <span className="text-red-400">*</span>
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-[#f4e8d8] mb-2">
+                  Confirm password <span className="text-[#d45d4e]">*</span>
                 </label>
                 <div className="relative">
                   <input
@@ -224,15 +234,15 @@ const Register: React.FC = () => {
                     type={showConfirmPassword ? 'text' : 'password'}
                     autoComplete="new-password"
                     {...register('confirmPassword')}
-                    className={`w-full px-4 py-3 bg-stone-800 border ${
-                      errors.confirmPassword ? 'border-red-800/50' : 'border-stone-700'
-                    } text-stone-100 placeholder-stone-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-600 focus:border-transparent transition-all pr-12`}
+                    className={`w-full px-4 py-3 bg-[#3d3127]/60 border-b-2 ${
+                      errors.confirmPassword ? 'border-[#d45d4e]' : 'border-[#d4a373]/30'
+                    } text-[#f4e8d8] placeholder-[#d4a373]/50 rounded-t-xl focus:outline-none focus:border-[#ff6b35] focus:shadow-[0_4px_12px_rgba(255,107,53,0.15)] transition-all duration-300 pr-12`}
                     placeholder="Re-enter your password"
                   />
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute inset-y-0 right-0 pr-4 flex items-center text-stone-400 hover:text-stone-300 transition-colors"
+                    className="absolute inset-y-0 right-0 pr-4 flex items-center text-[#d4a373] hover:text-[#f4e8d8] transition-colors"
                   >
                     {showConfirmPassword ? (
                       <EyeOff className="h-5 w-5" />
@@ -242,42 +252,42 @@ const Register: React.FC = () => {
                   </button>
                 </div>
                 {errors.confirmPassword && (
-                  <p className="mt-2 text-sm text-red-400">{errors.confirmPassword.message}</p>
+                  <p className="mt-2 text-sm text-[#d45d4e]">{errors.confirmPassword.message}</p>
                 )}
               </div>
 
               {/* Optional Profile Fields */}
-              <div className="pt-6 border-t border-stone-800">
-                <p className="text-sm font-medium text-stone-300 mb-4">Optional profile information</p>
+              <div className="pt-6 border-t border-[#f4e8d8]/10">
+                <p className="text-sm font-medium text-[#d4a373] mb-4">Optional profile information</p>
 
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <div>
-                    <label htmlFor="firstName" className="block text-sm text-stone-400 mb-2">
+                    <label htmlFor="firstName" className="block text-sm text-[#d4a373]/80 mb-2">
                       First name
                     </label>
                     <input
                       id="firstName"
                       type="text"
                       {...register('firstName')}
-                      className="w-full px-4 py-3 bg-stone-800 border border-stone-700 text-stone-100 placeholder-stone-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-600 focus:border-transparent transition-all"
+                      className="w-full px-4 py-3 bg-[#3d3127]/40 border border-[#d4a373]/20 text-[#f4e8d8] placeholder-[#d4a373]/40 rounded-xl focus:outline-none focus:border-[#ff6b35]/50 focus:shadow-[0_2px_8px_rgba(255,107,53,0.1)] transition-all duration-300"
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="lastName" className="block text-sm text-stone-400 mb-2">
+                    <label htmlFor="lastName" className="block text-sm text-[#d4a373]/80 mb-2">
                       Last name
                     </label>
                     <input
                       id="lastName"
                       type="text"
                       {...register('lastName')}
-                      className="w-full px-4 py-3 bg-stone-800 border border-stone-700 text-stone-100 placeholder-stone-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-600 focus:border-transparent transition-all"
+                      className="w-full px-4 py-3 bg-[#3d3127]/40 border border-[#d4a373]/20 text-[#f4e8d8] placeholder-[#d4a373]/40 rounded-xl focus:outline-none focus:border-[#ff6b35]/50 focus:shadow-[0_2px_8px_rgba(255,107,53,0.1)] transition-all duration-300"
                     />
                   </div>
                 </div>
 
                 <div className="mb-4">
-                  <label htmlFor="community" className="block text-sm text-stone-400 mb-2">
+                  <label htmlFor="community" className="block text-sm text-[#d4a373]/80 mb-2">
                     Community
                   </label>
                   <input
@@ -285,19 +295,19 @@ const Register: React.FC = () => {
                     type="text"
                     {...register('community')}
                     placeholder="e.g., Yellowknife, Iqaluit, Whitehorse"
-                    className="w-full px-4 py-3 bg-stone-800 border border-stone-700 text-stone-100 placeholder-stone-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-600 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 bg-[#3d3127]/40 border border-[#d4a373]/20 text-[#f4e8d8] placeholder-[#d4a373]/40 rounded-xl focus:outline-none focus:border-[#ff6b35]/50 focus:shadow-[0_2px_8px_rgba(255,107,53,0.1)] transition-all duration-300"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="phone" className="block text-sm text-stone-400 mb-2">
+                  <label htmlFor="phone" className="block text-sm text-[#d4a373]/80 mb-2">
                     Phone
                   </label>
                   <input
                     id="phone"
                     type="tel"
                     {...register('phone')}
-                    className="w-full px-4 py-3 bg-stone-800 border border-stone-700 text-stone-100 placeholder-stone-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-600 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 bg-[#3d3127]/40 border border-[#d4a373]/20 text-[#f4e8d8] placeholder-[#d4a373]/40 rounded-xl focus:outline-none focus:border-[#ff6b35]/50 focus:shadow-[0_2px_8px_rgba(255,107,53,0.1)] transition-all duration-300"
                   />
                 </div>
               </div>
@@ -306,7 +316,7 @@ const Register: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-amber-700 hover:bg-amber-600 disabled:bg-stone-700 disabled:cursor-not-allowed text-stone-50 font-semibold rounded-lg transition-all duration-200 shadow-lg shadow-amber-900/30 hover:shadow-amber-900/50"
+                className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-[#ff6b35] to-[#f7931e] hover:shadow-[0_8px_32px_rgba(255,107,53,0.5)] disabled:opacity-50 disabled:cursor-not-allowed text-[#f4e8d8] font-bold rounded-xl transition-all duration-300 shadow-[0_4px_16px_rgba(255,107,53,0.35)] text-lg"
               >
                 {isSubmitting ? (
                   <>
@@ -319,9 +329,9 @@ const Register: React.FC = () => {
               </button>
 
               {/* Login Link */}
-              <div className="text-center pt-4 border-t border-stone-800">
-                <span className="text-sm text-stone-400">Already have an account? </span>
-                <Link to="/login" className="text-sm font-medium text-amber-400 hover:text-amber-300 transition-colors">
+              <div className="text-center pt-4 border-t border-[#f4e8d8]/10">
+                <span className="text-sm text-[#d4a373]">Already have an account? </span>
+                <Link to="/login" className="text-sm font-semibold text-[#f7931e] hover:text-[#ff6b35] transition-colors duration-200">
                   Sign in
                 </Link>
               </div>
@@ -330,7 +340,7 @@ const Register: React.FC = () => {
 
           {/* Footer Text */}
           <div className="text-center mt-8">
-            <p className="text-sm text-stone-500">
+            <p className="text-sm text-[#d4a373]/70">
               Built for Canada's North
             </p>
           </div>

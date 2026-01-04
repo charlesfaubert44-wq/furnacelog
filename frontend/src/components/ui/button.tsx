@@ -4,24 +4,30 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tech-blue-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
+        // Territorial Homestead - Primary warm gradient button
         default:
-          'bg-tech-blue-600 text-white shadow-md hover:bg-tech-blue-700 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:bg-tech-blue-800',
-        destructive:
-          'bg-flame-red-50 border-2 border-flame-red-200 text-flame-red-600 hover:bg-flame-red-100 hover:border-flame-red-300',
-        outline:
-          'border-2 border-aluminum-300 text-iron-600 bg-transparent hover:bg-aluminum-100 hover:border-aluminum-400 hover:text-graphite-900',
+          'bg-gradient-hearth text-wool-cream shadow-glow-sm hover:shadow-glow-md hover:scale-[1.02] active:scale-[0.98] rounded-xl focus-visible:ring-ember-glow',
+        // Territorial Homestead - Secondary outline with warm glow on hover
         secondary:
-          'bg-steel-700 text-white hover:bg-steel-800 shadow-sm',
-        ghost: 'hover:bg-aluminum-100 hover:text-graphite-900',
-        link: 'text-tech-blue-600 underline-offset-4 hover:underline',
+          'border-2 border-honey/40 bg-transparent text-wool-cream hover:bg-warm-stone/30 hover:border-honey hover:shadow-glow-sm hover:scale-[1.02] active:scale-[0.98] rounded-xl focus-visible:ring-honey',
+        // Territorial Homestead - Tertiary text-only warm color
+        tertiary:
+          'text-ember-glow hover:text-hearth-fire hover:bg-warm-stone/20 hover:scale-[1.02] active:scale-[0.98] rounded-xl focus-visible:ring-ember-glow',
+        // Legacy variants (preserved for compatibility)
+        outline:
+          'border-2 border-aluminum-300 text-iron-600 bg-transparent hover:bg-aluminum-100 hover:border-aluminum-400 hover:text-graphite-900 hover:scale-[1.02] active:scale-[0.98] rounded-lg focus-visible:ring-tech-blue-500',
+        destructive:
+          'bg-brick-red/20 border-2 border-brick-red/40 text-brick-red hover:bg-brick-red/30 hover:border-brick-red hover:scale-[1.02] active:scale-[0.98] rounded-xl focus-visible:ring-brick-red',
+        ghost: 'hover:bg-warm-stone/30 hover:text-wool-cream hover:scale-[1.02] active:scale-[0.98] rounded-xl focus-visible:ring-ember-glow',
+        link: 'text-ember-glow underline-offset-4 hover:underline hover:text-hearth-fire focus-visible:ring-ember-glow',
         success:
-          'bg-system-green-600 text-white shadow-md hover:bg-system-green-700 hover:-translate-y-0.5',
+          'bg-forest-green text-wool-cream shadow-md hover:bg-forest-green/90 hover:scale-[1.02] active:scale-[0.98] rounded-xl focus-visible:ring-forest-green',
         warning:
-          'bg-caution-yellow-500 text-graphite-900 shadow-md hover:bg-caution-yellow-600',
+          'bg-sunset-amber text-deep-charcoal shadow-md hover:bg-sunset-amber/90 hover:scale-[1.02] active:scale-[0.98] rounded-xl focus-visible:ring-sunset-amber',
       },
       size: {
         default: 'h-12 px-6 py-3',

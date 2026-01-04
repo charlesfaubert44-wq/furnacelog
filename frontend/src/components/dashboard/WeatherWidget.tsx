@@ -10,13 +10,13 @@ export const WeatherWidget: React.FC = () => {
   const hasAlert = currentTemp < -20;
 
   return (
-    <div className="bg-stone-900 border border-stone-800 rounded-2xl p-6 h-full">
+    <div className="bg-gradient-to-br from-[#2d1f1a] to-[#1a1412] border border-[#f4e8d8]/10 rounded-2xl p-8 h-full shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:shadow-[0_12px_48px_rgba(255,107,53,0.15)] transition-all duration-300">
       {/* Header */}
       <div className="mb-6">
-        <h3 className="text-xl font-semibold text-stone-50">
+        <h3 className="text-xl font-semibold text-[#f4e8d8]">
           Current Weather
         </h3>
-        <p className="text-sm text-stone-400 mt-1">
+        <p className="text-sm text-[#d4a373] mt-1">
           Yellowknife, NT
         </p>
       </div>
@@ -26,52 +26,52 @@ export const WeatherWidget: React.FC = () => {
         <div className="flex items-start justify-between mb-4">
           <div>
             <div className="flex items-baseline gap-3">
-              <span className="text-5xl font-bold text-sky-400">
+              <span className="text-6xl font-bold bg-gradient-to-br from-[#c4d7e0] to-[#5b8fa3] bg-clip-text text-transparent">
                 {currentTemp}°C
               </span>
             </div>
-            <p className="text-sm text-stone-400 mt-2">
-              Feels like <span className="text-stone-300 font-medium">{windChill}°C</span>
+            <p className="text-sm text-[#d4a373] mt-2">
+              Feels like <span className="text-[#c4d7e0] font-semibold">{windChill}°C</span>
             </p>
           </div>
-          <div className="text-5xl">🌨️</div>
+          <div className="text-6xl opacity-90">🌨️</div>
         </div>
       </div>
 
       {/* Weather Details */}
       <div className="grid grid-cols-2 gap-3 mb-6">
-        <div className="flex items-center gap-3 bg-stone-800 border border-stone-700 rounded-lg p-3">
-          <div className="w-10 h-10 bg-stone-700 rounded-lg flex items-center justify-center flex-shrink-0">
-            <Wind className="h-5 w-5 text-stone-300" />
+        <div className="flex items-center gap-3 bg-gradient-to-br from-[#3d3127] to-[#2d1f1a] border border-[#f4e8d8]/10 rounded-xl p-3 hover:border-[#5b8fa3]/30 transition-colors">
+          <div className="w-10 h-10 bg-gradient-to-br from-[#5b8fa3] to-[#7ea88f] rounded-lg flex items-center justify-center flex-shrink-0 shadow-[0_4px_12px_rgba(91,143,163,0.3)]">
+            <Wind className="h-5 w-5 text-[#f4e8d8]" />
           </div>
           <div className="min-w-0">
-            <p className="text-xs text-stone-400">Wind</p>
-            <p className="text-sm font-semibold text-stone-200">{windSpeed} km/h</p>
+            <p className="text-xs text-[#d4a373]">Wind</p>
+            <p className="text-sm font-semibold text-[#f4e8d8]">{windSpeed} km/h</p>
           </div>
         </div>
-        <div className="flex items-center gap-3 bg-stone-800 border border-stone-700 rounded-lg p-3">
-          <div className="w-10 h-10 bg-stone-700 rounded-lg flex items-center justify-center flex-shrink-0">
-            <Droplets className="h-5 w-5 text-stone-300" />
+        <div className="flex items-center gap-3 bg-gradient-to-br from-[#3d3127] to-[#2d1f1a] border border-[#f4e8d8]/10 rounded-xl p-3 hover:border-[#5b8fa3]/30 transition-colors">
+          <div className="w-10 h-10 bg-gradient-to-br from-[#5b8fa3] to-[#7ea88f] rounded-lg flex items-center justify-center flex-shrink-0 shadow-[0_4px_12px_rgba(91,143,163,0.3)]">
+            <Droplets className="h-5 w-5 text-[#f4e8d8]" />
           </div>
           <div className="min-w-0">
-            <p className="text-xs text-stone-400">Humidity</p>
-            <p className="text-sm font-semibold text-stone-200">{humidity}%</p>
+            <p className="text-xs text-[#d4a373]">Humidity</p>
+            <p className="text-sm font-semibold text-[#f4e8d8]">{humidity}%</p>
           </div>
         </div>
       </div>
 
       {/* Weather Alert */}
       {hasAlert && (
-        <div className="bg-gradient-to-br from-red-950/60 to-red-900/40 border-2 border-red-800/50 rounded-xl p-4 mb-4">
+        <div className="bg-gradient-to-br from-[#d45d4e]/20 to-[#d45d4e]/10 border border-[#d45d4e]/40 rounded-xl p-4 mb-4 shadow-[0_4px_16px_rgba(212,93,78,0.2)]">
           <div className="flex items-start gap-3">
-            <div className="flex-shrink-0 w-10 h-10 bg-red-900/50 rounded-lg flex items-center justify-center">
-              <AlertTriangle className="h-5 w-5 text-red-400" />
+            <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-[#d45d4e] to-[#d4734e] rounded-xl flex items-center justify-center shadow-[0_4px_12px_rgba(212,93,78,0.4)]">
+              <AlertTriangle className="h-6 w-6 text-[#f4e8d8]" />
             </div>
             <div>
-              <h4 className="font-semibold text-red-300 text-sm mb-1">
+              <h4 className="font-semibold text-[#f4e8d8] text-sm mb-1">
                 Extreme Cold Warning
               </h4>
-              <p className="text-xs text-red-400 leading-relaxed">
+              <p className="text-xs text-[#d4a373] leading-relaxed">
                 Check heat trace systems and ensure furnace is operating properly.
               </p>
             </div>
@@ -80,22 +80,22 @@ export const WeatherWidget: React.FC = () => {
       )}
 
       {/* Suggested Actions */}
-      <div className="bg-amber-950/30 border border-amber-900/40 rounded-xl p-4">
-        <h4 className="text-sm font-semibold text-amber-300 mb-3 flex items-center gap-2">
-          <Thermometer className="w-4 h-4" />
+      <div className="bg-gradient-to-br from-[#f2a541]/15 to-[#f7931e]/10 border border-[#f2a541]/30 rounded-xl p-4">
+        <h4 className="text-sm font-semibold text-[#f4e8d8] mb-3 flex items-center gap-2">
+          <Thermometer className="w-4 h-4 text-[#f2a541]" />
           Recommended Actions
         </h4>
-        <ul className="space-y-2 text-xs text-amber-400/90">
+        <ul className="space-y-2 text-xs text-[#d4a373]">
           <li className="flex items-start gap-2">
-            <span className="text-amber-500 mt-0.5">•</span>
+            <span className="text-[#ff6b35] mt-0.5 font-bold">•</span>
             <span>Monitor furnace operation</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-amber-500 mt-0.5">•</span>
+            <span className="text-[#ff6b35] mt-0.5 font-bold">•</span>
             <span>Verify heat trace cables are active</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-amber-500 mt-0.5">•</span>
+            <span className="text-[#ff6b35] mt-0.5 font-bold">•</span>
             <span>Let taps drip to prevent freezing</span>
           </li>
         </ul>

@@ -4,6 +4,7 @@ import { Thermometer, Home, Calendar, AlertTriangle, Snowflake, Flame, Shield, C
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import { AuthModal } from '@/components/auth/AuthModal';
+import { useScrollPosition } from '@/hooks/useScrollAnimation';
 
 interface HealthStatus {
   status: string;
@@ -123,6 +124,7 @@ function HomePage() {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authModalTab, setAuthModalTab] = useState<'login' | 'register'>('login');
+  const { isScrolled } = useScrollPosition();
 
   useEffect(() => {
     const checkHealth = async () => {
@@ -163,7 +165,12 @@ function HomePage() {
   return (
     <div className="min-h-screen bg-stone-950">
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 border-b border-amber-900/20 bg-stone-950/95 backdrop-blur-sm">
+      <nav className={cn(
+        "sticky top-0 z-50 border-b transition-all duration-300",
+        isScrolled
+          ? "border-amber-900/30 bg-stone-950/98 backdrop-blur-md shadow-lg shadow-black/20"
+          : "border-amber-900/20 bg-stone-950/95 backdrop-blur-sm"
+      )}>
         <div className="max-w-7xl mx-auto px-6 py-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -231,53 +238,63 @@ function HomePage() {
       {/* Conditional Content - Marketing vs Dashboard */}
       {user ? (
         /* DASHBOARD CONTENT (When Logged In) */
-        <div className="max-w-7xl mx-auto px-6 py-12">
-          <div className="space-y-8">
-            {/* Dashboard Header */}
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <h2 className="text-4xl font-bold text-stone-50 tracking-tight">
-                  Dashboard
-                </h2>
-                <p className="text-stone-400 mt-2">
-                  Welcome back! Here's your home maintenance overview.
-                </p>
+        <div className="relative min-h-screen">
+          {/* Warm gradient background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[#1a1412] via-[#2d1f1a] to-[#1a1412] opacity-60" />
+          <div className="absolute inset-0 opacity-[0.02]" style={{
+            backgroundImage: `radial-gradient(circle at 50% 50%, rgba(247, 147, 30, 0.15) 0%, transparent 50%)`
+          }} />
+
+          <div className="relative max-w-7xl mx-auto px-6 py-12">
+            <div className="space-y-8">
+              {/* Dashboard Header */}
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-[#d4a373] text-sm font-medium mb-2">
+                    {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+                  </p>
+                  <h2 className="text-4xl font-bold text-[#f4e8d8] tracking-tight">
+                    Welcome Home
+                  </h2>
+                  <p className="text-[#d4a373] mt-2">
+                    Your home is warm and protected. Here's your maintenance overview.
+                  </p>
+                </div>
+                <button className="px-6 py-3 bg-gradient-to-br from-[#ff6b35] to-[#f7931e] hover:from-[#f7931e] hover:to-[#ff6b35] text-[#f4e8d8] text-sm font-semibold rounded-xl transition-all duration-300 shadow-[0_4px_16px_rgba(255,107,53,0.4)] hover:shadow-[0_6px_24px_rgba(255,107,53,0.5)] flex items-center gap-2">
+                  <Plus className="h-4 w-4" />
+                  Log Maintenance
+                </button>
               </div>
-              <button className="px-5 py-2.5 bg-amber-700 hover:bg-amber-600 text-stone-50 text-sm font-semibold rounded-lg transition-all duration-200 shadow-lg shadow-amber-900/30 flex items-center gap-2">
-                <Plus className="h-4 w-4" />
-                Log Maintenance
-              </button>
-            </div>
 
             {/* Dashboard Grid */}
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
               {/* Maintenance Summary - Spans 2 columns on xl */}
-              <div className="xl:col-span-2 bg-stone-900 border border-stone-800 rounded-2xl p-6">
+              <div className="xl:col-span-2 bg-gradient-to-br from-[#2d1f1a] to-[#1a1412] border border-[#f4e8d8]/10 rounded-2xl p-8 shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:shadow-[0_12px_48px_rgba(255,107,53,0.15)] transition-all duration-300">
                 <div className="mb-6">
-                  <h3 className="text-xl font-semibold text-stone-50">Maintenance Summary</h3>
-                  <p className="text-sm text-stone-400 mt-1">Track your upcoming and overdue tasks</p>
+                  <h3 className="text-xl font-semibold text-[#f4e8d8]">Maintenance Summary</h3>
+                  <p className="text-sm text-[#d4a373] mt-1">Track your upcoming and overdue tasks</p>
                 </div>
                 <div className="grid grid-cols-3 gap-4 mb-6">
-                  <div className="bg-gradient-to-br from-red-950/60 to-red-900/40 border border-red-800/40 rounded-xl p-4">
+                  <div className="bg-gradient-to-br from-[#d45d4e]/20 to-[#d45d4e]/10 border border-[#d45d4e]/30 rounded-xl p-4 shadow-[0_4px_16px_rgba(212,93,78,0.2)]">
                     <div className="flex items-center justify-center gap-2 mb-2">
-                      <AlertTriangle className="h-5 w-5 text-red-400" />
-                      <span className="text-3xl font-bold text-red-300">{overdueCount}</span>
+                      <AlertTriangle className="h-5 w-5 text-[#d45d4e]" />
+                      <span className="text-3xl font-bold text-[#f4e8d8]">{overdueCount}</span>
                     </div>
-                    <p className="text-xs text-red-400 font-medium text-center uppercase tracking-wide">Overdue</p>
+                    <p className="text-xs text-[#d45d4e] font-medium text-center uppercase tracking-wide">Overdue</p>
                   </div>
-                  <div className="bg-gradient-to-br from-amber-950/60 to-amber-900/40 border border-amber-800/40 rounded-xl p-4">
+                  <div className="bg-gradient-to-br from-[#f2a541]/20 to-[#f2a541]/10 border border-[#f2a541]/30 rounded-xl p-4 shadow-[0_4px_16px_rgba(242,165,65,0.2)]">
                     <div className="flex items-center justify-center gap-2 mb-2">
-                      <Clock className="h-5 w-5 text-amber-400" />
-                      <span className="text-3xl font-bold text-amber-300">{dueSoonCount}</span>
+                      <Clock className="h-5 w-5 text-[#f2a541]" />
+                      <span className="text-3xl font-bold text-[#f4e8d8]">{dueSoonCount}</span>
                     </div>
-                    <p className="text-xs text-amber-400 font-medium text-center uppercase tracking-wide">This Week</p>
+                    <p className="text-xs text-[#f2a541] font-medium text-center uppercase tracking-wide">This Week</p>
                   </div>
-                  <div className="bg-gradient-to-br from-sky-950/60 to-sky-900/40 border border-sky-800/40 rounded-xl p-4">
+                  <div className="bg-gradient-to-br from-[#3d3127] to-[#2d1f1a] border border-[#d4a373]/20 rounded-xl p-4">
                     <div className="flex items-center justify-center gap-2 mb-2">
-                      <CheckCircle2 className="h-5 w-5 text-sky-400" />
-                      <span className="text-3xl font-bold text-sky-300">{upcomingCount}</span>
+                      <CheckCircle2 className="h-5 w-5 text-[#d4a373]" />
+                      <span className="text-3xl font-bold text-[#f4e8d8]">{upcomingCount}</span>
                     </div>
-                    <p className="text-xs text-sky-400 font-medium text-center uppercase tracking-wide">Upcoming</p>
+                    <p className="text-xs text-[#d4a373] font-medium text-center uppercase tracking-wide">Upcoming</p>
                   </div>
                 </div>
                 <div className="space-y-3">
@@ -285,30 +302,30 @@ function HomePage() {
                     <div
                       key={task.id}
                       className={cn(
-                        'flex items-start gap-4 rounded-xl p-4 transition-all cursor-pointer border-2',
-                        task.status === 'overdue' && 'bg-red-950/30 border-red-900/50 hover:border-red-800/70',
-                        task.status === 'due-soon' && 'bg-amber-950/30 border-amber-900/50 hover:border-amber-800/70',
-                        task.status === 'upcoming' && 'bg-stone-800/50 border-stone-700 hover:border-stone-600'
+                        'flex items-start gap-4 rounded-xl p-4 transition-all duration-300 cursor-pointer border',
+                        task.status === 'overdue' && 'bg-gradient-to-br from-[#2d1f1a] to-[#1a1412] border-[#d45d4e]/30 hover:border-[#d45d4e]/50 hover:shadow-[0_4px_16px_rgba(212,93,78,0.2)]',
+                        task.status === 'due-soon' && 'bg-gradient-to-br from-[#2d1f1a] to-[#1a1412] border-[#f2a541]/30 hover:border-[#f2a541]/50 hover:shadow-[0_4px_16px_rgba(242,165,65,0.2)]',
+                        task.status === 'upcoming' && 'bg-gradient-to-br from-[#3d3127] to-[#2d1f1a] border-[#f4e8d8]/10 hover:border-[#ff6b35]/30 hover:shadow-[0_4px_16px_rgba(255,107,53,0.15)]'
                       )}
                     >
                       <div className={cn(
-                        'flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center',
-                        task.status === 'overdue' && 'bg-red-900/40 text-red-400',
-                        task.status === 'due-soon' && 'bg-amber-900/40 text-amber-400',
-                        task.status === 'upcoming' && 'bg-stone-700 text-stone-300'
+                        'flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.2)]',
+                        task.status === 'overdue' && 'bg-gradient-to-br from-[#d45d4e] to-[#d4734e] text-[#f4e8d8]',
+                        task.status === 'due-soon' && 'bg-gradient-to-br from-[#f2a541] to-[#f7931e] text-[#f4e8d8]',
+                        task.status === 'upcoming' && 'bg-gradient-to-br from-[#d4a373] to-[#c87941] text-[#f4e8d8]'
                       )}>
                         {task.icon}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-semibold text-stone-100 text-sm">{task.title}</h4>
-                        <p className="text-xs text-stone-400 mt-0.5">{task.system}</p>
+                        <h4 className="font-semibold text-[#f4e8d8] text-sm">{task.title}</h4>
+                        <p className="text-xs text-[#d4a373] mt-0.5">{task.system}</p>
                       </div>
                       <div className="flex-shrink-0">
                         <span className={cn(
-                          'inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium',
-                          task.status === 'overdue' && 'bg-red-900/40 text-red-300',
-                          task.status === 'due-soon' && 'bg-amber-900/40 text-amber-300',
-                          task.status === 'upcoming' && 'bg-stone-700 text-stone-300'
+                          'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border',
+                          task.status === 'overdue' && 'bg-[#d45d4e]/20 text-[#d45d4e] border-[#d45d4e]/30',
+                          task.status === 'due-soon' && 'bg-[#f2a541]/20 text-[#f2a541] border-[#f2a541]/30',
+                          task.status === 'upcoming' && 'bg-[#d4a373]/20 text-[#d4a373] border-[#d4a373]/30'
                         )}>
                           {task.dueDate.toLocaleDateString('en-CA', { month: 'short', day: 'numeric' })}
                         </span>
@@ -319,75 +336,78 @@ function HomePage() {
               </div>
 
               {/* Weather Widget */}
-              <div className="bg-stone-900 border border-stone-800 rounded-2xl p-6">
+              <div className="bg-gradient-to-br from-[#2d1f1a] to-[#1a1412] border border-[#f4e8d8]/10 rounded-2xl p-8 shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:shadow-[0_12px_48px_rgba(255,107,53,0.15)] transition-all duration-300">
                 <div className="mb-6">
-                  <h3 className="text-xl font-semibold text-stone-50">Current Weather</h3>
-                  <p className="text-sm text-stone-400 mt-1">Yellowknife, NT</p>
+                  <h3 className="text-xl font-semibold text-[#f4e8d8]">Current Weather</h3>
+                  <p className="text-sm text-[#d4a373] mt-1 flex items-center gap-1.5">
+                    <MapPin className="w-3.5 h-3.5" />
+                    Yellowknife, NT
+                  </p>
                 </div>
                 <div className="mb-6">
                   <div className="flex items-start justify-between mb-4">
                     <div>
                       <div className="flex items-baseline gap-3">
-                        <span className="text-5xl font-bold text-sky-400">{currentTemp}°C</span>
+                        <span className="text-6xl font-bold bg-gradient-to-br from-[#c4d7e0] to-[#5b8fa3] bg-clip-text text-transparent">{currentTemp}°C</span>
                       </div>
-                      <p className="text-sm text-stone-400 mt-2">
-                        Feels like <span className="text-stone-300 font-medium">{windChill}°C</span>
+                      <p className="text-sm text-[#d4a373] mt-2">
+                        Feels like <span className="text-[#c4d7e0] font-semibold">{windChill}°C</span>
                       </p>
                     </div>
-                    <div className="text-5xl">🌨️</div>
+                    <div className="text-6xl opacity-90">🌨️</div>
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-3 mb-6">
-                  <div className="flex items-center gap-3 bg-stone-800 border border-stone-700 rounded-lg p-3">
-                    <div className="w-10 h-10 bg-stone-700 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Wind className="h-5 w-5 text-stone-300" />
+                  <div className="flex items-center gap-3 bg-gradient-to-br from-[#3d3127] to-[#2d1f1a] border border-[#f4e8d8]/10 rounded-xl p-3 hover:border-[#5b8fa3]/30 transition-colors">
+                    <div className="w-10 h-10 bg-gradient-to-br from-[#5b8fa3] to-[#7ea88f] rounded-lg flex items-center justify-center flex-shrink-0 shadow-[0_4px_12px_rgba(91,143,163,0.3)]">
+                      <Wind className="h-5 w-5 text-[#f4e8d8]" />
                     </div>
                     <div className="min-w-0">
-                      <p className="text-xs text-stone-400">Wind</p>
-                      <p className="text-sm font-semibold text-stone-200">{windSpeed} km/h</p>
+                      <p className="text-xs text-[#d4a373]">Wind</p>
+                      <p className="text-sm font-semibold text-[#f4e8d8]">{windSpeed} km/h</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 bg-stone-800 border border-stone-700 rounded-lg p-3">
-                    <div className="w-10 h-10 bg-stone-700 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Droplets className="h-5 w-5 text-stone-300" />
+                  <div className="flex items-center gap-3 bg-gradient-to-br from-[#3d3127] to-[#2d1f1a] border border-[#f4e8d8]/10 rounded-xl p-3 hover:border-[#5b8fa3]/30 transition-colors">
+                    <div className="w-10 h-10 bg-gradient-to-br from-[#5b8fa3] to-[#7ea88f] rounded-lg flex items-center justify-center flex-shrink-0 shadow-[0_4px_12px_rgba(91,143,163,0.3)]">
+                      <Droplets className="h-5 w-5 text-[#f4e8d8]" />
                     </div>
                     <div className="min-w-0">
-                      <p className="text-xs text-stone-400">Humidity</p>
-                      <p className="text-sm font-semibold text-stone-200">{humidity}%</p>
+                      <p className="text-xs text-[#d4a373]">Humidity</p>
+                      <p className="text-sm font-semibold text-[#f4e8d8]">{humidity}%</p>
                     </div>
                   </div>
                 </div>
                 {hasAlert && (
-                  <div className="bg-gradient-to-br from-red-950/60 to-red-900/40 border-2 border-red-800/50 rounded-xl p-4 mb-4">
+                  <div className="bg-gradient-to-br from-[#d45d4e]/20 to-[#d45d4e]/10 border border-[#d45d4e]/40 rounded-xl p-4 mb-4 shadow-[0_4px_16px_rgba(212,93,78,0.2)]">
                     <div className="flex items-start gap-3">
-                      <div className="flex-shrink-0 w-10 h-10 bg-red-900/50 rounded-lg flex items-center justify-center">
-                        <AlertTriangle className="h-5 w-5 text-red-400" />
+                      <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-[#d45d4e] to-[#d4734e] rounded-xl flex items-center justify-center shadow-[0_4px_12px_rgba(212,93,78,0.4)]">
+                        <AlertTriangle className="h-6 w-6 text-[#f4e8d8]" />
                       </div>
                       <div>
-                        <h4 className="font-semibold text-red-300 text-sm mb-1">Extreme Cold Warning</h4>
-                        <p className="text-xs text-red-400 leading-relaxed">
+                        <h4 className="font-semibold text-[#f4e8d8] text-sm mb-1">Extreme Cold Warning</h4>
+                        <p className="text-xs text-[#d4a373] leading-relaxed">
                           Check heat trace systems and ensure furnace is operating properly.
                         </p>
                       </div>
                     </div>
                   </div>
                 )}
-                <div className="bg-amber-950/30 border border-amber-900/40 rounded-xl p-4">
-                  <h4 className="text-sm font-semibold text-amber-300 mb-3 flex items-center gap-2">
-                    <Thermometer className="w-4 h-4" />
+                <div className="bg-gradient-to-br from-[#f2a541]/15 to-[#f7931e]/10 border border-[#f2a541]/30 rounded-xl p-4">
+                  <h4 className="text-sm font-semibold text-[#f4e8d8] mb-3 flex items-center gap-2">
+                    <Thermometer className="w-4 h-4 text-[#f2a541]" />
                     Recommended Actions
                   </h4>
-                  <ul className="space-y-2 text-xs text-amber-400/90">
+                  <ul className="space-y-2 text-xs text-[#d4a373]">
                     <li className="flex items-start gap-2">
-                      <span className="text-amber-500 mt-0.5">•</span>
+                      <span className="text-[#ff6b35] mt-0.5 font-bold">•</span>
                       <span>Monitor furnace operation</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-amber-500 mt-0.5">•</span>
+                      <span className="text-[#ff6b35] mt-0.5 font-bold">•</span>
                       <span>Verify heat trace cables are active</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-amber-500 mt-0.5">•</span>
+                      <span className="text-[#ff6b35] mt-0.5 font-bold">•</span>
                       <span>Let taps drip to prevent freezing</span>
                     </li>
                   </ul>
@@ -395,44 +415,70 @@ function HomePage() {
               </div>
 
               {/* System Status - Spans 2 columns on lg */}
-              <div className="lg:col-span-2 bg-stone-900 border border-stone-800 rounded-2xl p-6">
+              <div className="lg:col-span-2 bg-gradient-to-br from-[#2d1f1a] to-[#1a1412] border border-[#f4e8d8]/10 rounded-2xl p-8 shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:shadow-[0_12px_48px_rgba(255,107,53,0.15)] transition-all duration-300">
                 <div className="mb-6">
-                  <h3 className="text-xl font-semibold text-stone-50">System Status</h3>
-                  <p className="text-sm text-stone-400 mt-1">Monitor your critical home systems</p>
+                  <h3 className="text-xl font-semibold text-[#f4e8d8]">System Status</h3>
+                  <p className="text-sm text-[#d4a373] mt-1">Monitor your critical home systems</p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {systems.map((system) => (
-                    <div key={system.id} className="bg-stone-800 border border-stone-700 hover:border-stone-600 rounded-xl p-4 transition-all cursor-pointer">
-                      <div className="flex items-start gap-3 mb-3">
-                        <div className={`flex-shrink-0 w-12 h-12 rounded-lg flex items-center justify-center ${
-                          system.status === 'healthy' ? 'bg-emerald-950/60 border border-emerald-800/50' :
-                          system.status === 'warning' ? 'bg-amber-950/60 border border-amber-800/50' :
-                          'bg-red-950/60 border border-red-800/50'
-                        }`}>
-                          <system.icon className={`h-6 w-6 ${
-                            system.status === 'healthy' ? 'text-emerald-400' :
-                            system.status === 'warning' ? 'text-amber-400' :
-                            'text-red-400'
-                          }`} />
+                    <div key={system.id} className="bg-gradient-to-br from-[#3d3127] to-[#2d1f1a] border border-[#f4e8d8]/10 hover:border-[#ff6b35]/30 rounded-xl p-5 transition-all duration-300 cursor-pointer group hover:shadow-[0_8px_24px_rgba(255,107,53,0.2)] hover:-translate-y-0.5">
+                      <div className="flex items-start gap-3 mb-4">
+                        <div className={cn(
+                          'flex-shrink-0 w-14 h-14 rounded-xl flex items-center justify-center shadow-[0_4px_16px_rgba(0,0,0,0.2)] transition-transform group-hover:scale-105',
+                          system.status === 'healthy' && 'bg-gradient-to-br from-[#6a994e] to-[#7ea88f] shadow-[0_4px_16px_rgba(106,153,78,0.4)]',
+                          system.status === 'warning' && 'bg-gradient-to-br from-[#f2a541] to-[#f7931e] shadow-[0_4px_16px_rgba(242,165,65,0.4)]',
+                          system.status === 'critical' && 'bg-gradient-to-br from-[#d45d4e] to-[#d4734e] shadow-[0_4px_16px_rgba(212,93,78,0.4)]'
+                        )}>
+                          <system.icon className="h-7 w-7 text-[#f4e8d8]" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
-                            <h4 className="text-sm font-semibold text-stone-100">{system.name}</h4>
-                            {system.status === 'healthy' && <CheckCircle2 className="h-4 w-4 text-emerald-500 flex-shrink-0" />}
-                            {system.status === 'warning' && <AlertTriangle className="h-4 w-4 text-amber-500 flex-shrink-0" />}
+                            <h4 className="text-sm font-semibold text-[#f4e8d8]">{system.name}</h4>
+                            {system.status === 'healthy' && <CheckCircle2 className="h-4 w-4 text-[#6a994e] flex-shrink-0" />}
+                            {system.status === 'warning' && <AlertTriangle className="h-4 w-4 text-[#f2a541] flex-shrink-0" />}
                           </div>
-                          <p className="text-xs text-stone-400">Last service: {system.lastService}</p>
+                          <p className="text-xs text-[#d4a373]">Last service: {system.lastService}</p>
                         </div>
                       </div>
-                      <div className="flex items-center justify-between pt-3 border-t border-stone-700">
-                        <span className="text-xs text-stone-400 uppercase tracking-wide">Health Score</span>
+                      <div className="flex items-center justify-between pt-3 border-t border-[#f4e8d8]/10">
+                        <span className="text-xs text-[#d4a373] uppercase tracking-wide font-medium">Health Score</span>
                         <div className="flex items-center gap-2">
-                          <span className="text-lg font-bold text-stone-200">{system.health}%</span>
-                          <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-                            system.status === 'healthy' ? 'bg-emerald-950/40 text-emerald-400' :
-                            system.status === 'warning' ? 'bg-amber-950/40 text-amber-400' :
-                            'bg-red-950/40 text-red-400'
-                          }`}>
+                          <div className="relative w-12 h-12">
+                            <svg className="w-12 h-12 -rotate-90" viewBox="0 0 36 36">
+                              <circle
+                                cx="18"
+                                cy="18"
+                                r="15"
+                                fill="none"
+                                className="stroke-[#3d3127]"
+                                strokeWidth="3"
+                              />
+                              <circle
+                                cx="18"
+                                cy="18"
+                                r="15"
+                                fill="none"
+                                className={cn(
+                                  system.status === 'healthy' && 'stroke-[#6a994e]',
+                                  system.status === 'warning' && 'stroke-[#f2a541]',
+                                  system.status === 'critical' && 'stroke-[#d45d4e]'
+                                )}
+                                strokeWidth="3"
+                                strokeDasharray={`${system.health * 0.942} 100`}
+                                strokeLinecap="round"
+                              />
+                            </svg>
+                            <span className="absolute inset-0 flex items-center justify-center text-xs font-bold text-[#f4e8d8]">
+                              {system.health}
+                            </span>
+                          </div>
+                          <span className={cn(
+                            'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border',
+                            system.status === 'healthy' && 'bg-[#6a994e]/20 text-[#6a994e] border-[#6a994e]/30',
+                            system.status === 'warning' && 'bg-[#f2a541]/20 text-[#f2a541] border-[#f2a541]/30',
+                            system.status === 'critical' && 'bg-[#d45d4e]/20 text-[#d45d4e] border-[#d45d4e]/30'
+                          )}>
                             {system.status}
                           </span>
                         </div>
@@ -443,76 +489,89 @@ function HomePage() {
               </div>
 
               {/* Seasonal Checklist */}
-              <div className="bg-stone-900 border border-stone-800 rounded-2xl p-6 flex flex-col">
+              <div className="bg-gradient-to-br from-[#2d1f1a] to-[#1a1412] border border-[#f4e8d8]/10 rounded-2xl p-8 flex flex-col shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:shadow-[0_12px_48px_rgba(255,107,53,0.15)] transition-all duration-300">
                 <div className="mb-6">
                   <div className="flex items-start justify-between mb-2">
-                    <h3 className="text-xl font-semibold text-stone-50">Winter Checklist</h3>
-                    <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-sky-950/40 text-sky-400">
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-xl font-semibold text-[#f4e8d8]">Winter Checklist</h3>
+                      <Snowflake className="w-5 h-5 text-[#c4d7e0]" />
+                    </div>
+                    <span className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold bg-gradient-to-br from-[#ff6b35] to-[#f7931e] text-[#f4e8d8] shadow-[0_4px_12px_rgba(255,107,53,0.3)]">
                       {progressPercentage}%
                     </span>
                   </div>
-                  <p className="text-sm text-stone-400">Critical seasonal tasks</p>
+                  <p className="text-sm text-[#d4a373]">Critical seasonal tasks</p>
                 </div>
                 <div className="mb-6">
-                  <div className="h-2 bg-stone-800 rounded-full overflow-hidden mb-2">
-                    <div className="h-full bg-gradient-to-r from-amber-600 to-amber-500 transition-all duration-300" style={{ width: `${progressPercentage}%` }} />
+                  <div className="h-3 bg-[#3d3127] rounded-full overflow-hidden mb-2 shadow-inner">
+                    <div
+                      className="h-full bg-gradient-to-r from-[#ff6b35] to-[#f7931e] transition-all duration-500 shadow-[0_0_8px_rgba(255,107,53,0.5)]"
+                      style={{ width: `${progressPercentage}%` }}
+                    />
                   </div>
-                  <p className="text-xs text-stone-400">{completedCount} of {totalCount} tasks complete</p>
+                  <p className="text-xs text-[#d4a373] font-medium">{completedCount} of {totalCount} tasks complete</p>
                 </div>
                 <div className="space-y-2 flex-1 mb-4">
                   {winterChecklist.slice(0, 4).map((item) => (
-                    <div key={item.id} className="flex items-center gap-3 p-3 bg-stone-800 border border-stone-700 hover:border-stone-600 rounded-lg transition-all cursor-pointer">
+                    <div
+                      key={item.id}
+                      className="flex items-center gap-3 p-3 bg-gradient-to-br from-[#3d3127] to-[#2d1f1a] border border-[#f4e8d8]/10 hover:border-[#ff6b35]/30 rounded-xl transition-all duration-300 cursor-pointer group hover:shadow-[0_4px_16px_rgba(255,107,53,0.15)]"
+                    >
                       {item.completed ? (
-                        <CheckCircle2 className="h-5 w-5 text-emerald-500 flex-shrink-0" />
+                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-gradient-to-br from-[#6a994e] to-[#7ea88f] flex items-center justify-center shadow-[0_2px_8px_rgba(106,153,78,0.4)]">
+                          <CheckCircle2 className="h-4 w-4 text-[#f4e8d8]" />
+                        </div>
                       ) : (
-                        <Circle className="h-5 w-5 text-stone-500 flex-shrink-0" />
+                        <div className="flex-shrink-0 w-6 h-6 rounded-full border-2 border-[#d4a373]/40 group-hover:border-[#ff6b35] transition-colors" />
                       )}
-                      <span className={`flex-1 text-sm ${item.completed ? 'text-stone-500 line-through' : 'text-stone-200'}`}>
+                      <span className={`flex-1 text-sm transition-colors ${item.completed ? 'text-[#d4a373]/60 line-through' : 'text-[#f4e8d8] group-hover:text-[#f4e8d8]'}`}>
                         {item.title}
                       </span>
                       {item.priority === 'high' && !item.completed && (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-950/40 text-red-400">High</span>
+                        <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-[#d45d4e]/20 text-[#d45d4e] border border-[#d45d4e]/30">
+                          High
+                        </span>
                       )}
                     </div>
                   ))}
                 </div>
-                <button className="w-full px-4 py-2.5 bg-stone-800 hover:bg-stone-700 border border-stone-700 text-stone-200 text-sm font-medium rounded-lg transition-all duration-200 flex items-center justify-center gap-2">
+                <button className="w-full px-4 py-3 bg-gradient-to-br from-[#3d3127] to-[#2d1f1a] hover:from-[#ff6b35]/20 hover:to-[#f7931e]/20 border border-[#f4e8d8]/20 hover:border-[#ff6b35]/40 text-[#f4e8d8] text-sm font-medium rounded-xl transition-all duration-300 flex items-center justify-center gap-2 group">
                   View Full Checklist
-                  <ChevronRight className="h-4 w-4" />
+                  <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
             </div>
 
             {/* Quick Actions */}
-            <div className="bg-stone-900 border border-stone-800 rounded-2xl p-8">
-              <div className="text-center mb-6">
-                <h3 className="text-xl font-semibold text-stone-50 mb-2">Quick Actions</h3>
-                <p className="text-sm text-stone-400">Frequently used actions to manage your home</p>
+            <div className="bg-gradient-to-br from-[#2d1f1a] to-[#1a1412] border border-[#f4e8d8]/10 rounded-2xl p-8 shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:shadow-[0_12px_48px_rgba(255,107,53,0.15)] transition-all duration-300">
+              <div className="text-center mb-8">
+                <h3 className="text-xl font-semibold text-[#f4e8d8] mb-2">Quick Actions</h3>
+                <p className="text-sm text-[#d4a373]">Frequently used actions to manage your home</p>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <button className="flex flex-col items-center gap-3 p-4 bg-stone-800 hover:bg-stone-700 border border-stone-700 rounded-xl transition-all duration-200 group">
-                  <div className="w-12 h-12 bg-gradient-to-br from-emerald-700 to-emerald-800 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Home className="w-6 h-6 text-emerald-100" />
+                <button className="flex flex-col items-center gap-4 p-6 bg-gradient-to-br from-[#3d3127] to-[#2d1f1a] hover:from-[#6a994e]/20 hover:to-[#7ea88f]/10 border border-[#f4e8d8]/10 hover:border-[#6a994e]/40 rounded-xl transition-all duration-300 group hover:shadow-[0_8px_24px_rgba(106,153,78,0.2)] hover:-translate-y-1">
+                  <div className="w-14 h-14 bg-gradient-to-br from-[#6a994e] to-[#7ea88f] rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-[0_4px_16px_rgba(106,153,78,0.4)]">
+                    <Home className="w-7 h-7 text-[#f4e8d8]" />
                   </div>
-                  <span className="text-sm font-medium text-stone-200">Add System</span>
+                  <span className="text-sm font-medium text-[#f4e8d8]">Add System</span>
                 </button>
-                <button className="flex flex-col items-center gap-3 p-4 bg-stone-800 hover:bg-stone-700 border border-stone-700 rounded-xl transition-all duration-200 group">
-                  <div className="w-12 h-12 bg-gradient-to-br from-amber-700 to-orange-800 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Calendar className="w-6 h-6 text-amber-100" />
+                <button className="flex flex-col items-center gap-4 p-6 bg-gradient-to-br from-[#3d3127] to-[#2d1f1a] hover:from-[#ff6b35]/20 hover:to-[#f7931e]/10 border border-[#f4e8d8]/10 hover:border-[#ff6b35]/40 rounded-xl transition-all duration-300 group hover:shadow-[0_8px_24px_rgba(255,107,53,0.3)] hover:-translate-y-1">
+                  <div className="w-14 h-14 bg-gradient-to-br from-[#ff6b35] to-[#f7931e] rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-[0_4px_16px_rgba(255,107,53,0.4)]">
+                    <Calendar className="w-7 h-7 text-[#f4e8d8]" />
                   </div>
-                  <span className="text-sm font-medium text-stone-200">Schedule Task</span>
+                  <span className="text-sm font-medium text-[#f4e8d8]">Schedule Task</span>
                 </button>
-                <button className="flex flex-col items-center gap-3 p-4 bg-stone-800 hover:bg-stone-700 border border-stone-700 rounded-xl transition-all duration-200 group">
-                  <div className="w-12 h-12 bg-gradient-to-br from-sky-700 to-sky-800 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <FileText className="w-6 h-6 text-sky-100" />
+                <button className="flex flex-col items-center gap-4 p-6 bg-gradient-to-br from-[#3d3127] to-[#2d1f1a] hover:from-[#5b8fa3]/20 hover:to-[#7ea88f]/10 border border-[#f4e8d8]/10 hover:border-[#5b8fa3]/40 rounded-xl transition-all duration-300 group hover:shadow-[0_8px_24px_rgba(91,143,163,0.2)] hover:-translate-y-1">
+                  <div className="w-14 h-14 bg-gradient-to-br from-[#5b8fa3] to-[#7ea88f] rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-[0_4px_16px_rgba(91,143,163,0.4)]">
+                    <FileText className="w-7 h-7 text-[#f4e8d8]" />
                   </div>
-                  <span className="text-sm font-medium text-stone-200">Upload Document</span>
+                  <span className="text-sm font-medium text-[#f4e8d8]">Upload Document</span>
                 </button>
-                <button className="flex flex-col items-center gap-3 p-4 bg-stone-800 hover:bg-stone-700 border border-stone-700 rounded-xl transition-all duration-200 group">
-                  <div className="w-12 h-12 bg-gradient-to-br from-violet-700 to-violet-800 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Wrench className="w-6 h-6 text-violet-100" />
+                <button className="flex flex-col items-center gap-4 p-6 bg-gradient-to-br from-[#3d3127] to-[#2d1f1a] hover:from-[#7ea88f]/20 hover:to-[#6a994e]/10 border border-[#f4e8d8]/10 hover:border-[#7ea88f]/40 rounded-xl transition-all duration-300 group hover:shadow-[0_8px_24px_rgba(126,168,143,0.2)] hover:-translate-y-1">
+                  <div className="w-14 h-14 bg-gradient-to-br from-[#7ea88f] to-[#6a994e] rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-[0_4px_16px_rgba(126,168,143,0.4)]">
+                    <Wrench className="w-7 h-7 text-[#f4e8d8]" />
                   </div>
-                  <span className="text-sm font-medium text-stone-200">Find Provider</span>
+                  <span className="text-sm font-medium text-[#f4e8d8]">Find Provider</span>
                 </button>
               </div>
             </div>
@@ -533,7 +592,7 @@ function HomePage() {
             <div className="relative max-w-7xl mx-auto px-6 py-20 md:py-28">
               <div className="grid lg:grid-cols-2 gap-16 items-center">
                 <div className="space-y-8">
-                  <div className="inline-flex items-center gap-2.5 px-4 py-2 bg-emerald-950/40 border border-emerald-800/30 rounded-full">
+                  <div className="inline-flex items-center gap-2.5 px-4 py-2 bg-emerald-950/40 border border-emerald-800/30 rounded-full animate-fade-in">
                     <MapPin className="w-4 h-4 text-emerald-400" />
                     <span className="text-sm text-emerald-300 font-medium">
                       Built for Northwest Territories, Nunavut & Yukon
@@ -541,28 +600,28 @@ function HomePage() {
                   </div>
 
                   <div className="space-y-6">
-                    <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-stone-50 leading-[1.05] tracking-tight">
+                    <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-stone-50 leading-[1.05] tracking-tight animate-fade-slide-up animate-delay-100">
                       Protect Your
                       <span className="block text-amber-500 mt-2">Northern Home</span>
                     </h2>
-                    <p className="text-xl text-stone-300 leading-relaxed max-w-xl">
+                    <p className="text-xl text-stone-300 leading-relaxed max-w-xl animate-fade-slide-up animate-delay-200">
                       Track heating systems, prevent freeze damage, and manage maintenance for homes
                       built to survive <span className="text-stone-50 font-semibold">-40°C winters</span>.
                     </p>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                  <div className="flex flex-col sm:flex-row gap-4 pt-4 animate-fade-slide-up animate-delay-300">
                     <button
                       onClick={() => {
                         setAuthModalTab('register');
                         setAuthModalOpen(true);
                       }}
-                      className="group inline-flex items-center justify-center gap-2.5 px-7 py-4 bg-amber-700 hover:bg-amber-600 text-stone-50 font-semibold rounded-xl transition-all duration-200 shadow-xl shadow-amber-900/40"
+                      className="group inline-flex items-center justify-center gap-2.5 px-7 py-4 bg-amber-700 hover:bg-amber-600 text-stone-50 font-semibold rounded-xl transition-all duration-300 shadow-xl shadow-amber-900/40 hover:shadow-amber-900/60 hover:scale-[1.02] active:scale-[0.98]"
                     >
                       Start Free Today
-                      <ArrowRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
+                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </button>
-                    <a href="#features" className="inline-flex items-center justify-center gap-2 px-7 py-4 bg-stone-800 hover:bg-stone-700 border border-stone-700 text-stone-100 font-semibold rounded-xl transition-all duration-200">
+                    <a href="#features" className="inline-flex items-center justify-center gap-2 px-7 py-4 bg-stone-800 hover:bg-stone-700 border border-stone-700 text-stone-100 font-semibold rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
                       See Features
                     </a>
                   </div>
@@ -682,9 +741,9 @@ function HomePage() {
               </div>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div className="group bg-stone-900 border border-stone-800 hover:border-amber-800/50 rounded-2xl p-8 transition-all duration-300">
-                  <div className="w-14 h-14 bg-gradient-to-br from-amber-700 to-orange-800 rounded-xl flex items-center justify-center mb-6 shadow-lg">
-                    <Flame className="w-7 h-7 text-amber-100" />
+                <div className="group bg-stone-900 border border-stone-800 hover:border-amber-800/50 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-amber-900/20">
+                  <div className="w-14 h-14 bg-gradient-to-br from-amber-700 to-orange-800 rounded-xl flex items-center justify-center mb-6 shadow-lg group-hover:shadow-amber-900/50 transition-all duration-300 group-hover:scale-110">
+                    <Flame className="w-7 h-7 text-amber-100 group-hover:animate-flicker" />
                   </div>
                   <h3 className="text-xl font-semibold text-stone-50 mb-3">Heating System Tracking</h3>
                   <p className="text-stone-400 leading-relaxed">
@@ -692,8 +751,8 @@ function HomePage() {
                   </p>
                 </div>
 
-                <div className="group bg-stone-900 border border-stone-800 hover:border-emerald-800/50 rounded-2xl p-8 transition-all duration-300">
-                  <div className="w-14 h-14 bg-gradient-to-br from-emerald-700 to-emerald-800 rounded-xl flex items-center justify-center mb-6 shadow-lg">
+                <div className="group bg-stone-900 border border-stone-800 hover:border-emerald-800/50 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-900/20">
+                  <div className="w-14 h-14 bg-gradient-to-br from-emerald-700 to-emerald-800 rounded-xl flex items-center justify-center mb-6 shadow-lg group-hover:shadow-emerald-900/50 transition-all duration-300 group-hover:scale-110">
                     <Calendar className="w-7 h-7 text-emerald-100" />
                   </div>
                   <h3 className="text-xl font-semibold text-stone-50 mb-3">Seasonal Checklists</h3>
@@ -702,9 +761,9 @@ function HomePage() {
                   </p>
                 </div>
 
-                <div className="group bg-stone-900 border border-stone-800 hover:border-sky-800/50 rounded-2xl p-8 transition-all duration-300">
-                  <div className="w-14 h-14 bg-gradient-to-br from-sky-700 to-sky-800 rounded-xl flex items-center justify-center mb-6 shadow-lg">
-                    <Snowflake className="w-7 h-7 text-sky-100" />
+                <div className="group bg-stone-900 border border-stone-800 hover:border-sky-800/50 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-sky-900/20">
+                  <div className="w-14 h-14 bg-gradient-to-br from-sky-700 to-sky-800 rounded-xl flex items-center justify-center mb-6 shadow-lg group-hover:shadow-sky-900/50 transition-all duration-300 group-hover:scale-110">
+                    <Snowflake className="w-7 h-7 text-sky-100 group-hover:animate-float" />
                   </div>
                   <h3 className="text-xl font-semibold text-stone-50 mb-3">Weather Alerts</h3>
                   <p className="text-stone-400 leading-relaxed">

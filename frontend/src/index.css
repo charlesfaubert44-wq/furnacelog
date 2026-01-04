@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Sans:wght@400;500;600;700&display=swap');
+/* Territorial Homestead Typography - Fraunces (display), DM Sans (body), JetBrains Mono (data) */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Instrument+Sans:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -36,6 +37,33 @@
     --ring: 32 95% 54%;             /* amber-600 */
 
     --radius: 0.5rem;
+
+    /* Territorial Homestead - Hearth & Home Color System */
+    /* Foundation (Backgrounds) */
+    --deep-charcoal: #1a1412;
+    --rich-umber: #2d1f1a;
+    --warm-stone: #3d3127;
+
+    /* Primary (Warmth & Action) */
+    --ember-glow: #ff6b35;
+    --hearth-fire: #f7931e;
+    --copper-warm: #c87941;
+
+    /* Secondary (Comfort & Trust) */
+    --wool-cream: #f4e8d8;
+    --honey: #d4a373;
+    --terracotta: #d4734e;
+
+    /* Functional */
+    --forest-green: #6a994e;
+    --sunset-amber: #f2a541;
+    --brick-red: #d45d4e;
+    --slate-blue: #5b8fa3;
+
+    /* Accent (Seasonal) */
+    --winter-sky: #c4d7e0;
+    --northern-lights: #7ea88f;
+    --birch-white: #ede4d3;
   }
 
   .dark {
@@ -267,6 +295,22 @@
     background-image: linear-gradient(white, white), var(--tw-gradient-aurora);
     background-origin: border-box;
   }
+
+  /* Territorial Homestead - Warm gradient backgrounds */
+  .bg-warm-gradient {
+    background: linear-gradient(180deg, var(--rich-umber) 0%, var(--deep-charcoal) 100%);
+  }
+
+  .bg-hearth-gradient {
+    background: linear-gradient(135deg, var(--ember-glow) 0%, var(--hearth-fire) 100%);
+  }
+
+  .text-hearth-gradient {
+    background: linear-gradient(135deg, var(--ember-glow) 0%, var(--hearth-fire) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
 }
 
 @layer utilities {
@@ -277,6 +321,31 @@
 
   .animate-out {
     animation: slide-up 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Staggered animation delays */
+  .animate-delay-100 {
+    animation-delay: 100ms;
+  }
+
+  .animate-delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .animate-delay-300 {
+    animation-delay: 300ms;
+  }
+
+  .animate-delay-400 {
+    animation-delay: 400ms;
+  }
+
+  .animate-delay-500 {
+    animation-delay: 500ms;
+  }
+
+  .animate-delay-600 {
+    animation-delay: 600ms;
   }
 
   /* Typography utilities */
@@ -305,6 +374,24 @@
 
   .glow-critical {
     @apply shadow-glow-critical;
+  }
+
+  /* Warm glow effects for Territorial Homestead theme */
+  .glow-warm {
+    box-shadow: 0 0 24px rgba(251, 191, 36, 0.3);
+  }
+
+  .glow-ember {
+    box-shadow: 0 0 24px rgba(255, 107, 53, 0.4);
+  }
+
+  /* Smooth transitions */
+  .transition-smooth {
+    transition: all 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .transition-bounce {
+    transition: all 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 }
 

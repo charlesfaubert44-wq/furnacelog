@@ -31,28 +31,28 @@ const navigation = [
 
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle, isMobile }) => {
   return (
-    <div className="flex h-full flex-col bg-gradient-night text-frost-white shadow-floating">
+    <div className="flex h-full flex-col bg-gradient-to-br from-[#2d1f1a] via-[#1a1412] to-[#2d1f1a] text-[#f4e8d8] shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
       {/* Logo & Header */}
-      <div className="flex h-16 items-center justify-between px-4 border-b border-steel-700">
+      <div className="flex h-16 items-center justify-between px-4 border-b border-[#f4e8d8]/10">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-aurora">
-            <Flame className="h-6 w-6 text-white" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#ff6b35] to-[#f7931e] shadow-[0_4px_16px_rgba(255,107,53,0.4)]">
+            <Flame className="h-6 w-6 text-[#f4e8d8]" />
           </div>
           {isOpen && (
             <div>
-              <h1 className="font-heading text-lg font-bold">FurnaceLog</h1>
-              <p className="text-micro text-aluminum-400">Northern Tracker</p>
+              <h1 className="font-heading text-lg font-bold text-[#f4e8d8]">FurnaceLog</h1>
+              <p className="text-xs text-[#d4a373]">Northern Tracker</p>
             </div>
           )}
         </div>
         {!isMobile && (
           <button
             onClick={onToggle}
-            className="rounded-lg p-2 hover:bg-steel-700 transition-colors"
+            className="rounded-lg p-2 hover:bg-[#3d3127]/40 transition-colors"
           >
             <ChevronLeft
               className={cn(
-                'h-5 w-5 transition-transform',
+                'h-5 w-5 transition-transform text-[#d4a373]',
                 !isOpen && 'rotate-180'
               )}
             />
@@ -62,8 +62,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle, isMobile }) 
 
       {/* Home Selector */}
       {isOpen && (
-        <div className="p-4 border-b border-steel-700">
-          <select className="w-full rounded-lg bg-steel-700 px-3 py-2 text-sm hover:bg-steel-600 focus:outline-none focus:ring-2 focus:ring-tech-blue-500 transition-colors">
+        <div className="p-4 border-b border-[#f4e8d8]/10">
+          <select className="w-full rounded-xl bg-gradient-to-br from-[#3d3127] to-[#2d1f1a] border border-[#f4e8d8]/10 px-3 py-2 text-sm text-[#f4e8d8] hover:border-[#ff6b35]/30 focus:outline-none focus:ring-2 focus:ring-[#ff6b35]/50 transition-all">
             <option>Main Home - Yellowknife</option>
             <option>Cabin - Prelude Lake</option>
             <option>+ Add New Home</option>
@@ -79,10 +79,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle, isMobile }) 
             to={item.href}
             className={({ isActive }) =>
               cn(
-                'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all',
+                'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-300',
                 isActive
-                  ? 'bg-tech-blue-600 text-white shadow-md'
-                  : 'text-aluminum-300 hover:bg-steel-700 hover:text-white',
+                  ? 'bg-gradient-to-br from-[#ff6b35] to-[#f7931e] text-[#f4e8d8] shadow-[0_4px_16px_rgba(255,107,53,0.4)]'
+                  : 'text-[#d4a373] hover:bg-[#3d3127]/40 hover:text-[#f4e8d8]',
                 !isOpen && 'justify-center'
               )
             }
@@ -94,15 +94,15 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle, isMobile }) 
       </nav>
 
       {/* User Profile */}
-      <div className="border-t border-steel-700 p-4">
+      <div className="border-t border-[#f4e8d8]/10 p-4">
         <div className={cn('flex items-center gap-3', !isOpen && 'justify-center')}>
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-aurora font-semibold text-white">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[#ff6b35] to-[#f7931e] font-semibold text-[#f4e8d8] shadow-[0_4px_12px_rgba(255,107,53,0.4)]">
             JD
           </div>
           {isOpen && (
             <div className="flex-1">
-              <p className="text-sm font-medium">John Doe</p>
-              <p className="text-micro text-aluminum-400">john@example.com</p>
+              <p className="text-sm font-medium text-[#f4e8d8]">John Doe</p>
+              <p className="text-xs text-[#d4a373]">john@example.com</p>
             </div>
           )}
         </div>

@@ -21,10 +21,11 @@ const Card = React.forwardRef<
     },
     ref
   ) => {
+    // Territorial Homestead - Warm gradient backgrounds with organic feel
     const elevationClasses = {
-      surface: 'card-surface',
-      elevated: 'card-elevated',
-      floating: 'card-floating',
+      surface: 'bg-gradient-to-br from-rich-umber to-deep-charcoal border border-wool-cream/8 shadow-sm rounded-[20px]',
+      elevated: 'bg-gradient-to-br from-rich-umber to-deep-charcoal border border-wool-cream/8 shadow-md shadow-black/20 rounded-[20px]',
+      floating: 'bg-gradient-to-br from-rich-umber to-deep-charcoal shadow-lg shadow-black/30 rounded-[20px]',
     };
 
     return (
@@ -32,9 +33,11 @@ const Card = React.forwardRef<
         ref={ref}
         className={cn(
           elevationClasses[elevation],
-          interactive && 'card-interactive',
-          selected && 'card-selected',
-          critical && 'card-critical',
+          // Add subtle inset highlight for depth
+          'relative before:absolute before:inset-0 before:rounded-[20px] before:p-[1px] before:bg-gradient-to-b before:from-wool-cream/10 before:to-transparent before:pointer-events-none',
+          interactive && 'cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-glow-sm',
+          selected && 'ring-2 ring-ember-glow shadow-glow-md',
+          critical && 'ring-2 ring-brick-red animate-pulse-critical',
           className
         )}
         {...props}
@@ -74,7 +77,7 @@ const CardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn('text-small text-aluminum-500', className)}
+    className={cn('text-small text-honey/70', className)}
     {...props}
   />
 ));
