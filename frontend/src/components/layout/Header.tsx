@@ -2,14 +2,13 @@ import React from 'react';
 import { Menu, Bell, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { cn } from '@/lib/utils';
 
 interface HeaderProps {
   onMenuClick: () => void;
   sidebarOpen: boolean;
 }
 
-export const Header: React.FC<HeaderProps> = ({ onMenuClick, sidebarOpen }) => {
+export const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
   return (
     <header className="sticky top-0 z-40 h-16 border-b border-aluminum-200 bg-white/80 backdrop-blur-md">
       <div className="flex h-full items-center justify-between px-4 md:px-6 lg:px-8">
