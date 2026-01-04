@@ -1,82 +1,45 @@
-import { useEffect } from 'react';
+import React from 'react';
+import { cn } from '@/lib/utils';
 
 interface AdSenseProps {
-  slot: string;
-  format?: 'auto' | 'fluid' | 'rectangle' | 'vertical' | 'horizontal';
-  responsive?: boolean;
+  slot?: string;
+  format?: 'auto' | 'rectangle' | 'horizontal' | 'vertical';
   className?: string;
+  responsive?: boolean;
 }
 
 /**
- * Google AdSense Component
- * Only shows ads for free tier users
+ * Google AdSense Placeholder Component
+ * Will be replaced with actual AdSense code when ready
  */
 export const AdSense: React.FC<AdSenseProps> = ({
-  slot,
+  slot = 'placeholder',
   format = 'auto',
-  responsive = true,
-  className = ''
+  className = '',
+  responsive = true
 }) => {
-  useEffect(() => {
-    try {
-      // @ts-ignore
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-    } catch (err) {
-      console.error('AdSense error:', err);
-    }
-  }, []);
-
-  const clientId = import.meta.env.VITE_ADSENSE_CLIENT_ID || 'ca-pub-3954644976524123';
-
-  if (!clientId || import.meta.env.DEV) {
-    // Development placeholder
-    return (
-      <div className={`bg-stone-800/50 border border-stone-700 rounded-lg p-8 text-center ${className}`}>
-        <p className="text-stone-500 text-sm">
-          📢 Ad Space • $6.99/mo to remove ads
-        </p>
-      </div>
-    );
-  }
-
+  // For now, show a placeholder that matches the Territorial Homestead theme
   return (
-    <ins
-      className={`adsbygoogle ${className}`}
-      style={{ display: 'block' }}
-      data-ad-client={clientId}
+    <div
+      className={cn(
+        'relative overflow-hidden rounded-xl border transition-all duration-300',
+        'bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border-[#d4a373]/10',
+        className
+      )}
       data-ad-slot={slot}
       data-ad-format={format}
       data-full-width-responsive={responsive}
-    />
-  );
-};
-
-/**
- * Ad Banner for Dashboard (horizontal)
- */
-export const DashboardAdBanner: React.FC = () => {
-  return (
-    <div className="my-8">
-      <AdSense
-        slot="1234567890"
-        format="horizontal"
-        className="min-h-[90px]"
-      />
-    </div>
-  );
-};
-
-/**
- * Ad Sidebar (vertical)
- */
-export const SidebarAd: React.FC = () => {
-  return (
-    <div className="sticky top-24">
-      <AdSense
-        slot="0987654321"
-        format="vertical"
-        className="min-h-[600px]"
-      />
+    >
+      <div className="p-6 text-center">
+        <div className="flex flex-col items-center justify-center space-y-2 opacity-40">
+          <div className="text-xs font-medium text-[#d4a373] uppercase tracking-wider">
+            Advertisement
+          </div>
+          <div className="w-full max-w-xs h-24 bg-[#2a2a2a] rounded-lg flex items-center justify-center">
+            <span className="text-xs text-[#d4a373]/60">Ad Space</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

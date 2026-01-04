@@ -4,6 +4,7 @@ import { Home, LogOut, User, Plus, AlertTriangle, CheckCircle2, Clock, Flame, Dr
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import { useScrollPosition } from '@/hooks/useScrollAnimation';
+import { AdSense } from '@/components/ads/AdSense';
 
 /**
  * Dashboard Page
@@ -335,6 +336,11 @@ export function Dashboard() {
                   ))}
                 </div>
               </div>
+            </div>
+
+            {/* Ad Placement - Dashboard Bottom */}
+            <div className="mt-8">
+              <AdSense format="horizontal" />
             </div>
           </div>
         </div>

@@ -9,6 +9,7 @@ import logger from '@/utils/logger';
 import { fetchNorthernWeather, type CityWeather } from '@/services/weather.service';
 import { getTemperatureQuote } from '@/utils/weatherQuotes';
 import { PricingPlans } from '@/components/pricing/PricingPlans';
+import { AdSense } from '@/components/ads/AdSense';
 
 interface HealthStatus {
   status: string;
@@ -341,6 +342,11 @@ function HomePage() {
             </div>
           </section>
 
+          {/* Ad Placement 1 */}
+          <div className="max-w-7xl mx-auto px-6 py-8">
+            <AdSense format="horizontal" className="max-w-4xl mx-auto" />
+          </div>
+
           {/* Features Grid */}
           <section id="features" className="py-24 border-b border-[#d4a373]/10">
             <div className="max-w-7xl mx-auto px-6">
@@ -415,6 +421,11 @@ function HomePage() {
             </div>
           </section>
 
+          {/* Ad Placement 2 */}
+          <div className="max-w-7xl mx-auto px-6 py-8">
+            <AdSense format="horizontal" className="max-w-4xl mx-auto" />
+          </div>
+
           {/* Pricing Section */}
           <section id="pricing" className="py-24 border-b border-[#d4a373]/10">
             <div className="max-w-7xl mx-auto px-6">
@@ -461,6 +472,11 @@ function HomePage() {
               </div>
             </div>
           </section>
+
+      {/* Ad Placement 3 */}
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        <AdSense format="horizontal" className="max-w-4xl mx-auto" />
+      </div>
 
       {/* Footer */}
       <footer className="py-12">
