@@ -24,7 +24,7 @@ const pricingTiers: PricingTier[] = [
     period: 'forever',
     description: 'Essential home tracking with ads',
     icon: Flame,
-    iconColor: 'from-[#f7931e] to-[#ff6b35]',
+    iconColor: 'from-[#ff6a00] to-[#ff4500]',
     features: [
       'Track unlimited homes',
       'Basic maintenance scheduling',
@@ -67,7 +67,7 @@ const pricingTiers: PricingTier[] = [
     period: 'month',
     description: 'For professionals managing multiple properties',
     icon: Crown,
-    iconColor: 'from-[#d4a373] to-[#c87941]',
+    iconColor: 'from-[#d4a373] to-[#ff8c00]',
     features: [
       'Everything in Northern Pro',
       'Manage up to 50 homes',
@@ -91,10 +91,10 @@ export const PricingPlans: React.FC = () => {
         <div
           key={tier.id}
           className={cn(
-            'relative bg-gradient-to-br from-[#2d1f1a] to-[#1a1412] border rounded-2xl p-8 transition-all duration-300 hover:shadow-2xl',
+            'relative bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border rounded-2xl p-8 transition-all duration-300 hover:shadow-2xl',
             tier.popular
               ? 'border-[#6a994e] shadow-[0_8px_32px_rgba(106,153,78,0.3)] hover:shadow-[0_12px_48px_rgba(106,153,78,0.4)] scale-105'
-              : 'border-[#f4e8d8]/10 hover:border-[#ff6b35]/30 hover:shadow-[0_8px_32px_rgba(255,107,53,0.2)]'
+              : 'border-[#f4e8d8]/10 hover:border-[#ff4500]/30 hover:shadow-[0_8px_32px_rgba(255,107,53,0.2)]'
           )}
         >
           {tier.popular && (
@@ -108,7 +108,7 @@ export const PricingPlans: React.FC = () => {
 
           {tier.comingSoon && (
             <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-              <span className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-gradient-to-r from-[#d4a373] to-[#c87941] text-[#f4e8d8] text-xs font-bold rounded-full shadow-lg">
+              <span className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-gradient-to-r from-[#d4a373] to-[#ff8c00] text-[#f4e8d8] text-xs font-bold rounded-full shadow-lg">
                 COMING SOON
               </span>
             </div>
@@ -148,7 +148,7 @@ export const PricingPlans: React.FC = () => {
 
           {/* Limitations */}
           {tier.limitations && tier.limitations.length > 0 && (
-            <div className="mb-8 p-4 bg-[#3d3127]/50 border border-[#f4e8d8]/10 rounded-lg">
+            <div className="mb-8 p-4 bg-[#2a2a2a]/50 border border-[#f4e8d8]/10 rounded-lg">
               {tier.limitations.map((limitation, index) => (
                 <p key={index} className="text-xs text-[#d4a373]/70 italic">
                   • {limitation}
@@ -165,8 +165,8 @@ export const PricingPlans: React.FC = () => {
               tier.popular
                 ? 'bg-gradient-to-r from-[#6a994e] to-[#7ea88f] hover:from-[#7ea88f] hover:to-[#6a994e] text-[#f4e8d8] shadow-[0_4px_16px_rgba(106,153,78,0.4)] hover:shadow-[0_6px_24px_rgba(106,153,78,0.5)] hover:scale-105'
                 : tier.comingSoon
-                ? 'bg-[#3d3127] text-[#d4a373]/50 cursor-not-allowed'
-                : 'bg-gradient-to-r from-[#ff6b35] to-[#f7931e] hover:from-[#f7931e] hover:to-[#ff6b35] text-[#f4e8d8] shadow-[0_4px_16px_rgba(255,107,53,0.4)] hover:shadow-[0_6px_24px_rgba(255,107,53,0.5)] hover:scale-105'
+                ? 'bg-[#2a2a2a] text-[#d4a373]/50 cursor-not-allowed'
+                : 'bg-gradient-to-r from-[#ff4500] to-[#ff6a00] hover:from-[#ff6a00] hover:to-[#ff4500] text-[#f4e8d8] shadow-[0_4px_16px_rgba(255,107,53,0.4)] hover:shadow-[0_6px_24px_rgba(255,107,53,0.5)] hover:scale-105'
             )}
           >
             {tier.cta}

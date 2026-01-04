@@ -47,7 +47,7 @@ const systems: SystemStatus[] = [
 
 export const SystemStatusWidget: React.FC = () => {
   return (
-    <div className="bg-gradient-to-br from-[#2d1f1a] to-[#1a1412] border border-[#f4e8d8]/10 rounded-2xl p-8 h-full shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:shadow-[0_12px_48px_rgba(255,107,53,0.15)] transition-all duration-300">
+    <div className="bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#f4e8d8]/10 rounded-2xl p-8 h-full shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:shadow-[0_12px_48px_rgba(255,107,53,0.15)] transition-all duration-300">
       {/* Header */}
       <div className="mb-6">
         <h3 className="text-xl font-semibold text-[#f4e8d8]">
@@ -63,7 +63,7 @@ export const SystemStatusWidget: React.FC = () => {
         {systems.map((system) => (
           <div
             key={system.id}
-            className="bg-gradient-to-br from-[#3d3127] to-[#2d1f1a] border border-[#f4e8d8]/10 hover:border-[#ff6b35]/30 rounded-xl p-5 transition-all duration-300 cursor-pointer group hover:shadow-[0_8px_24px_rgba(255,107,53,0.2)] hover:-translate-y-0.5"
+            className="bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-[#f4e8d8]/10 hover:border-[#ff4500]/30 rounded-xl p-5 transition-all duration-300 cursor-pointer group hover:shadow-[0_8px_24px_rgba(255,107,53,0.2)] hover:-translate-y-0.5"
           >
             <div className="flex items-start gap-3 mb-4">
               <div
@@ -71,7 +71,7 @@ export const SystemStatusWidget: React.FC = () => {
                   system.status === 'healthy'
                     ? 'bg-gradient-to-br from-[#6a994e] to-[#7ea88f] shadow-[0_4px_16px_rgba(106,153,78,0.4)]'
                     : system.status === 'warning'
-                    ? 'bg-gradient-to-br from-[#f2a541] to-[#f7931e] shadow-[0_4px_16px_rgba(242,165,65,0.4)]'
+                    ? 'bg-gradient-to-br from-[#ff9500] to-[#ff6a00] shadow-[0_4px_16px_rgba(242,165,65,0.4)]'
                     : 'bg-gradient-to-br from-[#d45d4e] to-[#d4734e] shadow-[0_4px_16px_rgba(212,93,78,0.4)]'
                 }`}
               >
@@ -86,7 +86,7 @@ export const SystemStatusWidget: React.FC = () => {
                     <CheckCircle2 className="h-4 w-4 text-[#6a994e] flex-shrink-0" />
                   )}
                   {system.status === 'warning' && (
-                    <AlertTriangle className="h-4 w-4 text-[#f2a541] flex-shrink-0" />
+                    <AlertTriangle className="h-4 w-4 text-[#ff9500] flex-shrink-0" />
                   )}
                 </div>
                 <p className="text-xs text-[#d4a373]">
@@ -106,7 +106,7 @@ export const SystemStatusWidget: React.FC = () => {
                       cy="18"
                       r="15"
                       fill="none"
-                      className="stroke-[#3d3127]"
+                      className="stroke-[#2a2a2a]"
                       strokeWidth="3"
                     />
                     <circle
@@ -118,7 +118,7 @@ export const SystemStatusWidget: React.FC = () => {
                         system.status === 'healthy'
                           ? 'stroke-[#6a994e]'
                           : system.status === 'warning'
-                          ? 'stroke-[#f2a541]'
+                          ? 'stroke-[#ff9500]'
                           : 'stroke-[#d45d4e]'
                       }
                       strokeWidth="3"
@@ -135,7 +135,7 @@ export const SystemStatusWidget: React.FC = () => {
                     system.status === 'healthy'
                       ? 'bg-[#6a994e]/20 text-[#6a994e] border-[#6a994e]/30'
                       : system.status === 'warning'
-                      ? 'bg-[#f2a541]/20 text-[#f2a541] border-[#f2a541]/30'
+                      ? 'bg-[#ff9500]/20 text-[#ff9500] border-[#ff9500]/30'
                       : 'bg-[#d45d4e]/20 text-[#d45d4e] border-[#d45d4e]/30'
                   }`}
                 >

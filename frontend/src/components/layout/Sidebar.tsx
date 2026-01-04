@@ -31,11 +31,11 @@ const navigation = [
 
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle, isMobile }) => {
   return (
-    <div className="flex h-full flex-col bg-gradient-to-br from-[#2d1f1a] via-[#1a1412] to-[#2d1f1a] text-[#f4e8d8] shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
+    <div className="flex h-full flex-col bg-gradient-to-br from-[#1a1a1a] via-[#0a0a0a] to-[#1a1a1a] text-[#f4e8d8] shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
       {/* Logo & Header */}
       <div className="flex h-16 items-center justify-between px-4 border-b border-[#f4e8d8]/10">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#ff6b35] to-[#f7931e] shadow-[0_4px_16px_rgba(255,107,53,0.4)]">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#ff4500] to-[#ff6a00] shadow-[0_4px_16px_rgba(255,107,53,0.4)]">
             <Flame className="h-6 w-6 text-[#f4e8d8]" />
           </div>
           {isOpen && (
@@ -48,7 +48,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle, isMobile }) 
         {!isMobile && (
           <button
             onClick={onToggle}
-            className="rounded-lg p-2 hover:bg-[#3d3127]/40 transition-colors"
+            className="rounded-lg p-2 hover:bg-[#2a2a2a]/40 transition-colors"
           >
             <ChevronLeft
               className={cn(
@@ -63,7 +63,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle, isMobile }) 
       {/* Home Selector */}
       {isOpen && (
         <div className="p-4 border-b border-[#f4e8d8]/10">
-          <select className="w-full rounded-xl bg-gradient-to-br from-[#3d3127] to-[#2d1f1a] border border-[#f4e8d8]/10 px-3 py-2 text-sm text-[#f4e8d8] hover:border-[#ff6b35]/30 focus:outline-none focus:ring-2 focus:ring-[#ff6b35]/50 transition-all">
+          <select className="w-full rounded-xl bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-[#f4e8d8]/10 px-3 py-2 text-sm text-[#f4e8d8] hover:border-[#ff4500]/30 focus:outline-none focus:ring-2 focus:ring-[#ff4500]/50 transition-all">
             <option>Main Home - Yellowknife</option>
             <option>Cabin - Prelude Lake</option>
             <option>+ Add New Home</option>
@@ -81,8 +81,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle, isMobile }) 
               cn(
                 'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-300',
                 isActive
-                  ? 'bg-gradient-to-br from-[#ff6b35] to-[#f7931e] text-[#f4e8d8] shadow-[0_4px_16px_rgba(255,107,53,0.4)]'
-                  : 'text-[#d4a373] hover:bg-[#3d3127]/40 hover:text-[#f4e8d8]',
+                  ? 'bg-gradient-to-br from-[#ff4500] to-[#ff6a00] text-[#f4e8d8] shadow-[0_4px_16px_rgba(255,107,53,0.4)]'
+                  : 'text-[#d4a373] hover:bg-[#2a2a2a]/40 hover:text-[#f4e8d8]',
                 !isOpen && 'justify-center'
               )
             }
@@ -96,7 +96,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle, isMobile }) 
       {/* User Profile */}
       <div className="border-t border-[#f4e8d8]/10 p-4">
         <div className={cn('flex items-center gap-3', !isOpen && 'justify-center')}>
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[#ff6b35] to-[#f7931e] font-semibold text-[#f4e8d8] shadow-[0_4px_12px_rgba(255,107,53,0.4)]">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[#ff4500] to-[#ff6a00] font-semibold text-[#f4e8d8] shadow-[0_4px_12px_rgba(255,107,53,0.4)]">
             JD
           </div>
           {isOpen && (

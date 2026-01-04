@@ -40,14 +40,14 @@
 
     /* Territorial Homestead - Hearth & Home Color System */
     /* Foundation (Backgrounds) */
-    --deep-charcoal: #1a1412;
-    --rich-umber: #2d1f1a;
-    --warm-stone: #3d3127;
+    --deep-charcoal: #0a0a0a;
+    --rich-umber: #1a1a1a;
+    --warm-stone: #2a2a2a;
 
     /* Primary (Warmth & Action) */
-    --ember-glow: #ff6b35;
-    --hearth-fire: #f7931e;
-    --copper-warm: #c87941;
+    --ember-glow: #ff4500;
+    --hearth-fire: #ff6a00;
+    --copper-warm: #ff8c00;
 
     /* Secondary (Comfort & Trust) */
     --wool-cream: #f4e8d8;
@@ -56,7 +56,7 @@
 
     /* Functional */
     --forest-green: #6a994e;
-    --sunset-amber: #f2a541;
+    --sunset-amber: #ff9500;
     --brick-red: #d45d4e;
     --slate-blue: #5b8fa3;
 

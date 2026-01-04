@@ -67,29 +67,29 @@ const Register: React.FC = () => {
       case 'fair':
         return 'bg-[#d4734e]';
       case 'good':
-        return 'bg-[#f2a541]';
+        return 'bg-[#ff9500]';
       case 'strong':
         return 'bg-[#6a994e]';
       default:
-        return 'bg-[#3d3127]';
+        return 'bg-[#2a2a2a]';
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#1a1412] relative overflow-hidden">
+    <div className="min-h-screen bg-[#0a0a0a] relative overflow-hidden">
       {/* Warm Background Gradient Mesh */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#ff6b35]/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-[#f7931e]/12 rounded-full blur-3xl" />
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#c87941]/8 rounded-full blur-3xl" />
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#ff4500]/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-[#ff6a00]/12 rounded-full blur-3xl" />
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#ff8c00]/8 rounded-full blur-3xl" />
       </div>
 
       {/* Navigation */}
-      <nav className="relative border-b border-[#d4a373]/10 bg-[#1a1412]/80 backdrop-blur-sm">
+      <nav className="relative border-b border-[#d4a373]/10 bg-[#0a0a0a]/80 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-6 py-5">
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center gap-3 group">
-              <div className="w-10 h-10 bg-gradient-to-br from-[#ff6b35] to-[#f7931e] rounded-xl flex items-center justify-center shadow-[0_4px_16px_rgba(255,107,53,0.3)]">
+              <div className="w-10 h-10 bg-gradient-to-br from-[#ff4500] to-[#ff6a00] rounded-xl flex items-center justify-center shadow-[0_4px_16px_rgba(255,107,53,0.3)]">
                 <Flame className="w-6 h-6 text-[#f4e8d8]" strokeWidth={2.5} />
               </div>
               <div>
@@ -101,7 +101,7 @@ const Register: React.FC = () => {
             </Link>
             <Link
               to="/login"
-              className="px-5 py-2.5 bg-[#3d3127]/60 hover:bg-[#3d3127] border border-[#d4a373]/30 text-[#f4e8d8] text-sm font-semibold rounded-xl transition-all duration-300"
+              className="px-5 py-2.5 bg-[#2a2a2a]/60 hover:bg-[#2a2a2a] border border-[#d4a373]/30 text-[#f4e8d8] text-sm font-semibold rounded-xl transition-all duration-300"
             >
               Sign In
             </Link>
@@ -114,7 +114,7 @@ const Register: React.FC = () => {
         <div className="max-w-2xl w-full">
           {/* Header */}
           <div className="text-center mb-8 animate-fade-slide-up">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#ff6b35] to-[#f7931e] rounded-2xl shadow-[0_8px_24px_rgba(255,107,53,0.4)] mb-6">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#ff4500] to-[#ff6a00] rounded-2xl shadow-[0_8px_24px_rgba(255,107,53,0.4)] mb-6">
               <Flame className="w-8 h-8 text-[#f4e8d8]" strokeWidth={2.5} />
             </div>
             <h2 className="text-4xl font-bold text-[#f4e8d8] mb-3">
@@ -126,7 +126,7 @@ const Register: React.FC = () => {
           </div>
 
           {/* Form Card */}
-          <div className="bg-gradient-to-br from-[#2d1f1a] to-[#1a1412] border border-[#f4e8d8]/10 rounded-2xl p-8 shadow-2xl backdrop-blur-sm animate-scale-in animate-delay-100">
+          <div className="bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#f4e8d8]/10 rounded-2xl p-8 shadow-2xl backdrop-blur-sm animate-scale-in animate-delay-100">
             <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
               {/* Error Alert */}
               {error && (
@@ -151,9 +151,9 @@ const Register: React.FC = () => {
                   type="email"
                   autoComplete="email"
                   {...register('email')}
-                  className={`w-full px-4 py-3 bg-[#3d3127]/60 border-b-2 ${
+                  className={`w-full px-4 py-3 bg-[#2a2a2a]/60 border-b-2 ${
                     errors.email ? 'border-[#d45d4e]' : 'border-[#d4a373]/30'
-                  } text-[#f4e8d8] placeholder-[#d4a373]/50 rounded-t-xl focus:outline-none focus:border-[#ff6b35] focus:shadow-[0_4px_12px_rgba(255,107,53,0.15)] transition-all duration-300`}
+                  } text-[#f4e8d8] placeholder-[#d4a373]/50 rounded-t-xl focus:outline-none focus:border-[#ff4500] focus:shadow-[0_4px_12px_rgba(255,107,53,0.15)] transition-all duration-300`}
                   placeholder="you@example.com"
                 />
                 {errors.email && (
@@ -172,9 +172,9 @@ const Register: React.FC = () => {
                     type={showPassword ? 'text' : 'password'}
                     autoComplete="new-password"
                     {...register('password')}
-                    className={`w-full px-4 py-3 bg-[#3d3127]/60 border-b-2 ${
+                    className={`w-full px-4 py-3 bg-[#2a2a2a]/60 border-b-2 ${
                       errors.password ? 'border-[#d45d4e]' : 'border-[#d4a373]/30'
-                    } text-[#f4e8d8] placeholder-[#d4a373]/50 rounded-t-xl focus:outline-none focus:border-[#ff6b35] focus:shadow-[0_4px_12px_rgba(255,107,53,0.15)] transition-all duration-300 pr-12`}
+                    } text-[#f4e8d8] placeholder-[#d4a373]/50 rounded-t-xl focus:outline-none focus:border-[#ff4500] focus:shadow-[0_4px_12px_rgba(255,107,53,0.15)] transition-all duration-300 pr-12`}
                     placeholder="Create a strong password"
                   />
                   <button
@@ -195,19 +195,19 @@ const Register: React.FC = () => {
 
                 {/* Password Strength Indicator */}
                 {passwordStrength && (
-                  <div className="mt-3 p-4 bg-[#3d3127]/40 border border-[#d4a373]/20 rounded-xl animate-slide-down">
+                  <div className="mt-3 p-4 bg-[#2a2a2a]/40 border border-[#d4a373]/20 rounded-xl animate-slide-down">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-xs text-[#d4a373]">Password strength:</span>
                       <span className={`text-xs font-semibold transition-colors duration-300 ${
                         passwordStrength.level === 'strong' ? 'text-[#6a994e]' :
-                        passwordStrength.level === 'good' ? 'text-[#f2a541]' :
+                        passwordStrength.level === 'good' ? 'text-[#ff9500]' :
                         passwordStrength.level === 'fair' ? 'text-[#d4734e]' :
                         'text-[#d45d4e]'
                       }`}>
                         {passwordStrength.level.toUpperCase()}
                       </span>
                     </div>
-                    <div className="w-full bg-[#2d1f1a] rounded-full h-2.5">
+                    <div className="w-full bg-[#1a1a1a] rounded-full h-2.5">
                       <div
                         className={`h-2.5 rounded-full transition-all duration-500 ${getStrengthColor(passwordStrength.level)}`}
                         style={{ width: `${(passwordStrength.score / 7) * 100}%` }}
@@ -235,9 +235,9 @@ const Register: React.FC = () => {
                     type={showConfirmPassword ? 'text' : 'password'}
                     autoComplete="new-password"
                     {...register('confirmPassword')}
-                    className={`w-full px-4 py-3 bg-[#3d3127]/60 border-b-2 ${
+                    className={`w-full px-4 py-3 bg-[#2a2a2a]/60 border-b-2 ${
                       errors.confirmPassword ? 'border-[#d45d4e]' : 'border-[#d4a373]/30'
-                    } text-[#f4e8d8] placeholder-[#d4a373]/50 rounded-t-xl focus:outline-none focus:border-[#ff6b35] focus:shadow-[0_4px_12px_rgba(255,107,53,0.15)] transition-all duration-300 pr-12`}
+                    } text-[#f4e8d8] placeholder-[#d4a373]/50 rounded-t-xl focus:outline-none focus:border-[#ff4500] focus:shadow-[0_4px_12px_rgba(255,107,53,0.15)] transition-all duration-300 pr-12`}
                     placeholder="Re-enter your password"
                   />
                   <button
@@ -270,9 +270,9 @@ const Register: React.FC = () => {
                       id="firstName"
                       type="text"
                       {...register('firstName')}
-                      className={`w-full px-4 py-3 bg-[#3d3127]/40 border ${
+                      className={`w-full px-4 py-3 bg-[#2a2a2a]/40 border ${
                         errors.firstName ? 'border-[#d45d4e]' : 'border-[#d4a373]/20'
-                      } text-[#f4e8d8] placeholder-[#d4a373]/40 rounded-xl focus:outline-none focus:border-[#ff6b35]/50 focus:shadow-[0_2px_8px_rgba(255,107,53,0.1)] transition-all duration-300`}
+                      } text-[#f4e8d8] placeholder-[#d4a373]/40 rounded-xl focus:outline-none focus:border-[#ff4500]/50 focus:shadow-[0_2px_8px_rgba(255,107,53,0.1)] transition-all duration-300`}
                     />
                     {errors.firstName && (
                       <p className="mt-2 text-sm text-[#d45d4e]">{errors.firstName.message}</p>
@@ -287,9 +287,9 @@ const Register: React.FC = () => {
                       id="lastName"
                       type="text"
                       {...register('lastName')}
-                      className={`w-full px-4 py-3 bg-[#3d3127]/40 border ${
+                      className={`w-full px-4 py-3 bg-[#2a2a2a]/40 border ${
                         errors.lastName ? 'border-[#d45d4e]' : 'border-[#d4a373]/20'
-                      } text-[#f4e8d8] placeholder-[#d4a373]/40 rounded-xl focus:outline-none focus:border-[#ff6b35]/50 focus:shadow-[0_2px_8px_rgba(255,107,53,0.1)] transition-all duration-300`}
+                      } text-[#f4e8d8] placeholder-[#d4a373]/40 rounded-xl focus:outline-none focus:border-[#ff4500]/50 focus:shadow-[0_2px_8px_rgba(255,107,53,0.1)] transition-all duration-300`}
                     />
                     {errors.lastName && (
                       <p className="mt-2 text-sm text-[#d45d4e]">{errors.lastName.message}</p>
@@ -306,9 +306,9 @@ const Register: React.FC = () => {
                     type="text"
                     {...register('community')}
                     placeholder="e.g., Yellowknife, Iqaluit, Whitehorse"
-                    className={`w-full px-4 py-3 bg-[#3d3127]/40 border ${
+                    className={`w-full px-4 py-3 bg-[#2a2a2a]/40 border ${
                       errors.community ? 'border-[#d45d4e]' : 'border-[#d4a373]/20'
-                    } text-[#f4e8d8] placeholder-[#d4a373]/40 rounded-xl focus:outline-none focus:border-[#ff6b35]/50 focus:shadow-[0_2px_8px_rgba(255,107,53,0.1)] transition-all duration-300`}
+                    } text-[#f4e8d8] placeholder-[#d4a373]/40 rounded-xl focus:outline-none focus:border-[#ff4500]/50 focus:shadow-[0_2px_8px_rgba(255,107,53,0.1)] transition-all duration-300`}
                   />
                   {errors.community && (
                     <p className="mt-2 text-sm text-[#d45d4e]">{errors.community.message}</p>
@@ -324,9 +324,9 @@ const Register: React.FC = () => {
                     type="tel"
                     {...register('phone')}
                     placeholder="e.g., +1-867-555-0100"
-                    className={`w-full px-4 py-3 bg-[#3d3127]/40 border ${
+                    className={`w-full px-4 py-3 bg-[#2a2a2a]/40 border ${
                       errors.phone ? 'border-[#d45d4e]' : 'border-[#d4a373]/20'
-                    } text-[#f4e8d8] placeholder-[#d4a373]/40 rounded-xl focus:outline-none focus:border-[#ff6b35]/50 focus:shadow-[0_2px_8px_rgba(255,107,53,0.1)] transition-all duration-300`}
+                    } text-[#f4e8d8] placeholder-[#d4a373]/40 rounded-xl focus:outline-none focus:border-[#ff4500]/50 focus:shadow-[0_2px_8px_rgba(255,107,53,0.1)] transition-all duration-300`}
                   />
                   {errors.phone && (
                     <p className="mt-2 text-sm text-[#d45d4e]">{errors.phone.message}</p>
@@ -338,7 +338,7 @@ const Register: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-[#ff6b35] to-[#f7931e] hover:shadow-[0_8px_32px_rgba(255,107,53,0.5)] disabled:opacity-50 disabled:cursor-not-allowed text-[#f4e8d8] font-bold rounded-xl transition-all duration-300 shadow-[0_4px_16px_rgba(255,107,53,0.35)] text-lg"
+                className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-[#ff4500] to-[#ff6a00] hover:shadow-[0_8px_32px_rgba(255,107,53,0.5)] disabled:opacity-50 disabled:cursor-not-allowed text-[#f4e8d8] font-bold rounded-xl transition-all duration-300 shadow-[0_4px_16px_rgba(255,107,53,0.35)] text-lg"
               >
                 {isSubmitting ? (
                   <>
@@ -353,7 +353,7 @@ const Register: React.FC = () => {
               {/* Login Link */}
               <div className="text-center pt-4 border-t border-[#f4e8d8]/10">
                 <span className="text-sm text-[#d4a373]">Already have an account? </span>
-                <Link to="/login" className="text-sm font-semibold text-[#f7931e] hover:text-[#ff6b35] transition-colors duration-200">
+                <Link to="/login" className="text-sm font-semibold text-[#ff6a00] hover:text-[#ff4500] transition-colors duration-200">
                   Sign in
                 </Link>
               </div>

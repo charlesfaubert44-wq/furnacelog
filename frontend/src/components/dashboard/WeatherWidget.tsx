@@ -10,7 +10,7 @@ export const WeatherWidget: React.FC = () => {
   const hasAlert = currentTemp < -20;
 
   return (
-    <div className="bg-gradient-to-br from-[#2d1f1a] to-[#1a1412] border border-[#f4e8d8]/10 rounded-2xl p-8 h-full shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:shadow-[0_12px_48px_rgba(255,107,53,0.15)] transition-all duration-300">
+    <div className="bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#f4e8d8]/10 rounded-2xl p-8 h-full shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:shadow-[0_12px_48px_rgba(255,107,53,0.15)] transition-all duration-300">
       {/* Header */}
       <div className="mb-6">
         <h3 className="text-xl font-semibold text-[#f4e8d8]">
@@ -40,7 +40,7 @@ export const WeatherWidget: React.FC = () => {
 
       {/* Weather Details */}
       <div className="grid grid-cols-2 gap-3 mb-6">
-        <div className="flex items-center gap-3 bg-gradient-to-br from-[#3d3127] to-[#2d1f1a] border border-[#f4e8d8]/10 rounded-xl p-3 hover:border-[#5b8fa3]/30 transition-colors">
+        <div className="flex items-center gap-3 bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-[#f4e8d8]/10 rounded-xl p-3 hover:border-[#5b8fa3]/30 transition-colors">
           <div className="w-10 h-10 bg-gradient-to-br from-[#5b8fa3] to-[#7ea88f] rounded-lg flex items-center justify-center flex-shrink-0 shadow-[0_4px_12px_rgba(91,143,163,0.3)]">
             <Wind className="h-5 w-5 text-[#f4e8d8]" />
           </div>
@@ -49,7 +49,7 @@ export const WeatherWidget: React.FC = () => {
             <p className="text-sm font-semibold text-[#f4e8d8]">{windSpeed} km/h</p>
           </div>
         </div>
-        <div className="flex items-center gap-3 bg-gradient-to-br from-[#3d3127] to-[#2d1f1a] border border-[#f4e8d8]/10 rounded-xl p-3 hover:border-[#5b8fa3]/30 transition-colors">
+        <div className="flex items-center gap-3 bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-[#f4e8d8]/10 rounded-xl p-3 hover:border-[#5b8fa3]/30 transition-colors">
           <div className="w-10 h-10 bg-gradient-to-br from-[#5b8fa3] to-[#7ea88f] rounded-lg flex items-center justify-center flex-shrink-0 shadow-[0_4px_12px_rgba(91,143,163,0.3)]">
             <Droplets className="h-5 w-5 text-[#f4e8d8]" />
           </div>
@@ -80,22 +80,22 @@ export const WeatherWidget: React.FC = () => {
       )}
 
       {/* Suggested Actions */}
-      <div className="bg-gradient-to-br from-[#f2a541]/15 to-[#f7931e]/10 border border-[#f2a541]/30 rounded-xl p-4">
+      <div className="bg-gradient-to-br from-[#ff9500]/15 to-[#ff6a00]/10 border border-[#ff9500]/30 rounded-xl p-4">
         <h4 className="text-sm font-semibold text-[#f4e8d8] mb-3 flex items-center gap-2">
-          <Thermometer className="w-4 h-4 text-[#f2a541]" />
+          <Thermometer className="w-4 h-4 text-[#ff9500]" />
           Recommended Actions
         </h4>
         <ul className="space-y-2 text-xs text-[#d4a373]">
           <li className="flex items-start gap-2">
-            <span className="text-[#ff6b35] mt-0.5 font-bold">•</span>
+            <span className="text-[#ff4500] mt-0.5 font-bold">•</span>
             <span>Monitor furnace operation</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-[#ff6b35] mt-0.5 font-bold">•</span>
+            <span className="text-[#ff4500] mt-0.5 font-bold">•</span>
             <span>Verify heat trace cables are active</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-[#ff6b35] mt-0.5 font-bold">•</span>
+            <span className="text-[#ff4500] mt-0.5 font-bold">•</span>
             <span>Let taps drip to prevent freezing</span>
           </li>
         </ul>

@@ -10,28 +10,28 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
   return (
-    <header className="sticky top-0 z-40 h-16 border-b border-[#f4e8d8]/10 bg-gradient-to-br from-[#2d1f1a]/95 to-[#1a1412]/95 backdrop-blur-md shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
+    <header className="sticky top-0 z-40 h-16 border-b border-[#f4e8d8]/10 bg-gradient-to-br from-[#1a1a1a]/95 to-[#0a0a0a]/95 backdrop-blur-md shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
       <div className="flex h-full items-center justify-between px-4 md:px-6 lg:px-8">
         {/* Left: Mobile Menu + Search */}
         <div className="flex items-center gap-4">
           <Button
             variant="ghost"
             size="icon"
-            className="lg:hidden text-[#d4a373] hover:text-[#f4e8d8] hover:bg-[#3d3127]/40"
+            className="lg:hidden text-[#d4a373] hover:text-[#f4e8d8] hover:bg-[#2a2a2a]/40"
             onClick={onMenuClick}
           >
             <Menu className="h-5 w-5" />
           </Button>
 
           {/* Search */}
-          <div className="hidden md:flex items-center gap-2 rounded-xl bg-gradient-to-br from-[#3d3127] to-[#2d1f1a] border border-[#f4e8d8]/10 px-3 py-2 w-64 lg:w-96 hover:border-[#ff6b35]/30 transition-colors">
+          <div className="hidden md:flex items-center gap-2 rounded-xl bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-[#f4e8d8]/10 px-3 py-2 w-64 lg:w-96 hover:border-[#ff4500]/30 transition-colors">
             <Search className="h-4 w-4 text-[#d4a373]" />
             <input
               type="text"
               placeholder="Search homes, systems, tasks..."
               className="flex-1 bg-transparent text-sm outline-none placeholder:text-[#d4a373]/60 text-[#f4e8d8]"
             />
-            <kbd className="hidden lg:inline-flex h-5 select-none items-center gap-1 rounded border border-[#f4e8d8]/20 bg-[#3d3127] px-1.5 font-mono text-[10px] font-medium text-[#d4a373]">
+            <kbd className="hidden lg:inline-flex h-5 select-none items-center gap-1 rounded border border-[#f4e8d8]/20 bg-[#2a2a2a] px-1.5 font-mono text-[10px] font-medium text-[#d4a373]">
               ⌘K
             </kbd>
           </div>
@@ -49,7 +49,7 @@ export const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
           </div>
 
           {/* Notifications */}
-          <Button variant="ghost" size="icon" className="relative text-[#d4a373] hover:text-[#f4e8d8] hover:bg-[#3d3127]/40">
+          <Button variant="ghost" size="icon" className="relative text-[#d4a373] hover:text-[#f4e8d8] hover:bg-[#2a2a2a]/40">
             <Bell className="h-5 w-5" />
             <Badge
               variant="error"
@@ -60,7 +60,7 @@ export const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
           </Button>
 
           {/* Mobile Search Button */}
-          <Button variant="ghost" size="icon" className="md:hidden text-[#d4a373] hover:text-[#f4e8d8] hover:bg-[#3d3127]/40">
+          <Button variant="ghost" size="icon" className="md:hidden text-[#d4a373] hover:text-[#f4e8d8] hover:bg-[#2a2a2a]/40">
             <Search className="h-5 w-5" />
           </Button>
         </div>

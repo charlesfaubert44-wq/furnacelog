@@ -48,7 +48,7 @@ export const MaintenanceSummaryWidget: React.FC = () => {
   const upcomingCount = mockTasks.filter((t) => t.status === 'upcoming').length;
 
   return (
-    <div className="bg-gradient-to-br from-[#2d1f1a] to-[#1a1412] border border-[#f4e8d8]/10 rounded-2xl p-8 h-full shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:shadow-[0_12px_48px_rgba(255,107,53,0.15)] transition-all duration-300">
+    <div className="bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#f4e8d8]/10 rounded-2xl p-8 h-full shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:shadow-[0_12px_48px_rgba(255,107,53,0.15)] transition-all duration-300">
       {/* Header */}
       <div className="mb-6">
         <h3 className="text-xl font-semibold text-[#f4e8d8]">
@@ -73,19 +73,19 @@ export const MaintenanceSummaryWidget: React.FC = () => {
           </p>
         </div>
 
-        <div className="bg-gradient-to-br from-[#f2a541]/20 to-[#f2a541]/10 border border-[#f2a541]/30 rounded-xl p-4 shadow-[0_4px_16px_rgba(242,165,65,0.2)]">
+        <div className="bg-gradient-to-br from-[#ff9500]/20 to-[#ff9500]/10 border border-[#ff9500]/30 rounded-xl p-4 shadow-[0_4px_16px_rgba(242,165,65,0.2)]">
           <div className="flex items-center justify-center gap-2 mb-2">
-            <Clock className="h-5 w-5 text-[#f2a541]" />
+            <Clock className="h-5 w-5 text-[#ff9500]" />
             <span className="text-3xl font-bold text-[#f4e8d8]">
               {dueSoonCount}
             </span>
           </div>
-          <p className="text-xs text-[#f2a541] font-medium text-center uppercase tracking-wide">
+          <p className="text-xs text-[#ff9500] font-medium text-center uppercase tracking-wide">
             This Week
           </p>
         </div>
 
-        <div className="bg-gradient-to-br from-[#3d3127] to-[#2d1f1a] border border-[#d4a373]/20 rounded-xl p-4">
+        <div className="bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-[#d4a373]/20 rounded-xl p-4">
           <div className="flex items-center justify-center gap-2 mb-2">
             <CheckCircle2 className="h-5 w-5 text-[#d4a373]" />
             <span className="text-3xl font-bold text-[#f4e8d8]">
@@ -105,17 +105,17 @@ export const MaintenanceSummaryWidget: React.FC = () => {
             key={task.id}
             className={cn(
               'flex items-start gap-4 rounded-xl p-4 transition-all duration-300 cursor-pointer border',
-              task.status === 'overdue' && 'bg-gradient-to-br from-[#2d1f1a] to-[#1a1412] border-[#d45d4e]/30 hover:border-[#d45d4e]/50 hover:shadow-[0_4px_16px_rgba(212,93,78,0.2)]',
-              task.status === 'due-soon' && 'bg-gradient-to-br from-[#2d1f1a] to-[#1a1412] border-[#f2a541]/30 hover:border-[#f2a541]/50 hover:shadow-[0_4px_16px_rgba(242,165,65,0.2)]',
-              task.status === 'upcoming' && 'bg-gradient-to-br from-[#3d3127] to-[#2d1f1a] border-[#f4e8d8]/10 hover:border-[#ff6b35]/30 hover:shadow-[0_4px_16px_rgba(255,107,53,0.15)]'
+              task.status === 'overdue' && 'bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border-[#d45d4e]/30 hover:border-[#d45d4e]/50 hover:shadow-[0_4px_16px_rgba(212,93,78,0.2)]',
+              task.status === 'due-soon' && 'bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border-[#ff9500]/30 hover:border-[#ff9500]/50 hover:shadow-[0_4px_16px_rgba(242,165,65,0.2)]',
+              task.status === 'upcoming' && 'bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border-[#f4e8d8]/10 hover:border-[#ff4500]/30 hover:shadow-[0_4px_16px_rgba(255,107,53,0.15)]'
             )}
           >
             <div
               className={cn(
                 'flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.2)]',
                 task.status === 'overdue' && 'bg-gradient-to-br from-[#d45d4e] to-[#d4734e] text-[#f4e8d8]',
-                task.status === 'due-soon' && 'bg-gradient-to-br from-[#f2a541] to-[#f7931e] text-[#f4e8d8]',
-                task.status === 'upcoming' && 'bg-gradient-to-br from-[#d4a373] to-[#c87941] text-[#f4e8d8]'
+                task.status === 'due-soon' && 'bg-gradient-to-br from-[#ff9500] to-[#ff6a00] text-[#f4e8d8]',
+                task.status === 'upcoming' && 'bg-gradient-to-br from-[#d4a373] to-[#ff8c00] text-[#f4e8d8]'
               )}
             >
               {task.icon}
@@ -131,7 +131,7 @@ export const MaintenanceSummaryWidget: React.FC = () => {
                 className={cn(
                   'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border',
                   task.status === 'overdue' && 'bg-[#d45d4e]/20 text-[#d45d4e] border-[#d45d4e]/30',
-                  task.status === 'due-soon' && 'bg-[#f2a541]/20 text-[#f2a541] border-[#f2a541]/30',
+                  task.status === 'due-soon' && 'bg-[#ff9500]/20 text-[#ff9500] border-[#ff9500]/30',
                   task.status === 'upcoming' && 'bg-[#d4a373]/20 text-[#d4a373] border-[#d4a373]/30'
                 )}
               >
