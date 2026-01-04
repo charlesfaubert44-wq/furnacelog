@@ -104,19 +104,14 @@ userSchema.index({ createdAt: -1 });
  * Hash password before saving
  * E2-T1: Implement password hashing with bcrypt
  */
-userSchema.pre('save', async function(next) {
+userSchema.pre('save', async function() {
   // Only hash if password is modified
   if (!this.isModified('passwordHash')) {
-    return next();
+    return;
   }
 
-  try {
-    const salt = await bcrypt.genSalt(12);
-    this.passwordHash = await bcrypt.hash(this.passwordHash, salt);
-    next();
-  } catch (error) {
-    next(error);
-  }
+  const salt = await bcrypt.genSalt(12);
+  this.passwordHash = await bcrypt.hash(this.passwordHash, salt);
 });
 
 /**
