@@ -614,13 +614,6 @@ function HomePage() {
             <div className="relative max-w-7xl mx-auto px-6 py-20 md:py-28">
               <div className="grid lg:grid-cols-2 gap-16 items-center">
                 <div className="space-y-8">
-                  <div className="inline-flex items-center gap-2.5 px-4 py-2 bg-gradient-to-r from-[#6a994e]/20 to-[#7ea88f]/20 border border-[#6a994e]/30 rounded-full animate-fade-in">
-                    <MapPin className="w-4 h-4 text-[#6a994e]" />
-                    <span className="text-sm text-[#7ea88f] font-medium">
-                      Built for Northwest Territories, Nunavut & Yukon
-                    </span>
-                  </div>
-
                   <div className="space-y-6">
                     <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-[#f4e8d8] leading-[1.05] tracking-tight animate-fade-slide-up animate-delay-100">
                       Protect Your
