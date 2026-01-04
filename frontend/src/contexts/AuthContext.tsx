@@ -108,7 +108,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
         // No localStorage - tokens are in httpOnly cookies
 
-        navigate('/');
+        navigate('/dashboard');
       } else {
         throw new Error(response.message || 'Login failed');
       }

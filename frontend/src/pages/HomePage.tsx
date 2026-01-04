@@ -98,6 +98,22 @@ function HomePage() {
                   <p className="text-xs text-[#d4a373] font-medium">Northern Home Tracker</p>
                 </div>
               </div>
+              {user && (
+                <nav className="hidden md:flex items-center gap-1 ml-8">
+                  <button
+                    onClick={() => navigate('/')}
+                    className="px-4 py-2 text-sm text-[#d4a373] hover:text-[#f4e8d8] font-medium transition-colors rounded-lg hover:bg-[#2a2a2a]/50"
+                  >
+                    Home
+                  </button>
+                  <button
+                    onClick={() => navigate('/dashboard')}
+                    className="px-4 py-2 text-sm text-[#d4a373] hover:text-[#f4e8d8] font-medium transition-colors rounded-lg hover:bg-[#2a2a2a]/50"
+                  >
+                    Dashboard
+                  </button>
+                </nav>
+              )}
             </div>
             <div className="flex items-center gap-3">
               {user ? (
