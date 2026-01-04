@@ -1,6 +1,5 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
 import morgan from 'morgan';
@@ -13,6 +12,7 @@ import systemRoutes from './routes/systemRoutes.js';
 import componentRoutes from './routes/componentRoutes.js';
 import templateRoutes from './routes/templateRoutes.js';
 import maintenanceRoutes from './routes/maintenanceRoutes.js';
+import logger from './utils/logger.js';
 
 // Load environment variables
 dotenv.config();
@@ -34,13 +34,40 @@ const app = express();
 // Middleware
 app.use(helmet()); // Security headers
 
-// CORS - properly configured for production
-app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+// CORS - Support multiple origins
+const allowedOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(',').map(origin => origin.trim())
+  : ['http://localhost:5173', 'http://localhost:3000'];
+
+// Manual CORS middleware (more control than cors package)
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+
+  logger.info(`CORS check - Origin: ${origin}, Allowed: ${JSON.stringify(allowedOrigins)}`);
+
+  // Check if origin is allowed
+  if (origin && allowedOrigins.indexOf(origin) !== -1) {
+    // Set CORS headers manually
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+    logger.info(`CORS: Set Access-Control-Allow-Origin to ${origin}`);
+  } else if (!origin) {
+    // No origin (server-to-server, Postman, etc.)
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    logger.info('CORS: No origin, allowing all');
+  } else {
+    logger.warn(`CORS: Origin ${origin} not allowed`);
+  }
+
+  // Handle OPTIONS preflight
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+
+  next();
+});
 
 app.use(compression()); // Compress responses
 app.use(express.json()); // Parse JSON bodies
