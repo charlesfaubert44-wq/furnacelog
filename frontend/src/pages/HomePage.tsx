@@ -844,26 +844,6 @@ function HomePage() {
             </div>
           </section>
 
-          {/* Stats Section */}
-          <section className="py-20 border-b border-[#d4a373]/10">
-            <div className="max-w-7xl mx-auto px-6">
-              <div className="grid md:grid-cols-3 gap-12">
-                <div className="text-center space-y-2">
-                  <div className="text-5xl font-bold bg-gradient-to-r from-[#ff4500] to-[#ff6a00] bg-clip-text text-transparent">-40°C</div>
-                  <p className="text-[#d4a373]">Extreme cold tested</p>
-                </div>
-                <div className="text-center space-y-2">
-                  <div className="text-5xl font-bold bg-gradient-to-r from-[#ff4500] to-[#ff6a00] bg-clip-text text-transparent">100%</div>
-                  <p className="text-[#d4a373]">Free & open source</p>
-                </div>
-                <div className="text-center space-y-2">
-                  <div className="text-5xl font-bold bg-gradient-to-r from-[#ff4500] to-[#ff6a00] bg-clip-text text-transparent">24/7</div>
-                  <p className="text-[#d4a373]">Offline access</p>
-                </div>
-              </div>
-            </div>
-          </section>
-
           {/* Pricing Section */}
           <section id="pricing" className="py-24 border-b border-[#d4a373]/10">
             <div className="max-w-7xl mx-auto px-6">
