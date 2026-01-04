@@ -81,7 +81,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
         // No localStorage - tokens are in httpOnly cookies
 
-        navigate('/dashboard');
+        navigate('/');
       } else {
         throw new Error(response.message || 'Registration failed');
       }
@@ -108,7 +108,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
         // No localStorage - tokens are in httpOnly cookies
 
-        navigate('/dashboard');
+        navigate('/');
       } else {
         throw new Error(response.message || 'Login failed');
       }

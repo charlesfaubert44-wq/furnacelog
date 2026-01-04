@@ -39,7 +39,7 @@ const ClimateTimeMachine: React.FC = () => {
   // Load data on mount
   useEffect(() => {
     if (!homeId) {
-      navigate('/dashboard');
+      navigate('/');
       return;
     }
 

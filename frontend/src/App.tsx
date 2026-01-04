@@ -5,7 +5,6 @@ import HomePage from './pages/HomePage';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import AuthCallback from './pages/AuthCallback';
-import { Dashboard } from './pages/Dashboard';
 import ClimateTimeMachine from './pages/ClimateTimeMachine';
 
 /**
@@ -23,7 +22,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
 
-            {/* Auth routes - redirect to dashboard if already logged in */}
+            {/* Auth routes - redirect to homepage if already logged in */}
             <Route
               path="/login"
               element={
@@ -42,14 +41,6 @@ function App() {
             />
 
             {/* Protected routes - require authentication */}
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
             <Route
               path="/timeline/:homeId"
               element={
