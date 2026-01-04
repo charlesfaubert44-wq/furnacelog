@@ -4,7 +4,8 @@ import {
   login,
   logout,
   refreshToken,
-  getCurrentUser
+  getCurrentUser,
+  oauthCallback
 } from '../controllers/auth.controller.js';
 import {
   authenticate,
@@ -15,6 +16,7 @@ import {
   registerSchema,
   loginSchema
 } from '../validators/auth.validators.js';
+import passport from '../config/passport.js';
 
 const router = express.Router();
 
@@ -62,5 +64,59 @@ router.post('/refresh', refreshToken);
  * @task    E2-T4: User Profile Management API
  */
 router.get('/me', authenticate, getCurrentUser);
+
+/**
+ * OAuth Routes
+ */
+
+/**
+ * @route   GET /api/v1/auth/google
+ * @desc    Initiate Google OAuth flow
+ * @access  Public
+ */
+router.get('/google',
+  passport.authenticate('google', {
+    scope: ['profile', 'email'],
+    session: false
+  })
+);
+
+/**
+ * @route   GET /api/v1/auth/google/callback
+ * @desc    Google OAuth callback
+ * @access  Public
+ */
+router.get('/google/callback',
+  passport.authenticate('google', {
+    session: false,
+    failureRedirect: `${process.env.FRONTEND_URL || 'http://localhost:3000'}?auth_error=google_auth_failed`
+  }),
+  oauthCallback
+);
+
+/**
+ * @route   GET /api/v1/auth/facebook
+ * @desc    Initiate Facebook OAuth flow
+ * @access  Public
+ */
+router.get('/facebook',
+  passport.authenticate('facebook', {
+    scope: ['email'],
+    session: false
+  })
+);
+
+/**
+ * @route   GET /api/v1/auth/facebook/callback
+ * @desc    Facebook OAuth callback
+ * @access  Public
+ */
+router.get('/facebook/callback',
+  passport.authenticate('facebook', {
+    session: false,
+    failureRedirect: `${process.env.FRONTEND_URL || 'http://localhost:3000'}?auth_error=facebook_auth_failed`
+  }),
+  oauthCallback
+);
 
 export default router;

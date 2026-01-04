@@ -329,10 +329,61 @@ export const getCurrentUser = async (req, res) => {
   }
 };
 
+/**
+ * OAuth callback handler (Google & Facebook)
+ * Generates tokens and redirects to frontend with auth data
+ */
+export const oauthCallback = async (req, res) => {
+  try {
+    const user = req.user; // Set by Passport
+
+    if (!user) {
+      return res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:3000'}?auth_error=user_not_found`);
+    }
+
+    // Update last login
+    await user.updateLastLogin();
+
+    // Generate tokens
+    const tokens = generateTokenPair(user);
+
+    // Store session in Redis
+    const redis = getRedisClient();
+    if (redis) {
+      try {
+        const sessionKey = `session:${user._id}:${tokens.sessionId}`;
+        const sessionData = {
+          userId: user._id.toString(),
+          email: user.email,
+          createdAt: new Date().toISOString(),
+          userAgent: req.headers['user-agent'],
+          ip: req.ip,
+          oauth: true
+        };
+        await redis.setex(sessionKey, 30 * 24 * 60 * 60, JSON.stringify(sessionData)); // 30 days for OAuth
+      } catch (redisError) {
+        console.warn('Failed to store OAuth session in Redis:', redisError.message);
+      }
+    }
+
+    // Redirect to frontend with tokens
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+    const redirectUrl = `${frontendUrl}/auth/callback?access_token=${tokens.accessToken}&refresh_token=${tokens.refreshToken}&expires_in=${tokens.expiresIn}`;
+
+    return res.redirect(redirectUrl);
+
+  } catch (error) {
+    console.error('OAuth callback error:', error);
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+    return res.redirect(`${frontendUrl}?auth_error=oauth_failed`);
+  }
+};
+
 export default {
   register,
   login,
   logout,
   refreshToken,
-  getCurrentUser
+  getCurrentUser,
+  oauthCallback
 };

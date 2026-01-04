@@ -4,6 +4,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import HomePage from './pages/HomePage';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import AuthCallback from './pages/AuthCallback';
 import { Dashboard } from './pages/Dashboard';
 
 /**
@@ -15,10 +16,11 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <div className="min-h-screen bg-background text-foreground">
+        <div className="min-h-screen bg-stone-950 text-stone-50">
           <Routes>
             {/* Public routes */}
             <Route path="/" element={<HomePage />} />
+            <Route path="/auth/callback" element={<AuthCallback />} />
 
             {/* Auth routes - redirect to dashboard if already logged in */}
             <Route

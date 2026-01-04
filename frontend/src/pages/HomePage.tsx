@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Thermometer, Home, Calendar, AlertTriangle, Snowflake, Flame, Shield, CheckCircle2, ArrowRight, MapPin, Clock, TrendingDown, Plus, FileText, Wrench, Wind, Droplets, Zap, Circle, ChevronRight, LogOut, User } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
+import { AuthModal } from '@/components/auth/AuthModal';
 
 interface HealthStatus {
   status: string;
@@ -120,6 +121,8 @@ function HomePage() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [authModalTab, setAuthModalTab] = useState<'login' | 'register'>('login');
 
   useEffect(() => {
     const checkHealth = async () => {
@@ -200,18 +203,24 @@ function HomePage() {
                 </div>
               ) : (
                 <>
-                  <Link
-                    to="/login"
+                  <button
+                    onClick={() => {
+                      setAuthModalTab('login');
+                      setAuthModalOpen(true);
+                    }}
                     className="px-4 py-2 text-sm text-stone-300 hover:text-stone-50 font-medium transition-colors"
                   >
                     Sign In
-                  </Link>
-                  <Link
-                    to="/register"
+                  </button>
+                  <button
+                    onClick={() => {
+                      setAuthModalTab('register');
+                      setAuthModalOpen(true);
+                    }}
                     className="px-5 py-2.5 bg-amber-700 hover:bg-amber-600 text-stone-50 text-sm font-semibold rounded-lg transition-all duration-200 shadow-lg shadow-amber-900/30"
                   >
                     Get Started
-                  </Link>
+                  </button>
                 </>
               )}
             </div>
@@ -543,10 +552,16 @@ function HomePage() {
                   </div>
 
                   <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                    <Link to="/register" className="group inline-flex items-center justify-center gap-2.5 px-7 py-4 bg-amber-700 hover:bg-amber-600 text-stone-50 font-semibold rounded-xl transition-all duration-200 shadow-xl shadow-amber-900/40">
+                    <button
+                      onClick={() => {
+                        setAuthModalTab('register');
+                        setAuthModalOpen(true);
+                      }}
+                      className="group inline-flex items-center justify-center gap-2.5 px-7 py-4 bg-amber-700 hover:bg-amber-600 text-stone-50 font-semibold rounded-xl transition-all duration-200 shadow-xl shadow-amber-900/40"
+                    >
                       Start Free Today
                       <ArrowRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
-                    </Link>
+                    </button>
                     <a href="#features" className="inline-flex items-center justify-center gap-2 px-7 py-4 bg-stone-800 hover:bg-stone-700 border border-stone-700 text-stone-100 font-semibold rounded-xl transition-all duration-200">
                       See Features
                     </a>
@@ -760,10 +775,16 @@ function HomePage() {
                 Join northern homeowners who trust FurnaceLog to keep their homes safe, warm, and well-maintained through extreme winters.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link to="/register" className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-amber-700 hover:bg-amber-600 text-stone-50 font-semibold rounded-xl transition-all duration-200 shadow-xl shadow-amber-900/40">
+                <button
+                  onClick={() => {
+                    setAuthModalTab('register');
+                    setAuthModalOpen(true);
+                  }}
+                  className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-amber-700 hover:bg-amber-600 text-stone-50 font-semibold rounded-xl transition-all duration-200 shadow-xl shadow-amber-900/40"
+                >
                   Create Free Account
                   <ArrowRight className="w-5 h-5" />
-                </Link>
+                </button>
               </div>
             </div>
           </section>
@@ -793,6 +814,13 @@ function HomePage() {
           </div>
         </div>
       </footer>
+
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+        defaultTab={authModalTab}
+      />
     </div>
   );
 }

@@ -19,8 +19,20 @@ const userSchema = new mongoose.Schema({
   },
   passwordHash: {
     type: String,
-    required: [true, 'Password is required'],
+    required: false, // Not required for OAuth users
     select: false // Don't return password hash by default
+  },
+  googleId: {
+    type: String,
+    unique: true,
+    sparse: true, // Allow null values to be non-unique
+    select: false
+  },
+  facebookId: {
+    type: String,
+    unique: true,
+    sparse: true, // Allow null values to be non-unique
+    select: false
   },
   profile: {
     firstName: {
@@ -105,8 +117,8 @@ userSchema.index({ createdAt: -1 });
  * E2-T1: Implement password hashing with bcrypt
  */
 userSchema.pre('save', async function() {
-  // Only hash if password is modified
-  if (!this.isModified('passwordHash')) {
+  // Only hash if password is modified and exists (OAuth users don't have passwords)
+  if (!this.isModified('passwordHash') || !this.passwordHash) {
     return;
   }
 

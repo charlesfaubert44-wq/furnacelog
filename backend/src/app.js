@@ -6,7 +6,9 @@ import mongoSanitize from 'express-mongo-sanitize';
 import rateLimit from 'express-rate-limit';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
+import passport from './config/passport.js';
 import healthRoutes from './routes/health.js';
+import authRoutes from './routes/auth.routes.js';
 import logger from './utils/logger.js';
 
 const app = express();
@@ -19,9 +21,23 @@ app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' },
 }));
 
-// CORS
+// CORS - Support multiple origins
+const allowedOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(',').map(origin => origin.trim())
+  : ['http://localhost:5173', 'http://localhost:3000'];
+
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps, curl, Postman)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      logger.warn(`CORS blocked request from origin: ${origin}`);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -44,6 +60,9 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // Cookie Parser
 app.use(cookieParser());
 
+// Initialize Passport for OAuth
+app.use(passport.initialize());
+
 // Data Sanitization against NoSQL query injection
 app.use(mongoSanitize());
 
@@ -63,6 +82,7 @@ if (process.env.NODE_ENV === 'development') {
 
 // API Routes
 app.use('/api/v1', healthRoutes);
+app.use('/api/v1/auth', authRoutes);
 
 // Root endpoint
 app.get('/', (req, res) => {

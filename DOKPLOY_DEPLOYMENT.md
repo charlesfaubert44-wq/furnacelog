@@ -327,8 +327,23 @@ furnacelog/
    # Frontend URL (will update after frontend deployment)
    FRONTEND_URL=https://furnacelog.yourdomain.com
 
-   # CORS
-   CORS_ORIGIN=https://furnacelog.yourdomain.com
+   # API URL (used for OAuth callbacks)
+   API_URL=https://api.furnacelog.yourdomain.com
+
+   # CORS - Comma-separated list of allowed origins
+   # Include all frontend domains (with and without www if applicable)
+   CORS_ORIGIN=https://furnacelog.yourdomain.com,https://www.furnacelog.yourdomain.com
+
+   # OAuth Credentials (OPTIONAL - only needed if using Google/Facebook login)
+   # Google OAuth - Get from https://console.cloud.google.com/
+   # Set callback URL to: https://api.furnacelog.yourdomain.com/api/v1/auth/google/callback
+   GOOGLE_CLIENT_ID=your-google-client-id
+   GOOGLE_CLIENT_SECRET=your-google-client-secret
+
+   # Facebook OAuth - Get from https://developers.facebook.com/
+   # Set callback URL to: https://api.furnacelog.yourdomain.com/api/v1/auth/facebook/callback
+   FACEBOOK_APP_ID=your-facebook-app-id
+   FACEBOOK_APP_SECRET=your-facebook-app-secret
 
    # Weather API
    WEATHER_API_KEY=your-environment-canada-api-key
@@ -615,12 +630,47 @@ docker inspect furnacelog-backend | grep -A 5 "LogConfig"
 
 #### 2. CORS errors in browser
 
-**Error:** `Access to fetch blocked by CORS policy`
+**Error:** `CORS header 'Access-Control-Allow-Origin' does not match 'https://furnacelog.com'`
+
+**Common Causes:**
+- Backend `CORS_ORIGIN` environment variable doesn't include the frontend domain
+- Protocol mismatch (http vs https)
+- Missing www subdomain in allowed origins
 
 **Solution:**
-- Ensure `CORS_ORIGIN` in backend matches frontend domain exactly
-- Include protocol: `https://furnacelog.yourdomain.com` (not `furnacelog.yourdomain.com`)
-- Restart backend after changing environment variables
+
+1. **Update Backend Environment Variables in Dokploy:**
+   - Go to your backend application in Dokploy
+   - Edit Environment Variables
+   - Update `CORS_ORIGIN` to include ALL frontend domains (comma-separated):
+     ```env
+     CORS_ORIGIN=https://furnacelog.com,https://www.furnacelog.com
+     ```
+   - If you're also testing locally, include:
+     ```env
+     CORS_ORIGIN=https://furnacelog.com,https://www.furnacelog.com,http://localhost:5173
+     ```
+
+2. **Include the protocol** - Must use `https://` or `http://` (not just `furnacelog.com`)
+
+3. **Restart backend application** after changing environment variables:
+   - In Dokploy dashboard, click "Restart" on backend application
+   - Or via CLI: `docker restart furnacelog-backend`
+
+4. **Verify the change:**
+   - Check backend logs: `docker logs furnacelog-backend | grep CORS`
+   - Test with curl:
+     ```bash
+     curl -H "Origin: https://furnacelog.com" \
+          -H "Access-Control-Request-Method: POST" \
+          -H "Access-Control-Request-Headers: Content-Type" \
+          -X OPTIONS \
+          https://api.furnacelog.com/api/v1/auth/login \
+          -v
+     ```
+   - Should see: `Access-Control-Allow-Origin: https://furnacelog.com`
+
+5. **Clear browser cache** and try again
 
 #### 3. SSL certificate not working
 

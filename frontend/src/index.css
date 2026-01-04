@@ -6,66 +6,67 @@
 
 @layer base {
   :root {
-    /* Semantic color variables */
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
+    /* Territorial Homestead Theme - Northern warmth with stone & amber */
+    --background: 24 10% 6%;        /* stone-950 */
+    --foreground: 24 6% 98%;        /* stone-50 */
 
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card: 24 10% 10%;             /* stone-900 */
+    --card-foreground: 24 6% 98%;   /* stone-50 */
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --popover: 24 10% 10%;          /* stone-900 */
+    --popover-foreground: 24 6% 98%; /* stone-50 */
 
-    --primary: 188 78% 41%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 32 95% 44%;          /* amber-700 */
+    --primary-foreground: 24 6% 98%; /* stone-50 */
 
-    --secondary: 220 13% 18%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 24 10% 18%;        /* stone-800 */
+    --secondary-foreground: 24 6% 98%; /* stone-50 */
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 24 10% 18%;            /* stone-800 */
+    --muted-foreground: 24 6% 64%;  /* stone-400 */
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222 47% 11%;
+    --accent: 32 95% 44%;           /* amber-700 */
+    --accent-foreground: 24 6% 98%; /* stone-50 */
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 84% 60%;       /* red-500 */
     --destructive-foreground: 0 0% 100%;
 
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 188 78% 41%;
+    --border: 24 6% 20%;            /* stone-800 */
+    --input: 24 10% 18%;            /* stone-800 */
+    --ring: 32 95% 54%;             /* amber-600 */
 
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 222 47% 11%;
-    --foreground: 210 40% 98%;
+    /* Same as root - we only use dark theme */
+    --background: 24 10% 6%;        /* stone-950 */
+    --foreground: 24 6% 98%;        /* stone-50 */
 
-    --card: 222 47% 11%;
-    --card-foreground: 210 40% 98%;
+    --card: 24 10% 10%;             /* stone-900 */
+    --card-foreground: 24 6% 98%;   /* stone-50 */
 
-    --popover: 222 47% 11%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 24 10% 10%;          /* stone-900 */
+    --popover-foreground: 24 6% 98%; /* stone-50 */
 
-    --primary: 188 78% 41%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 32 95% 44%;          /* amber-700 */
+    --primary-foreground: 24 6% 98%; /* stone-50 */
 
-    --secondary: 220 13% 18%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 24 10% 18%;        /* stone-800 */
+    --secondary-foreground: 24 6% 98%; /* stone-50 */
 
-    --muted: 217 33% 17%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 24 10% 18%;            /* stone-800 */
+    --muted-foreground: 24 6% 64%;  /* stone-400 */
 
-    --accent: 217 33% 17%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 32 95% 44%;           /* amber-700 */
+    --accent-foreground: 24 6% 98%; /* stone-50 */
 
-    --destructive: 0 62% 30%;
+    --destructive: 0 84% 60%;       /* red-500 */
     --destructive-foreground: 0 0% 100%;
 
-    --border: 217 33% 17%;
-    --input: 217 33% 17%;
-    --ring: 188 78% 41%;
+    --border: 24 6% 20%;            /* stone-800 */
+    --input: 24 10% 18%;            /* stone-800 */
+    --ring: 32 95% 54%;             /* amber-600 */
   }
 }
 
