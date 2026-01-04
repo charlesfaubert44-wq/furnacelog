@@ -1,5 +1,7 @@
 import axios from 'axios';
 import type { Home, CreateHomeDto, UpdateHomeDto, HomeResponse, HomesResponse } from '../types/home';
+import { getCsrfToken, fetchCsrfToken } from '../utils/csrf';
+import logger from '../utils/logger';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
 
@@ -8,16 +10,37 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true, // Send httpOnly cookies with requests
 });
 
-// Add auth token to requests (when auth is implemented)
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+// Add CSRF token to non-GET requests
+api.interceptors.request.use(
+  async (config) => {
+    // Add CSRF token for state-changing requests
+    if (config.method && config.method.toUpperCase() !== 'GET') {
+      let token = getCsrfToken();
+
+      // Fetch token if not available
+      if (!token) {
+        try {
+          token = await fetchCsrfToken();
+        } catch (error) {
+          logger.warn('Failed to fetch CSRF token', error as Record<string, any>);
+        }
+      }
+
+      if (token) {
+        config.headers['x-csrf-token'] = token;
+      }
+    }
+
+    // Cookies (including auth tokens) are sent automatically with withCredentials: true
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
   }
-  return config;
-});
+);
 
 export const homeService = {
   /**
