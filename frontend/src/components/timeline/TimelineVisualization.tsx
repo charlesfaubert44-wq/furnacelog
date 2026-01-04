@@ -7,7 +7,6 @@
 
 import React, { useState } from 'react';
 import { TimelineDataPoint } from '../../services/timeline.service';
-import { Card } from '../ui/card';
 import { Thermometer, Droplets, Wind, Wrench, DollarSign } from 'lucide-react';
 
 interface TimelineVisualizationProps {

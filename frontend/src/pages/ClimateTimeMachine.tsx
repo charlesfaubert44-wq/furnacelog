@@ -121,7 +121,7 @@ const ClimateTimeMachine: React.FC = () => {
         <ErrorState
           title="Failed to Load Timeline"
           message={error}
-          onRetry={loadTimelineData}
+          retry={loadTimelineData}
         />
       </div>
     );
