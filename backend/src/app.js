@@ -28,11 +28,18 @@ const allowedOrigins = process.env.CORS_ORIGIN
 
 app.use(cors({
   origin: (origin, callback) => {
+    // Debug logging
+    logger.info(`CORS origin check - Requested origin: ${origin}, Allowed origins: ${JSON.stringify(allowedOrigins)}`);
+
     // Allow requests with no origin (like mobile apps, curl, Postman)
-    if (!origin) return callback(null, true);
+    if (!origin) {
+      logger.info('CORS: No origin provided, allowing request');
+      return callback(null, true);
+    }
 
     if (allowedOrigins.indexOf(origin) !== -1) {
       // Explicitly return the requesting origin (not true)
+      logger.info(`CORS: Origin ${origin} is allowed, returning it`);
       callback(null, origin);
     } else {
       logger.warn(`CORS blocked request from origin: ${origin}`);
