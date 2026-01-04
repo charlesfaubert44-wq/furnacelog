@@ -43,8 +43,6 @@ const allowedOrigins = process.env.CORS_ORIGIN
 app.use((req, res, next) => {
   const origin = req.headers.origin;
 
-  logger.info(`CORS check - Origin: ${origin}, Allowed: ${JSON.stringify(allowedOrigins)}`);
-
   // Check if origin is allowed
   if (origin && allowedOrigins.indexOf(origin) !== -1) {
     // Set CORS headers manually
@@ -52,12 +50,11 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
-    logger.info(`CORS: Set Access-Control-Allow-Origin to ${origin}`);
   } else if (!origin) {
     // No origin (server-to-server, Postman, etc.)
     res.setHeader('Access-Control-Allow-Origin', '*');
-    logger.info('CORS: No origin, allowing all');
   } else {
+    // Log rejected origins for security monitoring
     logger.warn(`CORS: Origin ${origin} not allowed`);
   }
 
