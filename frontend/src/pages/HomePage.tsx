@@ -6,6 +6,8 @@ import { cn } from '@/lib/utils';
 import { AuthModal } from '@/components/auth/AuthModal';
 import { useScrollPosition } from '@/hooks/useScrollAnimation';
 import logger from '@/utils/logger';
+import { fetchNorthernWeather, type CityWeather } from '@/services/weather.service';
+import { getTemperatureQuote } from '@/utils/weatherQuotes';
 
 interface HealthStatus {
   status: string;
@@ -120,6 +122,7 @@ const winterChecklist: ChecklistItem[] = [
 function HomePage() {
   const [health, setHealth] = useState<HealthStatus | null>(null);
   const [loading, setLoading] = useState(true);
+  const [weather, setWeather] = useState<CityWeather[]>([]);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [showUserMenu, setShowUserMenu] = useState(false);
@@ -142,6 +145,23 @@ function HomePage() {
     };
 
     checkHealth();
+  }, []);
+
+  // Fetch northern weather on mount
+  useEffect(() => {
+    const loadWeather = async () => {
+      try {
+        const weatherData = await fetchNorthernWeather();
+        setWeather(weatherData);
+      } catch (err) {
+        logger.warn('Weather fetch failed', err);
+      }
+    };
+
+    loadWeather();
+    // Refresh weather every 10 minutes
+    const interval = setInterval(loadWeather, 10 * 60 * 1000);
+    return () => clearInterval(interval);
   }, []);
 
   const handleLogout = () => {
@@ -592,6 +612,13 @@ function HomePage() {
             <div className="relative max-w-7xl mx-auto px-6 py-20 md:py-28">
               <div className="grid lg:grid-cols-2 gap-16 items-center">
                 <div className="space-y-8">
+                  <div className="inline-flex items-center gap-2.5 px-4 py-2 bg-gradient-to-r from-[#6a994e]/20 to-[#7ea88f]/20 border border-[#6a994e]/30 rounded-full animate-fade-in">
+                    <MapPin className="w-4 h-4 text-[#6a994e]" />
+                    <span className="text-sm text-[#7ea88f] font-medium">
+                      Built for Northwest Territories, Nunavut & Yukon
+                    </span>
+                  </div>
+
                   <div className="space-y-6">
                     <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-[#f4e8d8] leading-[1.05] tracking-tight animate-fade-slide-up animate-delay-100">
                       Protect Your
@@ -619,28 +646,53 @@ function HomePage() {
                     </a>
                   </div>
 
+                  {/* Live Northern Weather */}
                   <div className="grid grid-cols-3 gap-6 pt-8 border-t border-[#f4e8d8]/10">
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2 text-[#d4a373]">
-                        <Shield className="w-4 h-4" />
-                        <span className="text-xs font-medium">Free Forever</span>
-                      </div>
-                      <p className="text-sm text-[#d4a373]/70">Open Source</p>
-                    </div>
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2 text-[#d4a373]">
-                        <Snowflake className="w-4 h-4" />
-                        <span className="text-xs font-medium">Works Offline</span>
-                      </div>
-                      <p className="text-sm text-[#d4a373]/70">Remote Ready</p>
-                    </div>
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2 text-[#d4a373]">
-                        <Home className="w-4 h-4" />
-                        <span className="text-xs font-medium">Your Data</span>
-                      </div>
-                      <p className="text-sm text-[#d4a373]/70">Self-Hosted</p>
-                    </div>
+                    {weather.length > 0 ? (
+                      weather.map((cityWeather) => (
+                        <div key={cityWeather.city} className="space-y-1">
+                          <div className="flex items-center gap-2 text-[#5b8fa3]">
+                            <Thermometer className="w-4 h-4" />
+                            <span className="text-xs font-medium">{cityWeather.city}</span>
+                          </div>
+                          <div className="flex items-baseline gap-1">
+                            <span className={cn(
+                              "text-2xl font-bold",
+                              cityWeather.temp < -35 && "text-[#c4d7e0]",
+                              cityWeather.temp >= -35 && cityWeather.temp < -20 && "text-[#5b8fa3]",
+                              cityWeather.temp >= -20 && "text-[#7ea88f]"
+                            )}>
+                              {cityWeather.temp}°
+                            </span>
+                            <span className="text-xs text-[#d4a373]/70">
+                              feels {cityWeather.feelsLike}°
+                            </span>
+                          </div>
+                          <p className="text-xs text-[#d4a373]/80 italic leading-tight">
+                            {getTemperatureQuote(cityWeather.temp)}
+                          </p>
+                        </div>
+                      ))
+                    ) : (
+                      // Loading placeholders
+                      <>
+                        <div className="space-y-1 animate-pulse">
+                          <div className="h-4 bg-[#3d3127]/50 rounded w-20"></div>
+                          <div className="h-8 bg-[#3d3127]/50 rounded w-16"></div>
+                          <div className="h-3 bg-[#3d3127]/50 rounded w-32"></div>
+                        </div>
+                        <div className="space-y-1 animate-pulse">
+                          <div className="h-4 bg-[#3d3127]/50 rounded w-20"></div>
+                          <div className="h-8 bg-[#3d3127]/50 rounded w-16"></div>
+                          <div className="h-3 bg-[#3d3127]/50 rounded w-32"></div>
+                        </div>
+                        <div className="space-y-1 animate-pulse">
+                          <div className="h-4 bg-[#3d3127]/50 rounded w-20"></div>
+                          <div className="h-8 bg-[#3d3127]/50 rounded w-16"></div>
+                          <div className="h-3 bg-[#3d3127]/50 rounded w-32"></div>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
 
@@ -734,62 +786,62 @@ function HomePage() {
               </div>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div className="group bg-stone-900 border border-stone-800 hover:border-amber-800/50 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-amber-900/20">
-                  <div className="w-14 h-14 bg-gradient-to-br from-amber-700 to-orange-800 rounded-xl flex items-center justify-center mb-6 shadow-lg group-hover:shadow-amber-900/50 transition-all duration-300 group-hover:scale-110">
-                    <Flame className="w-7 h-7 text-amber-100 group-hover:animate-flicker" />
+                <div className="group bg-gradient-to-br from-[#2d1f1a] to-[#1a1412] border border-[#f4e8d8]/10 hover:border-[#ff6b35]/30 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-[#ff6b35]/20">
+                  <div className="w-14 h-14 bg-gradient-to-br from-[#ff6b35] to-[#f7931e] rounded-xl flex items-center justify-center mb-6 shadow-[0_4px_16px_rgba(255,107,53,0.4)] group-hover:shadow-[0_6px_24px_rgba(255,107,53,0.5)] transition-all duration-300 group-hover:scale-110">
+                    <Flame className="w-7 h-7 text-[#f4e8d8] group-hover:animate-flicker" />
                   </div>
-                  <h3 className="text-xl font-semibold text-stone-50 mb-3">Heating System Tracking</h3>
-                  <p className="text-stone-400 leading-relaxed">
+                  <h3 className="text-xl font-semibold text-[#f4e8d8] mb-3">Heating System Tracking</h3>
+                  <p className="text-[#d4a373] leading-relaxed">
                     Monitor propane furnaces, oil boilers, heat trace cables, and HRV systems with northern-specific maintenance schedules.
                   </p>
                 </div>
 
-                <div className="group bg-stone-900 border border-stone-800 hover:border-emerald-800/50 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-900/20">
-                  <div className="w-14 h-14 bg-gradient-to-br from-emerald-700 to-emerald-800 rounded-xl flex items-center justify-center mb-6 shadow-lg group-hover:shadow-emerald-900/50 transition-all duration-300 group-hover:scale-110">
-                    <Calendar className="w-7 h-7 text-emerald-100" />
+                <div className="group bg-gradient-to-br from-[#2d1f1a] to-[#1a1412] border border-[#f4e8d8]/10 hover:border-[#6a994e]/30 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-[#6a994e]/20">
+                  <div className="w-14 h-14 bg-gradient-to-br from-[#6a994e] to-[#7ea88f] rounded-xl flex items-center justify-center mb-6 shadow-[0_4px_16px_rgba(106,153,78,0.4)] group-hover:shadow-[0_6px_24px_rgba(106,153,78,0.5)] transition-all duration-300 group-hover:scale-110">
+                    <Calendar className="w-7 h-7 text-[#f4e8d8]" />
                   </div>
-                  <h3 className="text-xl font-semibold text-stone-50 mb-3">Seasonal Checklists</h3>
-                  <p className="text-stone-400 leading-relaxed">
+                  <h3 className="text-xl font-semibold text-[#f4e8d8] mb-3">Seasonal Checklists</h3>
+                  <p className="text-[#d4a373] leading-relaxed">
                     Automated freeze-up, winter operations, break-up, and summer task lists tailored to territorial weather patterns.
                   </p>
                 </div>
 
-                <div className="group bg-stone-900 border border-stone-800 hover:border-sky-800/50 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-sky-900/20">
-                  <div className="w-14 h-14 bg-gradient-to-br from-sky-700 to-sky-800 rounded-xl flex items-center justify-center mb-6 shadow-lg group-hover:shadow-sky-900/50 transition-all duration-300 group-hover:scale-110">
-                    <Snowflake className="w-7 h-7 text-sky-100 group-hover:animate-float" />
+                <div className="group bg-gradient-to-br from-[#2d1f1a] to-[#1a1412] border border-[#f4e8d8]/10 hover:border-[#5b8fa3]/30 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-[#5b8fa3]/20">
+                  <div className="w-14 h-14 bg-gradient-to-br from-[#5b8fa3] to-[#7ea88f] rounded-xl flex items-center justify-center mb-6 shadow-[0_4px_16px_rgba(91,143,163,0.4)] group-hover:shadow-[0_6px_24px_rgba(91,143,163,0.5)] transition-all duration-300 group-hover:scale-110">
+                    <Snowflake className="w-7 h-7 text-[#f4e8d8] group-hover:animate-float" />
                   </div>
-                  <h3 className="text-xl font-semibold text-stone-50 mb-3">Weather Alerts</h3>
-                  <p className="text-stone-400 leading-relaxed">
+                  <h3 className="text-xl font-semibold text-[#f4e8d8] mb-3">Weather Alerts</h3>
+                  <p className="text-[#d4a373] leading-relaxed">
                     Real-time extreme cold warnings, wind chill alerts, and automated maintenance reminders based on temperature.
                   </p>
                 </div>
 
-                <div className="group bg-stone-900 border border-stone-800 hover:border-violet-800/50 rounded-2xl p-8 transition-all duration-300">
-                  <div className="w-14 h-14 bg-gradient-to-br from-violet-700 to-violet-800 rounded-xl flex items-center justify-center mb-6 shadow-lg">
-                    <Home className="w-7 h-7 text-violet-100" />
+                <div className="group bg-gradient-to-br from-[#2d1f1a] to-[#1a1412] border border-[#f4e8d8]/10 hover:border-[#c87941]/30 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-[#c87941]/20">
+                  <div className="w-14 h-14 bg-gradient-to-br from-[#c87941] to-[#d4a373] rounded-xl flex items-center justify-center mb-6 shadow-[0_4px_16px_rgba(200,121,65,0.4)] group-hover:shadow-[0_6px_24px_rgba(200,121,65,0.5)] transition-all duration-300 group-hover:scale-110">
+                    <Home className="w-7 h-7 text-[#f4e8d8]" />
                   </div>
-                  <h3 className="text-xl font-semibold text-stone-50 mb-3">Modular Home Support</h3>
-                  <p className="text-stone-400 leading-relaxed">
+                  <h3 className="text-xl font-semibold text-[#f4e8d8] mb-3">Modular Home Support</h3>
+                  <p className="text-[#d4a373] leading-relaxed">
                     Track marriage walls, skirting maintenance, foundation piles, and belly board inspections specific to manufactured homes.
                   </p>
                 </div>
 
-                <div className="group bg-stone-900 border border-stone-800 hover:border-orange-800/50 rounded-2xl p-8 transition-all duration-300">
-                  <div className="w-14 h-14 bg-gradient-to-br from-orange-700 to-red-800 rounded-xl flex items-center justify-center mb-6 shadow-lg">
-                    <AlertTriangle className="w-7 h-7 text-orange-100" />
+                <div className="group bg-gradient-to-br from-[#2d1f1a] to-[#1a1412] border border-[#f4e8d8]/10 hover:border-[#d45d4e]/30 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-[#d45d4e]/20">
+                  <div className="w-14 h-14 bg-gradient-to-br from-[#d45d4e] to-[#d4734e] rounded-xl flex items-center justify-center mb-6 shadow-[0_4px_16px_rgba(212,93,78,0.4)] group-hover:shadow-[0_6px_24px_rgba(212,93,78,0.5)] transition-all duration-300 group-hover:scale-110">
+                    <AlertTriangle className="w-7 h-7 text-[#f4e8d8]" />
                   </div>
-                  <h3 className="text-xl font-semibold text-stone-50 mb-3">Freeze Prevention</h3>
-                  <p className="text-stone-400 leading-relaxed">
+                  <h3 className="text-xl font-semibold text-[#f4e8d8] mb-3">Freeze Prevention</h3>
+                  <p className="text-[#d4a373] leading-relaxed">
                     Log freeze events, track heat trace cable zones, and receive proactive alerts before pipes freeze at -40°C.
                   </p>
                 </div>
 
-                <div className="group bg-stone-900 border border-stone-800 hover:border-stone-700 rounded-2xl p-8 transition-all duration-300">
-                  <div className="w-14 h-14 bg-gradient-to-br from-stone-700 to-stone-800 rounded-xl flex items-center justify-center mb-6 shadow-lg">
-                    <TrendingDown className="w-7 h-7 text-stone-200" />
+                <div className="group bg-gradient-to-br from-[#2d1f1a] to-[#1a1412] border border-[#f4e8d8]/10 hover:border-[#d4a373]/30 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-[#d4a373]/20">
+                  <div className="w-14 h-14 bg-gradient-to-br from-[#d4a373] to-[#c87941] rounded-xl flex items-center justify-center mb-6 shadow-[0_4px_16px_rgba(212,163,115,0.4)] group-hover:shadow-[0_6px_24px_rgba(212,163,115,0.5)] transition-all duration-300 group-hover:scale-110">
+                    <TrendingDown className="w-7 h-7 text-[#f4e8d8]" />
                   </div>
-                  <h3 className="text-xl font-semibold text-stone-50 mb-3">Offline-First Design</h3>
-                  <p className="text-stone-400 leading-relaxed">
+                  <h3 className="text-xl font-semibold text-[#f4e8d8] mb-3">Offline-First Design</h3>
+                  <p className="text-[#d4a373] leading-relaxed">
                     Full functionality without internet connection. Perfect for remote communities with limited connectivity.
                   </p>
                 </div>
@@ -798,32 +850,32 @@ function HomePage() {
           </section>
 
           {/* Stats Section */}
-          <section className="py-20 border-b border-stone-800">
+          <section className="py-20 border-b border-[#d4a373]/10">
             <div className="max-w-7xl mx-auto px-6">
               <div className="grid md:grid-cols-3 gap-12">
                 <div className="text-center space-y-2">
-                  <div className="text-5xl font-bold text-amber-500">-40°C</div>
-                  <p className="text-stone-400">Extreme cold tested</p>
+                  <div className="text-5xl font-bold bg-gradient-to-r from-[#ff6b35] to-[#f7931e] bg-clip-text text-transparent">-40°C</div>
+                  <p className="text-[#d4a373]">Extreme cold tested</p>
                 </div>
                 <div className="text-center space-y-2">
-                  <div className="text-5xl font-bold text-amber-500">100%</div>
-                  <p className="text-stone-400">Free & open source</p>
+                  <div className="text-5xl font-bold bg-gradient-to-r from-[#ff6b35] to-[#f7931e] bg-clip-text text-transparent">100%</div>
+                  <p className="text-[#d4a373]">Free & open source</p>
                 </div>
                 <div className="text-center space-y-2">
-                  <div className="text-5xl font-bold text-amber-500">24/7</div>
-                  <p className="text-stone-400">Offline access</p>
+                  <div className="text-5xl font-bold bg-gradient-to-r from-[#ff6b35] to-[#f7931e] bg-clip-text text-transparent">24/7</div>
+                  <p className="text-[#d4a373]">Offline access</p>
                 </div>
               </div>
             </div>
           </section>
 
           {/* CTA Section */}
-          <section className="py-24 border-b border-stone-800">
+          <section className="py-24 border-b border-[#d4a373]/10">
             <div className="max-w-4xl mx-auto px-6 text-center space-y-8">
-              <h2 className="text-4xl md:text-5xl font-bold text-stone-50">
+              <h2 className="text-4xl md:text-5xl font-bold text-[#f4e8d8]">
                 Start Protecting Your Home Today
               </h2>
-              <p className="text-xl text-stone-400 max-w-2xl mx-auto">
+              <p className="text-xl text-[#d4a373] max-w-2xl mx-auto">
                 Join northern homeowners who trust FurnaceLog to keep their homes safe, warm, and well-maintained through extreme winters.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -832,7 +884,7 @@ function HomePage() {
                     setAuthModalTab('register');
                     setAuthModalOpen(true);
                   }}
-                  className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-amber-700 hover:bg-amber-600 text-stone-50 font-semibold rounded-xl transition-all duration-200 shadow-xl shadow-amber-900/40"
+                  className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-gradient-to-r from-[#ff6b35] to-[#f7931e] hover:shadow-[0_8px_32px_rgba(255,107,53,0.5)] text-[#f4e8d8] font-semibold rounded-xl transition-all duration-300 shadow-[0_4px_16px_rgba(255,107,53,0.35)]"
                 >
                   Create Free Account
                   <ArrowRight className="w-5 h-5" />
@@ -846,22 +898,22 @@ function HomePage() {
       {/* Footer */}
       <footer className="py-12">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6 pb-8 border-b border-stone-800">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6 pb-8 border-b border-[#f4e8d8]/10">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-amber-700 to-orange-800 rounded-lg flex items-center justify-center">
-                <Flame className="w-5 h-5 text-amber-100" />
+              <div className="w-8 h-8 bg-gradient-to-br from-[#ff6b35] to-[#f7931e] rounded-lg flex items-center justify-center shadow-[0_2px_8px_rgba(255,107,53,0.3)]">
+                <Flame className="w-5 h-5 text-[#f4e8d8]" />
               </div>
-              <span className="text-stone-50 font-semibold">FurnaceLog</span>
+              <span className="text-[#f4e8d8] font-semibold">FurnaceLog</span>
             </div>
             {!loading && health?.status === 'healthy' && (
-              <div className="flex items-center gap-2 text-sm text-stone-400">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full" />
+              <div className="flex items-center gap-2 text-sm text-[#d4a373]">
+                <div className="w-2 h-2 bg-[#6a994e] rounded-full" />
                 <span>All Systems Operational</span>
               </div>
             )}
-            <p className="text-sm text-stone-500">Built for Canada's North</p>
+            <p className="text-sm text-[#d4a373]/70">Built for Canada's North</p>
           </div>
-          <div className="pt-8 text-center text-sm text-stone-500">
+          <div className="pt-8 text-center text-sm text-[#d4a373]/70">
             © 2026 FurnaceLog. Open source home maintenance tracking.
           </div>
         </div>
