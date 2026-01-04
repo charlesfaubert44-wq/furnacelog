@@ -8,6 +8,7 @@ import { useScrollPosition } from '@/hooks/useScrollAnimation';
 import logger from '@/utils/logger';
 import { fetchNorthernWeather, type CityWeather } from '@/services/weather.service';
 import { getTemperatureQuote } from '@/utils/weatherQuotes';
+import { PricingPlans } from '@/components/pricing/PricingPlans';
 
 interface HealthStatus {
   status: string;
@@ -866,6 +867,29 @@ function HomePage() {
                   <div className="text-5xl font-bold bg-gradient-to-r from-[#ff6b35] to-[#f7931e] bg-clip-text text-transparent">24/7</div>
                   <p className="text-[#d4a373]">Offline access</p>
                 </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Pricing Section */}
+          <section id="pricing" className="py-24 border-b border-[#d4a373]/10">
+            <div className="max-w-7xl mx-auto px-6">
+              <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                <h2 className="text-4xl md:text-5xl font-bold text-[#f4e8d8]">
+                  Choose Your Plan
+                </h2>
+                <p className="text-xl text-[#d4a373]">
+                  Start free with ads, or go ad-free for just $6.99/month. All plans include core features.
+                </p>
+              </div>
+
+              <PricingPlans />
+
+              <div className="mt-16 text-center">
+                <p className="text-sm text-[#d4a373]/70 max-w-2xl mx-auto">
+                  All plans include unlimited homes, maintenance tracking, weather alerts, and community support.
+                  Upgrade anytime to remove ads and unlock advanced features. No credit card required to start.
+                </p>
               </div>
             </div>
           </section>
