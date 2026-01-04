@@ -4,7 +4,11 @@
 .env
 .env.local
 .env.production
+.env.development
+.env.test
+.env.staging
 .env.*.local
+*.env
 
 # Dependencies
 node_modules/
@@ -159,10 +163,14 @@ Desktop.ini
 # Credentials and secrets
 credentials.json
 secrets/
+secrets.json
 *.key
 *.pem
 *.cert
 *.crt
+*.p12
+*.pfx
+.vscode/settings.json
 
 # MinIO data (local development)
 minio-data/

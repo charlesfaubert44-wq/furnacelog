@@ -22,9 +22,48 @@ const passwordSchema = z
  */
 const emailSchema = z
   .string()
+  .min(1, 'Email is required')
   .email('Please enter a valid email address')
   .toLowerCase()
   .trim();
+
+/**
+ * Name validation (firstName, lastName)
+ */
+const nameSchema = z
+  .string()
+  .trim()
+  .max(50, 'Name must be less than 50 characters')
+  .regex(/^[a-zA-Z\s'-]+$/, 'Name can only contain letters, spaces, hyphens, and apostrophes')
+  .optional()
+  .or(z.literal(''));
+
+/**
+ * Phone validation
+ */
+const phoneSchema = z
+  .string()
+  .trim()
+  .regex(
+    /^[+]?[(]?[0-9]{1,4}[)]?[-\s.]?[(]?[0-9]{1,4}[)]?[-\s.]?[0-9]{1,9}$/,
+    'Invalid phone number format (e.g., +1-867-555-0100)'
+  )
+  .optional()
+  .or(z.literal(''));
+
+/**
+ * Community validation
+ */
+const communitySchema = z
+  .string()
+  .trim()
+  .max(100, 'Community name must be less than 100 characters')
+  .regex(
+    /^[a-zA-Z\s,.-]+$/,
+    'Community name can only contain letters, spaces, commas, periods, and hyphens'
+  )
+  .optional()
+  .or(z.literal(''));
 
 /**
  * Registration form validation schema
@@ -35,10 +74,10 @@ export const registerValidationSchema = z
     email: emailSchema,
     password: passwordSchema,
     confirmPassword: z.string().min(1, 'Please confirm your password'),
-    firstName: z.string().optional(),
-    lastName: z.string().optional(),
-    community: z.string().optional(),
-    phone: z.string().optional()
+    firstName: nameSchema,
+    lastName: nameSchema,
+    community: communitySchema,
+    phone: phoneSchema
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'Passwords do not match',
@@ -63,10 +102,10 @@ export type LoginFormData = z.infer<typeof loginValidationSchema>;
  * Update profile validation schema
  */
 export const updateProfileValidationSchema = z.object({
-  firstName: z.string().optional(),
-  lastName: z.string().optional(),
-  phone: z.string().optional(),
-  community: z.string().optional(),
+  firstName: nameSchema,
+  lastName: nameSchema,
+  phone: phoneSchema,
+  community: communitySchema,
   timezone: z.string().optional(),
   preferredUnits: z.enum(['metric', 'imperial']).optional(),
   emailNotifications: z.boolean().optional(),

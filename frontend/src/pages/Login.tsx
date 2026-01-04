@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { Eye, EyeOff, Loader2, Flame, AlertCircle } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { loginValidationSchema, type LoginFormData } from '../utils/validation';
+import logger from '../utils/logger';
 
 /**
  * Login Page Component
@@ -13,8 +14,14 @@ import { loginValidationSchema, type LoginFormData } from '../utils/validation';
 
 const Login: React.FC = () => {
   const { login } = useAuth();
+  const [searchParams] = useSearchParams();
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Rate limiting state
+  const [failedAttempts, setFailedAttempts] = useState(0);
+  const [isLockedOut, setIsLockedOut] = useState(false);
+  const [lockoutTimer, setLockoutTimer] = useState(0);
 
   const {
     register,
@@ -24,7 +31,72 @@ const Login: React.FC = () => {
     resolver: zodResolver(loginValidationSchema)
   });
 
+  // Check for existing lockout on mount
+  useEffect(() => {
+    const storedLockoutEnd = localStorage.getItem('login_lockout_end');
+    if (storedLockoutEnd) {
+      const lockoutEndTime = parseInt(storedLockoutEnd, 10);
+      const now = Date.now();
+
+      if (lockoutEndTime > now) {
+        setIsLockedOut(true);
+        setLockoutTimer(Math.ceil((lockoutEndTime - now) / 1000));
+      } else {
+        localStorage.removeItem('login_lockout_end');
+        localStorage.removeItem('login_failed_attempts');
+      }
+    }
+
+    // Load failed attempts count
+    const storedAttempts = localStorage.getItem('login_failed_attempts');
+    if (storedAttempts) {
+      setFailedAttempts(parseInt(storedAttempts, 10));
+    }
+  }, []);
+
+  // Lockout countdown timer
+  useEffect(() => {
+    if (isLockedOut && lockoutTimer > 0) {
+      const interval = setInterval(() => {
+        setLockoutTimer((prev) => {
+          if (prev <= 1) {
+            clearInterval(interval);
+            setIsLockedOut(false);
+            setFailedAttempts(0);
+            localStorage.removeItem('login_lockout_end');
+            localStorage.removeItem('login_failed_attempts');
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [isLockedOut, lockoutTimer]);
+
+  // Check for session expiry or other errors from URL params
+  useEffect(() => {
+    // Check for session expiry
+    if (searchParams.get('session_expired')) {
+      setError('Your session has expired. Please log in again.');
+      sessionStorage.removeItem('logout_reason');
+    }
+
+    // Check for other errors
+    const errorParam = searchParams.get('error');
+    if (errorParam) {
+      setError(decodeURIComponent(errorParam));
+    }
+  }, [searchParams]);
+
   const onSubmit = async (data: LoginFormData) => {
+    // Check if locked out
+    if (isLockedOut) {
+      setError(`Too many failed login attempts. Please wait ${lockoutTimer} seconds.`);
+      return;
+    }
+
     setError(null);
 
     try {
@@ -33,9 +105,41 @@ const Login: React.FC = () => {
         password: data.password,
         rememberMe: data.rememberMe
       });
+
+      // Success: Reset failed attempts
+      setFailedAttempts(0);
+      localStorage.removeItem('login_failed_attempts');
+      localStorage.removeItem('login_lockout_end');
+
     } catch (err: any) {
-      setError(err.message || 'Login failed. Please check your credentials and try again.');
-      console.error('Login error:', err);
+      // Failure: Increment attempts
+      const newAttempts = failedAttempts + 1;
+      setFailedAttempts(newAttempts);
+      localStorage.setItem('login_failed_attempts', newAttempts.toString());
+
+      // Log failed attempt (sanitized)
+      logger.warn('Login attempt failed', {
+        attempts: newAttempts,
+        email: data.email.substring(0, 3) + '***' // Partial email for debugging
+      });
+
+      // Lock out after 5 failed attempts
+      if (newAttempts >= 5) {
+        const lockoutDuration = 60; // 60 seconds
+        const lockoutEndTime = Date.now() + (lockoutDuration * 1000);
+
+        setIsLockedOut(true);
+        setLockoutTimer(lockoutDuration);
+        localStorage.setItem('login_lockout_end', lockoutEndTime.toString());
+
+        setError(`Too many failed attempts. Account temporarily locked for ${lockoutDuration} seconds.`);
+
+        logger.warn('Account temporarily locked due to failed login attempts', {
+          attempts: newAttempts
+        });
+      } else {
+        setError(err.message || 'Login failed. Please check your credentials and try again.');
+      }
     }
   };
 
@@ -92,8 +196,25 @@ const Login: React.FC = () => {
           {/* Form Card */}
           <div className="bg-gradient-to-br from-[#2d1f1a] to-[#1a1412] border border-[#f4e8d8]/10 rounded-2xl p-8 shadow-2xl backdrop-blur-sm animate-scale-in animate-delay-100">
             <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+              {/* Lockout Warning */}
+              {isLockedOut && (
+                <div className="bg-gradient-to-br from-[#d45d4e]/20 to-[#d4734e]/10 border-2 border-[#d45d4e]/30 rounded-xl p-4 mb-4">
+                  <div className="flex items-start gap-3">
+                    <AlertCircle className="w-5 h-5 text-[#d45d4e] flex-shrink-0 mt-0.5" />
+                    <div>
+                      <h3 className="text-sm font-semibold text-[#d45d4e] mb-1">
+                        Account Temporarily Locked
+                      </h3>
+                      <p className="text-xs text-[#d45d4e]/90">
+                        Too many failed login attempts. Please wait {lockoutTimer} seconds before trying again.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Error Alert */}
-              {error && (
+              {error && !isLockedOut && (
                 <div className="bg-gradient-to-br from-[#d45d4e]/20 to-[#d45d4e]/10 border-2 border-[#d45d4e]/40 rounded-xl p-4 animate-slide-down">
                   <div className="flex items-start gap-3">
                     <AlertCircle className="w-5 h-5 text-[#d45d4e] flex-shrink-0 mt-0.5" />

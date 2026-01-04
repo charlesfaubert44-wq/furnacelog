@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Eye, EyeOff, Loader2, Flame, AlertCircle } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { registerValidationSchema, type RegisterFormData, calculatePasswordStrength } from '../utils/validation';
+import logger from '../utils/logger';
 
 /**
  * Registration Page Component
@@ -55,7 +56,7 @@ const Register: React.FC = () => {
       });
     } catch (err: any) {
       setError(err.message || 'Registration failed. Please try again.');
-      console.error('Registration error:', err);
+      logger.error('Registration failed', err, { action: 'register' });
     }
   };
 
@@ -269,8 +270,13 @@ const Register: React.FC = () => {
                       id="firstName"
                       type="text"
                       {...register('firstName')}
-                      className="w-full px-4 py-3 bg-[#3d3127]/40 border border-[#d4a373]/20 text-[#f4e8d8] placeholder-[#d4a373]/40 rounded-xl focus:outline-none focus:border-[#ff6b35]/50 focus:shadow-[0_2px_8px_rgba(255,107,53,0.1)] transition-all duration-300"
+                      className={`w-full px-4 py-3 bg-[#3d3127]/40 border ${
+                        errors.firstName ? 'border-[#d45d4e]' : 'border-[#d4a373]/20'
+                      } text-[#f4e8d8] placeholder-[#d4a373]/40 rounded-xl focus:outline-none focus:border-[#ff6b35]/50 focus:shadow-[0_2px_8px_rgba(255,107,53,0.1)] transition-all duration-300`}
                     />
+                    {errors.firstName && (
+                      <p className="mt-2 text-sm text-[#d45d4e]">{errors.firstName.message}</p>
+                    )}
                   </div>
 
                   <div>
@@ -281,8 +287,13 @@ const Register: React.FC = () => {
                       id="lastName"
                       type="text"
                       {...register('lastName')}
-                      className="w-full px-4 py-3 bg-[#3d3127]/40 border border-[#d4a373]/20 text-[#f4e8d8] placeholder-[#d4a373]/40 rounded-xl focus:outline-none focus:border-[#ff6b35]/50 focus:shadow-[0_2px_8px_rgba(255,107,53,0.1)] transition-all duration-300"
+                      className={`w-full px-4 py-3 bg-[#3d3127]/40 border ${
+                        errors.lastName ? 'border-[#d45d4e]' : 'border-[#d4a373]/20'
+                      } text-[#f4e8d8] placeholder-[#d4a373]/40 rounded-xl focus:outline-none focus:border-[#ff6b35]/50 focus:shadow-[0_2px_8px_rgba(255,107,53,0.1)] transition-all duration-300`}
                     />
+                    {errors.lastName && (
+                      <p className="mt-2 text-sm text-[#d45d4e]">{errors.lastName.message}</p>
+                    )}
                   </div>
                 </div>
 
@@ -295,8 +306,13 @@ const Register: React.FC = () => {
                     type="text"
                     {...register('community')}
                     placeholder="e.g., Yellowknife, Iqaluit, Whitehorse"
-                    className="w-full px-4 py-3 bg-[#3d3127]/40 border border-[#d4a373]/20 text-[#f4e8d8] placeholder-[#d4a373]/40 rounded-xl focus:outline-none focus:border-[#ff6b35]/50 focus:shadow-[0_2px_8px_rgba(255,107,53,0.1)] transition-all duration-300"
+                    className={`w-full px-4 py-3 bg-[#3d3127]/40 border ${
+                      errors.community ? 'border-[#d45d4e]' : 'border-[#d4a373]/20'
+                    } text-[#f4e8d8] placeholder-[#d4a373]/40 rounded-xl focus:outline-none focus:border-[#ff6b35]/50 focus:shadow-[0_2px_8px_rgba(255,107,53,0.1)] transition-all duration-300`}
                   />
+                  {errors.community && (
+                    <p className="mt-2 text-sm text-[#d45d4e]">{errors.community.message}</p>
+                  )}
                 </div>
 
                 <div>
@@ -307,8 +323,14 @@ const Register: React.FC = () => {
                     id="phone"
                     type="tel"
                     {...register('phone')}
-                    className="w-full px-4 py-3 bg-[#3d3127]/40 border border-[#d4a373]/20 text-[#f4e8d8] placeholder-[#d4a373]/40 rounded-xl focus:outline-none focus:border-[#ff6b35]/50 focus:shadow-[0_2px_8px_rgba(255,107,53,0.1)] transition-all duration-300"
+                    placeholder="e.g., +1-867-555-0100"
+                    className={`w-full px-4 py-3 bg-[#3d3127]/40 border ${
+                      errors.phone ? 'border-[#d45d4e]' : 'border-[#d4a373]/20'
+                    } text-[#f4e8d8] placeholder-[#d4a373]/40 rounded-xl focus:outline-none focus:border-[#ff6b35]/50 focus:shadow-[0_2px_8px_rgba(255,107,53,0.1)] transition-all duration-300`}
                   />
+                  {errors.phone && (
+                    <p className="mt-2 text-sm text-[#d45d4e]">{errors.phone.message}</p>
+                  )}
                 </div>
               </div>
 

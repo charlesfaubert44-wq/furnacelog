@@ -83,14 +83,45 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    sourcemap: false,
+
+    // SECURITY: Disable source maps in production, enable in development
+    sourcemap: process.env.NODE_ENV === 'development',
+
+    // SECURITY: Minify and obfuscate code
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        // SECURITY: Remove console.log in production
+        drop_console: process.env.NODE_ENV === 'production',
+        drop_debugger: true,
+        pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.trace']
+      },
+      mangle: true,
+      format: {
+        comments: false
+      }
+    },
+
+    // Code splitting for better performance and security
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ['react', 'react-dom', 'react-router-dom'],
-          ui: ['lucide-react'],
-        },
-      },
+          'vendor': ['react', 'react-dom'],
+          'router': ['react-router-dom'],
+          'forms': ['react-hook-form', '@hookform/resolvers', 'zod'],
+          'ui': ['lucide-react'],
+          'maps': ['leaflet', 'react-leaflet']
+        }
+      }
     },
+
+    // SECURITY: Set chunk size warnings
+    chunkSizeWarningLimit: 1000
   },
+
+  // Development server security
+  preview: {
+    port: 4173,
+    strictPort: true
+  }
 });

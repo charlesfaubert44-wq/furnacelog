@@ -13,8 +13,13 @@ import User from '../models/User.js';
  */
 export const authenticate = async (req, res, next) => {
   try {
-    // Extract token from Authorization header
-    const token = extractTokenFromHeader(req);
+    // SECURITY FIX: Extract token from httpOnly cookie first, then fallback to Authorization header
+    let token = req.cookies?.accessToken;
+
+    // Fallback to Authorization header for backward compatibility during transition
+    if (!token) {
+      token = extractTokenFromHeader(req);
+    }
 
     if (!token) {
       return res.status(401).json({
@@ -116,7 +121,12 @@ export const requireRole = (...roles) => {
  */
 export const optionalAuth = async (req, res, next) => {
   try {
-    const token = extractTokenFromHeader(req);
+    // SECURITY FIX: Extract token from httpOnly cookie first, then fallback to Authorization header
+    let token = req.cookies?.accessToken;
+
+    if (!token) {
+      token = extractTokenFromHeader(req);
+    }
 
     if (!token) {
       return next();

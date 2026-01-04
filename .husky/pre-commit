@@ -1,0 +1,82 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo ""
+echo "==================================================================="
+echo "  FurnaceLog Security Pre-Commit Hook"
+echo "==================================================================="
+echo ""
+echo "🔍 Checking for secrets in committed files..."
+echo ""
+
+# Check for .env files (except .env.example)
+if git diff --cached --name-only | grep -E "\.env$" > /dev/null; then
+  echo "❌ ERROR: .env file detected in commit!"
+  echo ""
+  echo "   Files found:"
+  git diff --cached --name-only | grep -E "\.env$" | sed 's/^/   - /'
+  echo ""
+  echo "   Only .env.example files should be committed."
+  echo "   .env files contain secrets and should never be in version control."
+  echo ""
+  echo "   To fix:"
+  echo "   1. Remove .env from staging: git reset HEAD .env"
+  echo "   2. Ensure .env is in .gitignore"
+  echo ""
+  exit 1
+fi
+
+# Check for common secret patterns in staged files
+# Exclude documentation files (.md), the hook itself, and lines with CHANGE_ME placeholders
+SECRET_PATTERNS="(JWT_SECRET=|MONGODB_URI=mongodb://.*:.*@|password=|api[-_]?key=|secret[-_]?key=|private[-_]?key=|client[-_]?secret=|REDIS_PASSWORD=|MINIO_SECRET_KEY=)"
+
+# Get diff excluding .md files and the hook itself
+# Only check added lines (starting with +), filter out CHANGE_ME and removed lines
+SECRETS_FOUND=$(git diff --cached --diff-filter=ACM -- . ':!*.md' ':!.husky/pre-commit' | grep "^+" | grep -E "$SECRET_PATTERNS" --ignore-case | grep -v "CHANGE_ME" | grep -v "changeme" || true)
+
+if [ -n "$SECRETS_FOUND" ]; then
+  echo "❌ ERROR: Potential secrets detected in staged files!"
+  echo ""
+  echo "   Secret patterns found:"
+  echo "$SECRETS_FOUND" | head -10 | sed 's/^/   /'
+  echo ""
+  echo "   Please ensure you are NOT committing:"
+  echo "   - JWT secrets"
+  echo "   - Database passwords"
+  echo "   - API keys"
+  echo "   - OAuth client secrets"
+  echo "   - Redis passwords"
+  echo "   - MinIO secret keys"
+  echo ""
+  echo "   Secrets should be in .env files (which are gitignored)."
+  echo "   Only .env.example files with CHANGE_ME placeholders should be committed."
+  echo ""
+  echo "   To fix:"
+  echo "   1. Move secrets to .env file"
+  echo "   2. Use placeholders like CHANGE_ME in .env.example"
+  echo "   3. Update .env.example instead of committing real secrets"
+  echo ""
+  exit 1
+fi
+
+# Check for credential files
+CREDENTIAL_FILES="(credentials\.json|secrets\.json|.*\.pem|.*\.key|.*\.p12|.*\.pfx)"
+
+if git diff --cached --name-only | grep -E "$CREDENTIAL_FILES" > /dev/null; then
+  echo "⚠️  WARNING: Credential files detected in commit!"
+  echo ""
+  echo "   Files found:"
+  git diff --cached --name-only | grep -E "$CREDENTIAL_FILES" | sed 's/^/   - /'
+  echo ""
+  echo "   These files typically contain sensitive information."
+  echo "   Are you sure you want to commit them?"
+  echo ""
+  echo "   Press Ctrl+C to cancel or Enter to continue..."
+  read -r
+fi
+
+echo "✅ No secrets detected!"
+echo ""
+echo "==================================================================="
+echo ""
+exit 0

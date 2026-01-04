@@ -1,4 +1,5 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, AxiosError } from 'axios';
+import axiosRetry from 'axios-retry';
 import type {
   LoginRequest,
   RegisterRequest,
@@ -6,6 +7,8 @@ import type {
   ChangePasswordRequest,
   AuthResponse
 } from '../types/auth.types';
+import logger from '../utils/logger';
+import { getCsrfToken, fetchCsrfToken } from '../utils/csrf';
 
 /**
  * Authentication API Service
@@ -14,29 +17,58 @@ import type {
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-// Create axios instance with base configuration
+// Create axios instance with timeout
 const api: AxiosInstance = axios.create({
   baseURL: `${API_URL}/api/v1`,
   headers: {
     'Content-Type': 'application/json'
   },
-  withCredentials: true
+  withCredentials: true,
+  timeout: 30000, // 30 seconds timeout
+  timeoutErrorMessage: 'Request timed out. Please check your connection and try again.'
 });
 
-// Request interceptor to add auth token
+// Configure retry logic with exponential backoff
+axiosRetry(api, {
+  retries: 3,
+  retryDelay: axiosRetry.exponentialDelay,
+  retryCondition: (error: AxiosError) => {
+    // Retry on network errors and 5xx server errors
+    return axiosRetry.isNetworkOrIdempotentRequestError(error) ||
+           error.code === 'ECONNABORTED' ||
+           (error.response?.status !== undefined && error.response.status >= 500 && error.response.status < 600);
+  },
+  onRetry: (retryCount, error, requestConfig) => {
+    logger.warn(`Retrying request (attempt ${retryCount})`, {
+      url: requestConfig.url,
+      method: requestConfig.method,
+      error: error.message
+    });
+  }
+});
+
+// SECURITY FIX: Add CSRF token to non-GET requests
 api.interceptors.request.use(
-  (config) => {
-    const tokens = localStorage.getItem('furnacelog_tokens');
-    if (tokens) {
-      try {
-        const { accessToken } = JSON.parse(tokens);
-        if (accessToken) {
-          config.headers.Authorization = `Bearer ${accessToken}`;
+  async (config) => {
+    // Add CSRF token for state-changing requests
+    if (config.method && config.method.toUpperCase() !== 'GET') {
+      let token = getCsrfToken();
+
+      // Fetch token if not available
+      if (!token) {
+        try {
+          token = await fetchCsrfToken();
+        } catch (error) {
+          logger.warn('Failed to fetch CSRF token', error);
         }
-      } catch (error) {
-        console.error('Error parsing tokens:', error);
+      }
+
+      if (token) {
+        config.headers['x-csrf-token'] = token;
       }
     }
+
+    // Cookies (including auth tokens) are sent automatically with withCredentials: true
     return config;
   },
   (error) => {
@@ -44,44 +76,59 @@ api.interceptors.request.use(
   }
 );
 
-// Response interceptor to handle token refresh
+// SECURITY FIX: Response interceptor updated for cookie-based auth
 api.interceptors.response.use(
   (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
+  async (error: AxiosError) => {
+    const originalRequest = error.config as any;
 
-    // If error is 401 and we haven't tried to refresh token yet
+    // Handle 401 Unauthorized - attempt token refresh
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
-        const tokens = localStorage.getItem('furnacelog_tokens');
-        if (tokens) {
-          const { refreshToken } = JSON.parse(tokens);
+        logger.info('Access token expired, attempting refresh');
 
-          // Try to refresh token
-          const response = await axios.post(`${API_URL}/api/v1/auth/refresh`, {
-            refreshToken
-          });
+        // SECURITY FIX: Call refresh endpoint - refresh token is in httpOnly cookie
+        const response = await axios.post(
+          `${API_URL}/api/v1/auth/refresh`,
+          {}, // Empty body - refresh token is in cookie
+          { withCredentials: true, timeout: 10000 }
+        );
 
-          if (response.data.success) {
-            const newTokens = response.data.data.tokens;
-            localStorage.setItem('furnacelog_tokens', JSON.stringify(newTokens));
+        if (response.data.success) {
+          logger.info('Token refresh successful');
 
-            // Retry original request with new token
-            originalRequest.headers.Authorization = `Bearer ${newTokens.accessToken}`;
-            return api(originalRequest);
-          }
+          // New access token is now in httpOnly cookie
+          // Retry original request - cookie will be sent automatically
+          return api(originalRequest);
         }
-      } catch (refreshError) {
-        // Refresh failed, clear tokens and redirect to login
-        localStorage.removeItem('furnacelog_tokens');
-        localStorage.removeItem('furnacelog_user');
-        window.location.href = '/login';
+      } catch (refreshError: any) {
+        logger.warn('Token refresh failed', {
+          error: refreshError.message,
+          status: refreshError.response?.status
+        });
+
+        // Store logout reason for user feedback
+        sessionStorage.setItem('logout_reason', 'session_expired');
+
+        // Redirect to login with clear message
+        const currentPath = window.location.pathname;
+        const redirectUrl = currentPath !== '/login' ? `?redirect=${encodeURIComponent(currentPath)}` : '';
+
+        window.location.href = `/login${redirectUrl}&session_expired=true`;
+
         return Promise.reject(refreshError);
       }
     }
 
+    // Handle network errors
+    if (error.code === 'ECONNABORTED') {
+      logger.error('Request timeout', error, { url: originalRequest?.url });
+      return Promise.reject(new Error('Request timed out. Please try again.'));
+    }
+
+    // Handle other errors
     return Promise.reject(error);
   }
 );
@@ -142,11 +189,10 @@ export const authService = {
 
   /**
    * Refresh access token
+   * SECURITY FIX: Refresh token is in httpOnly cookie, no need to pass it
    */
-  async refreshToken(refreshToken: string): Promise<AuthResponse> {
-    const response = await api.post<AuthResponse>('/auth/refresh', {
-      refreshToken
-    });
+  async refreshToken(): Promise<AuthResponse> {
+    const response = await api.post<AuthResponse>('/auth/refresh', {});
     return response.data;
   }
 };

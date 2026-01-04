@@ -55,17 +55,29 @@ export const register = async (req, res) => {
       }
     }
 
-    // Return success with user data and tokens
+    // Set httpOnly cookies for tokens (SECURITY FIX)
+    const isProduction = process.env.NODE_ENV === 'production';
+
+    res.cookie('accessToken', tokens.accessToken, {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: 'strict',
+      maxAge: 15 * 60 * 1000 // 15 minutes
+    });
+
+    res.cookie('refreshToken', tokens.refreshToken, {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    });
+
+    // Return success with user data only (no tokens in response body)
     return res.status(201).json({
       success: true,
       message: 'Registration successful',
       data: {
-        user: user.toSafeObject(),
-        tokens: {
-          accessToken: tokens.accessToken,
-          refreshToken: tokens.refreshToken,
-          expiresIn: tokens.expiresIn
-        }
+        user: user.toSafeObject()
       }
     });
 
@@ -147,17 +159,30 @@ export const login = async (req, res) => {
       }
     }
 
-    // Return success
+    // Set httpOnly cookies for tokens (SECURITY FIX)
+    const isProduction = process.env.NODE_ENV === 'production';
+    const refreshTokenMaxAge = rememberMe ? 30 * 24 * 60 * 60 * 1000 : 7 * 24 * 60 * 60 * 1000;
+
+    res.cookie('accessToken', tokens.accessToken, {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: 'strict',
+      maxAge: 15 * 60 * 1000 // 15 minutes
+    });
+
+    res.cookie('refreshToken', tokens.refreshToken, {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: 'strict',
+      maxAge: refreshTokenMaxAge
+    });
+
+    // Return success with user data only (no tokens in response body)
     return res.status(200).json({
       success: true,
       message: 'Login successful',
       data: {
-        user: user.toSafeObject(),
-        tokens: {
-          accessToken: tokens.accessToken,
-          refreshToken: tokens.refreshToken,
-          expiresIn: tokens.expiresIn
-        }
+        user: user.toSafeObject()
       }
     });
 
@@ -191,6 +216,19 @@ export const logout = async (req, res) => {
       }
     }
 
+    // Clear httpOnly cookies (SECURITY FIX)
+    res.clearCookie('accessToken', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict'
+    });
+
+    res.clearCookie('refreshToken', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict'
+    });
+
     return res.status(200).json({
       success: true,
       message: 'Logout successful'
@@ -212,7 +250,8 @@ export const logout = async (req, res) => {
  */
 export const refreshToken = async (req, res) => {
   try {
-    const { refreshToken } = req.body;
+    // Get refresh token from cookie instead of body (SECURITY FIX)
+    const refreshToken = req.cookies?.refreshToken || req.body.refreshToken;
 
     if (!refreshToken) {
       return res.status(400).json({
@@ -286,16 +325,27 @@ export const refreshToken = async (req, res) => {
       }
     }
 
+    // Set new httpOnly cookies for tokens (SECURITY FIX)
+    const isProduction = process.env.NODE_ENV === 'production';
+
+    res.cookie('accessToken', tokens.accessToken, {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: 'strict',
+      maxAge: 15 * 60 * 1000 // 15 minutes
+    });
+
+    res.cookie('refreshToken', tokens.refreshToken, {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    });
+
     return res.status(200).json({
       success: true,
       message: 'Token refreshed successfully',
-      data: {
-        tokens: {
-          accessToken: tokens.accessToken,
-          refreshToken: tokens.refreshToken,
-          expiresIn: tokens.expiresIn
-        }
-      }
+      data: {}
     });
 
   } catch (error) {
@@ -332,6 +382,7 @@ export const getCurrentUser = async (req, res) => {
 /**
  * OAuth callback handler (Google & Facebook)
  * Generates tokens and redirects to frontend with auth data
+ * SECURITY FIX: Tokens stored in httpOnly cookies, NOT in URL
  */
 export const oauthCallback = async (req, res) => {
   try {
@@ -366,9 +417,26 @@ export const oauthCallback = async (req, res) => {
       }
     }
 
-    // Redirect to frontend with tokens
+    // Set httpOnly cookies for tokens (SECURITY FIX: No tokens in URL!)
+    const isProduction = process.env.NODE_ENV === 'production';
+
+    res.cookie('accessToken', tokens.accessToken, {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: 'lax', // 'lax' for OAuth redirects
+      maxAge: 15 * 60 * 1000 // 15 minutes
+    });
+
+    res.cookie('refreshToken', tokens.refreshToken, {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: 'strict',
+      maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days for OAuth
+    });
+
+    // Redirect to frontend WITHOUT tokens in URL (SECURITY FIX)
     const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
-    const redirectUrl = `${frontendUrl}/auth/callback?access_token=${tokens.accessToken}&refresh_token=${tokens.refreshToken}&expires_in=${tokens.expiresIn}`;
+    const redirectUrl = `${frontendUrl}/auth/callback`;
 
     return res.redirect(redirectUrl);
 

@@ -1,0 +1,30 @@
+{
+  "name": "furnacelog",
+  "version": "1.0.0",
+  "description": "FurnaceLog - Northern Home Maintenance Tracker",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prepare": "husky install",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "test": "cd backend && npm test",
+    "lint": "cd backend && npm run lint && cd ../frontend && npm run lint",
+    "format": "cd backend && npm run format && cd ../frontend && npm run format"
+  },
+  "keywords": [
+    "furnacelog",
+    "home-maintenance",
+    "northern-canada"
+  ],
+  "author": "FurnaceLog Team",
+  "license": "ISC",
+  "devDependencies": {
+    "husky": "^8.0.3"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  }
+}

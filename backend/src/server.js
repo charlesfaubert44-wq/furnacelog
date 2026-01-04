@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 import helmet from 'helmet';
 import compression from 'compression';
 import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
+import { doubleCsrf } from 'csrf-csrf';
 import connectDB from './config/database.js';
 import { connectRedis } from './config/redis.js';
 import authRoutes from './routes/auth.routes.js';
@@ -12,6 +14,7 @@ import systemRoutes from './routes/systemRoutes.js';
 import componentRoutes from './routes/componentRoutes.js';
 import templateRoutes from './routes/templateRoutes.js';
 import maintenanceRoutes from './routes/maintenanceRoutes.js';
+import timelineRoutes from './routes/timelineRoutes.js';
 import logger from './utils/logger.js';
 
 // Load environment variables
@@ -67,8 +70,27 @@ app.use((req, res, next) => {
 });
 
 app.use(compression()); // Compress responses
+app.use(cookieParser()); // Parse cookies (SECURITY FIX: Required for httpOnly cookies)
 app.use(express.json()); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
+
+// CSRF Protection (SECURITY FIX)
+const {
+  generateToken, // Use this in route to generate a CSRF token
+  doubleCsrfProtection, // Apply this to routes you want protected
+} = doubleCsrf({
+  getSecret: () => process.env.CSRF_SECRET || 'furnacelog-csrf-secret-change-in-production',
+  cookieName: '__Host-psifi.x-csrf-token',
+  cookieOptions: {
+    httpOnly: true,
+    sameSite: 'strict',
+    secure: process.env.NODE_ENV === 'production',
+    path: '/'
+  },
+  size: 64,
+  ignoredMethods: ['GET', 'HEAD', 'OPTIONS'],
+  getTokenFromRequest: (req) => req.headers['x-csrf-token']
+});
 
 // Logging
 if (process.env.NODE_ENV !== 'production') {
@@ -87,17 +109,24 @@ app.get('/health', (req, res) => {
   });
 });
 
-// API Routes
+// CSRF token endpoint (SECURITY FIX)
+app.get('/api/v1/auth/csrf-token', (req, res) => {
+  const csrfToken = generateToken(req, res);
+  res.json({ csrfToken });
+});
+
+// API Routes (SECURITY FIX: CSRF protection applied to state-changing routes)
 app.use('/api/v1/auth', authRoutes);
-app.use('/api/v1/users', userRoutes);
-app.use('/api/v1/homes', homeRoutes);
-app.use('/api/v1/templates', templateRoutes);
-app.use('/api/v1/maintenance', maintenanceRoutes);
+app.use('/api/v1/users', doubleCsrfProtection, userRoutes);
+app.use('/api/v1/homes', doubleCsrfProtection, homeRoutes);
+app.use('/api/v1/templates', doubleCsrfProtection, templateRoutes);
+app.use('/api/v1/maintenance', doubleCsrfProtection, maintenanceRoutes);
+app.use('/api/v1/timeline', timelineRoutes); // Climate Time Machine (read-only, no CSRF needed)
 
 // Nested routes for systems and components (parameterized by homeId)
 // Note: These routes expect :homeId in path, handled by route definitions
-app.use('/api/v1/homes/:homeId/systems', systemRoutes);
-app.use('/api/v1/homes/:homeId/components', componentRoutes);
+app.use('/api/v1/homes/:homeId/systems', doubleCsrfProtection, systemRoutes);
+app.use('/api/v1/homes/:homeId/components', doubleCsrfProtection, componentRoutes);
 
 // 404 handler
 app.use((req, res) => {

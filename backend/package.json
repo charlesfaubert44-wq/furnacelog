@@ -5,13 +5,17 @@
   "main": "src/server.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon src/server.js",
-    "start": "node src/server.js",
+    "dev": "cross-env NODE_ENV=development nodemon src/server.js",
+    "start": "cross-env NODE_ENV=production node src/server.js",
     "lint": "eslint src/**/*.js",
     "lint:fix": "eslint src/**/*.js --fix",
     "format": "prettier --write \"src/**/*.{js,json}\"",
     "test": "jest --coverage",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "audit": "npm audit --audit-level=moderate",
+    "audit:fix": "npm audit fix",
+    "update:check": "npm outdated",
+    "update:deps": "npm update && npm audit fix"
   },
   "keywords": [
     "furnacelog",
@@ -29,6 +33,7 @@
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "csrf-csrf": "4.0.3",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "express-mongo-sanitize": "^2.2.0",
@@ -41,7 +46,7 @@
     "mongoose": "^9.1.1",
     "morgan": "^1.10.1",
     "multer": "^1.4.5-lts.1",
-    "nodemailer": "^6.9.8",
+    "nodemailer": "^7.0.12",
     "passport": "^0.7.0",
     "passport-facebook": "^3.0.0",
     "passport-google-oauth20": "^2.0.0",
@@ -50,6 +55,7 @@
     "zod": "^4.3.4"
   },
   "devDependencies": {
+    "cross-env": "10.1.0",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-node": "^11.1.0",
