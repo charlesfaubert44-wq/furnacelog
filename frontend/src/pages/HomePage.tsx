@@ -5,6 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import { AuthModal } from '@/components/auth/AuthModal';
 import { useScrollPosition } from '@/hooks/useScrollAnimation';
+import logger from '@/utils/logger';
 
 interface HealthStatus {
   status: string;
@@ -134,7 +135,7 @@ function HomePage() {
         const data = await response.json();
         setHealth(data);
       } catch (err) {
-        console.error('Health check failed:', err);
+        logger.warn('Health check failed', err);
       } finally {
         setLoading(false);
       }
@@ -163,26 +164,26 @@ function HomePage() {
   const hasAlert = currentTemp < -20;
 
   return (
-    <div className="min-h-screen bg-stone-950">
+    <div className="min-h-screen bg-[#1a1412]">
       {/* Navigation */}
       <nav className={cn(
         "sticky top-0 z-50 border-b transition-all duration-300",
         isScrolled
-          ? "border-amber-900/30 bg-stone-950/98 backdrop-blur-md shadow-lg shadow-black/20"
-          : "border-amber-900/20 bg-stone-950/95 backdrop-blur-sm"
+          ? "border-[#d4a373]/10 bg-[#1a1412]/80 backdrop-blur-md shadow-lg shadow-black/20"
+          : "border-[#d4a373]/10 bg-[#1a1412]/80 backdrop-blur-sm"
       )}>
         <div className="max-w-7xl mx-auto px-6 py-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-amber-700 to-orange-800 rounded-lg flex items-center justify-center shadow-lg">
-                  <Flame className="w-6 h-6 text-amber-100" strokeWidth={2.5} />
+                <div className="w-10 h-10 bg-gradient-to-br from-[#ff6b35] to-[#f7931e] rounded-xl flex items-center justify-center shadow-[0_4px_16px_rgba(255,107,53,0.3)]">
+                  <Flame className="w-6 h-6 text-[#f4e8d8]" strokeWidth={2.5} />
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold text-stone-50 tracking-tight">
+                  <h1 className="text-xl font-bold text-[#f4e8d8] tracking-tight">
                     FurnaceLog
                   </h1>
-                  <p className="text-xs text-stone-400 font-medium">Northern Home Tracker</p>
+                  <p className="text-xs text-[#d4a373] font-medium">Northern Home Tracker</p>
                 </div>
               </div>
             </div>
@@ -191,16 +192,16 @@ function HomePage() {
                 <div className="relative">
                   <button
                     onClick={() => setShowUserMenu(!showUserMenu)}
-                    className="flex items-center gap-2 px-4 py-2 text-sm text-stone-300 hover:text-stone-50 font-medium transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 text-sm text-[#d4a373] hover:text-[#f4e8d8] font-medium transition-colors"
                   >
                     <User className="w-4 h-4" />
                     <span>{user.email}</span>
                   </button>
                   {showUserMenu && (
-                    <div className="absolute right-0 mt-2 w-48 bg-stone-900 border border-stone-800 rounded-lg shadow-xl py-2">
+                    <div className="absolute right-0 mt-2 w-48 bg-[#2d1f1a] border border-[#f4e8d8]/10 rounded-lg shadow-xl py-2">
                       <button
                         onClick={handleLogout}
-                        className="w-full flex items-center gap-2 px-4 py-2 text-sm text-stone-300 hover:bg-stone-800 hover:text-stone-50 transition-colors"
+                        className="w-full flex items-center gap-2 px-4 py-2 text-sm text-[#d4a373] hover:bg-[#3d3127] hover:text-[#f4e8d8] transition-colors"
                       >
                         <LogOut className="w-4 h-4" />
                         Sign Out
@@ -215,7 +216,7 @@ function HomePage() {
                       setAuthModalTab('login');
                       setAuthModalOpen(true);
                     }}
-                    className="px-4 py-2 text-sm text-stone-300 hover:text-stone-50 font-medium transition-colors"
+                    className="px-4 py-2 text-sm text-[#d4a373] hover:text-[#f4e8d8] font-medium transition-colors"
                   >
                     Sign In
                   </button>
@@ -224,7 +225,7 @@ function HomePage() {
                       setAuthModalTab('register');
                       setAuthModalOpen(true);
                     }}
-                    className="px-5 py-2.5 bg-amber-700 hover:bg-amber-600 text-stone-50 text-sm font-semibold rounded-lg transition-all duration-200 shadow-lg shadow-amber-900/30"
+                    className="px-5 py-2.5 bg-gradient-to-r from-[#ff6b35] to-[#f7931e] hover:shadow-[0_6px_24px_rgba(255,107,53,0.45)] text-[#f4e8d8] text-sm font-semibold rounded-xl transition-all duration-300 shadow-[0_4px_16px_rgba(255,107,53,0.3)]"
                   >
                     Get Started
                   </button>
@@ -581,32 +582,24 @@ function HomePage() {
         /* MARKETING CONTENT (When Logged Out) */
         <>
           {/* Hero Section */}
-          <section className="relative overflow-hidden border-b border-stone-800">
-            <div className="absolute inset-0 opacity-[0.015]">
-              <div className="absolute inset-0" style={{
-                backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 255, 255, 0.03) 2px, rgba(255, 255, 255, 0.03) 4px)`
-              }} />
+          <section className="relative overflow-hidden border-b border-[#d4a373]/10">
+            <div className="absolute inset-0 overflow-hidden">
+              <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#ff6b35]/10 rounded-full blur-3xl" />
+              <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#f7931e]/12 rounded-full blur-3xl" />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#c87941]/8 rounded-full blur-3xl" />
             </div>
-            <div className="absolute inset-0 bg-gradient-to-b from-amber-950/20 via-transparent to-stone-950" />
 
             <div className="relative max-w-7xl mx-auto px-6 py-20 md:py-28">
               <div className="grid lg:grid-cols-2 gap-16 items-center">
                 <div className="space-y-8">
-                  <div className="inline-flex items-center gap-2.5 px-4 py-2 bg-emerald-950/40 border border-emerald-800/30 rounded-full animate-fade-in">
-                    <MapPin className="w-4 h-4 text-emerald-400" />
-                    <span className="text-sm text-emerald-300 font-medium">
-                      Built for Northwest Territories, Nunavut & Yukon
-                    </span>
-                  </div>
-
                   <div className="space-y-6">
-                    <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-stone-50 leading-[1.05] tracking-tight animate-fade-slide-up animate-delay-100">
+                    <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-[#f4e8d8] leading-[1.05] tracking-tight animate-fade-slide-up animate-delay-100">
                       Protect Your
-                      <span className="block text-amber-500 mt-2">Northern Home</span>
+                      <span className="block bg-gradient-to-r from-[#ff6b35] to-[#f7931e] bg-clip-text text-transparent mt-2">Northern Home</span>
                     </h2>
-                    <p className="text-xl text-stone-300 leading-relaxed max-w-xl animate-fade-slide-up animate-delay-200">
+                    <p className="text-xl text-[#d4a373] leading-relaxed max-w-xl animate-fade-slide-up animate-delay-200">
                       Track heating systems, prevent freeze damage, and manage maintenance for homes
-                      built to survive <span className="text-stone-50 font-semibold">-40°C winters</span>.
+                      built to survive <span className="text-[#f4e8d8] font-semibold">-40°C winters</span>.
                     </p>
                   </div>
 
@@ -616,57 +609,57 @@ function HomePage() {
                         setAuthModalTab('register');
                         setAuthModalOpen(true);
                       }}
-                      className="group inline-flex items-center justify-center gap-2.5 px-7 py-4 bg-amber-700 hover:bg-amber-600 text-stone-50 font-semibold rounded-xl transition-all duration-300 shadow-xl shadow-amber-900/40 hover:shadow-amber-900/60 hover:scale-[1.02] active:scale-[0.98]"
+                      className="group inline-flex items-center justify-center gap-2.5 px-7 py-4 bg-gradient-to-r from-[#ff6b35] to-[#f7931e] hover:shadow-[0_8px_32px_rgba(255,107,53,0.5)] text-[#f4e8d8] font-semibold rounded-xl transition-all duration-300 shadow-[0_4px_16px_rgba(255,107,53,0.35)] hover:scale-[1.02] active:scale-[0.98]"
                     >
                       Start Free Today
                       <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </button>
-                    <a href="#features" className="inline-flex items-center justify-center gap-2 px-7 py-4 bg-stone-800 hover:bg-stone-700 border border-stone-700 text-stone-100 font-semibold rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
+                    <a href="#features" className="inline-flex items-center justify-center gap-2 px-7 py-4 bg-gradient-to-br from-[#3d3127] to-[#2d1f1a] hover:from-[#3d3127] hover:to-[#3d3127] border border-[#f4e8d8]/20 text-[#f4e8d8] font-semibold rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
                       See Features
                     </a>
                   </div>
 
-                  <div className="grid grid-cols-3 gap-6 pt-8 border-t border-stone-800">
+                  <div className="grid grid-cols-3 gap-6 pt-8 border-t border-[#f4e8d8]/10">
                     <div className="space-y-1">
-                      <div className="flex items-center gap-2 text-stone-400">
+                      <div className="flex items-center gap-2 text-[#d4a373]">
                         <Shield className="w-4 h-4" />
                         <span className="text-xs font-medium">Free Forever</span>
                       </div>
-                      <p className="text-sm text-stone-500">Open Source</p>
+                      <p className="text-sm text-[#d4a373]/70">Open Source</p>
                     </div>
                     <div className="space-y-1">
-                      <div className="flex items-center gap-2 text-stone-400">
+                      <div className="flex items-center gap-2 text-[#d4a373]">
                         <Snowflake className="w-4 h-4" />
                         <span className="text-xs font-medium">Works Offline</span>
                       </div>
-                      <p className="text-sm text-stone-500">Remote Ready</p>
+                      <p className="text-sm text-[#d4a373]/70">Remote Ready</p>
                     </div>
                     <div className="space-y-1">
-                      <div className="flex items-center gap-2 text-stone-400">
+                      <div className="flex items-center gap-2 text-[#d4a373]">
                         <Home className="w-4 h-4" />
                         <span className="text-xs font-medium">Your Data</span>
                       </div>
-                      <p className="text-sm text-stone-500">Self-Hosted</p>
+                      <p className="text-sm text-[#d4a373]/70">Self-Hosted</p>
                     </div>
                   </div>
                 </div>
 
                 <div className="relative">
                   <div className="space-y-4">
-                    <div className="bg-gradient-to-br from-stone-900 to-stone-900/95 border-2 border-red-900/40 rounded-2xl p-6 shadow-2xl">
+                    <div className="bg-gradient-to-br from-[#2d1f1a] to-[#1a1412] border-2 border-[#d45d4e]/40 rounded-2xl p-6 shadow-2xl">
                       <div className="flex items-start gap-4">
-                        <div className="flex-shrink-0 w-12 h-12 bg-red-950/60 border border-red-800/50 rounded-xl flex items-center justify-center">
-                          <AlertTriangle className="w-6 h-6 text-red-400" />
+                        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-[#d45d4e] to-[#d4734e] rounded-xl flex items-center justify-center shadow-[0_4px_12px_rgba(212,93,78,0.4)]">
+                          <AlertTriangle className="w-6 h-6 text-[#f4e8d8]" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-start justify-between gap-3 mb-2">
-                            <h3 className="font-semibold text-stone-50">Extreme Cold Alert</h3>
-                            <span className="flex-shrink-0 text-xs text-red-400 font-medium bg-red-950/40 px-2 py-1 rounded">URGENT</span>
+                            <h3 className="font-semibold text-[#f4e8d8]">Extreme Cold Alert</h3>
+                            <span className="flex-shrink-0 text-xs text-[#d45d4e] font-medium bg-[#d45d4e]/20 px-2 py-1 rounded">URGENT</span>
                           </div>
-                          <p className="text-sm text-stone-300 mb-3">
+                          <p className="text-sm text-[#d4a373] mb-3">
                             Temperature dropping to -42°C tonight. Inspect heat trace cables and ensure backup heating is ready.
                           </p>
-                          <div className="flex items-center gap-2 text-xs text-stone-400">
+                          <div className="flex items-center gap-2 text-xs text-[#d4a373]/70">
                             <Clock className="w-3.5 h-3.5" />
                             <span>Due in 6 hours</span>
                           </div>
@@ -674,20 +667,20 @@ function HomePage() {
                       </div>
                     </div>
 
-                    <div className="bg-stone-900 border border-stone-800 rounded-2xl p-6 shadow-xl">
+                    <div className="bg-gradient-to-br from-[#2d1f1a] to-[#1a1412] border border-[#f2a541]/30 rounded-2xl p-6 shadow-xl">
                       <div className="flex items-start gap-4">
-                        <div className="flex-shrink-0 w-12 h-12 bg-amber-950/60 border border-amber-800/50 rounded-xl flex items-center justify-center">
-                          <Calendar className="w-6 h-6 text-amber-400" />
+                        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-[#f2a541] to-[#f7931e] rounded-xl flex items-center justify-center shadow-[0_4px_12px_rgba(242,165,65,0.4)]">
+                          <Calendar className="w-6 h-6 text-[#f4e8d8]" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-start justify-between gap-3 mb-2">
-                            <h3 className="font-semibold text-stone-50">Furnace Filter Due</h3>
-                            <span className="flex-shrink-0 text-xs text-amber-400 font-medium bg-amber-950/40 px-2 py-1 rounded">TOMORROW</span>
+                            <h3 className="font-semibold text-[#f4e8d8]">Furnace Filter Due</h3>
+                            <span className="flex-shrink-0 text-xs text-[#f2a541] font-medium bg-[#f2a541]/20 px-2 py-1 rounded">TOMORROW</span>
                           </div>
-                          <p className="text-sm text-stone-300 mb-3">
+                          <p className="text-sm text-[#d4a373] mb-3">
                             Replace forced-air furnace filter for optimal heating efficiency.
                           </p>
-                          <div className="flex items-center gap-2 text-xs text-stone-400">
+                          <div className="flex items-center gap-2 text-xs text-[#d4a373]/70">
                             <Thermometer className="w-3.5 h-3.5" />
                             <span>Propane Furnace</span>
                           </div>
@@ -695,27 +688,27 @@ function HomePage() {
                       </div>
                     </div>
 
-                    <div className="bg-stone-900 border border-stone-800 rounded-2xl p-6 shadow-xl">
+                    <div className="bg-gradient-to-br from-[#2d1f1a] to-[#1a1412] border border-[#6a994e]/30 rounded-2xl p-6 shadow-xl">
                       <div className="flex items-start gap-4">
-                        <div className="flex-shrink-0 w-12 h-12 bg-emerald-950/60 border border-emerald-800/50 rounded-xl flex items-center justify-center">
-                          <Home className="w-6 h-6 text-emerald-400" />
+                        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-[#6a994e] to-[#7ea88f] rounded-xl flex items-center justify-center shadow-[0_4px_12px_rgba(106,153,78,0.4)]">
+                          <Home className="w-6 h-6 text-[#f4e8d8]" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-start justify-between gap-3 mb-3">
-                            <h3 className="font-semibold text-stone-50">All Systems Running</h3>
-                            <span className="flex-shrink-0 text-xs text-emerald-400 font-medium bg-emerald-950/40 px-2 py-1 rounded">HEALTHY</span>
+                            <h3 className="font-semibold text-[#f4e8d8]">All Systems Running</h3>
+                            <span className="flex-shrink-0 text-xs text-[#6a994e] font-medium bg-[#6a994e]/20 px-2 py-1 rounded">HEALTHY</span>
                           </div>
                           <div className="space-y-2">
-                            <div className="flex items-center gap-2.5 text-sm text-stone-300">
-                              <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                            <div className="flex items-center gap-2.5 text-sm text-[#d4a373]">
+                              <CheckCircle2 className="w-4 h-4 text-[#6a994e] flex-shrink-0" />
                               <span>Propane Furnace</span>
                             </div>
-                            <div className="flex items-center gap-2.5 text-sm text-stone-300">
-                              <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                            <div className="flex items-center gap-2.5 text-sm text-[#d4a373]">
+                              <CheckCircle2 className="w-4 h-4 text-[#6a994e] flex-shrink-0" />
                               <span>HRV System</span>
                             </div>
-                            <div className="flex items-center gap-2.5 text-sm text-stone-300">
-                              <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                            <div className="flex items-center gap-2.5 text-sm text-[#d4a373]">
+                              <CheckCircle2 className="w-4 h-4 text-[#6a994e] flex-shrink-0" />
                               <span>Heat Trace Cables</span>
                             </div>
                           </div>
@@ -723,19 +716,19 @@ function HomePage() {
                       </div>
                     </div>
                   </div>
-                  <div className="absolute -top-8 -right-8 w-32 h-32 bg-gradient-to-br from-amber-600/10 to-transparent rounded-full blur-3xl pointer-events-none" />
-                  <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-gradient-to-tr from-emerald-600/10 to-transparent rounded-full blur-3xl pointer-events-none" />
+                  <div className="absolute -top-8 -right-8 w-32 h-32 bg-gradient-to-br from-[#ff6b35]/10 to-transparent rounded-full blur-3xl pointer-events-none" />
+                  <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-gradient-to-tr from-[#6a994e]/10 to-transparent rounded-full blur-3xl pointer-events-none" />
                 </div>
               </div>
             </div>
           </section>
 
           {/* Features Grid */}
-          <section id="features" className="py-24 border-b border-stone-800">
+          <section id="features" className="py-24 border-b border-[#d4a373]/10">
             <div className="max-w-7xl mx-auto px-6">
               <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-                <h2 className="text-4xl md:text-5xl font-bold text-stone-50">Purpose-Built for the North</h2>
-                <p className="text-xl text-stone-400">
+                <h2 className="text-4xl md:text-5xl font-bold text-[#f4e8d8]">Purpose-Built for the North</h2>
+                <p className="text-xl text-[#d4a373]">
                   Every feature designed for extreme climates, modular housing, and remote communities
                 </p>
               </div>
