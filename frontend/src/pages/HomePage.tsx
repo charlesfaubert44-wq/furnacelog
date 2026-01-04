@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Thermometer, Home, Calendar, AlertTriangle, Snowflake, Flame, CheckCircle2, ArrowRight, MapPin, Clock, TrendingDown, Plus, FileText, Wrench, Wind, Droplets, Zap, ChevronRight, LogOut, User } from 'lucide-react';
+import { Thermometer, Home, Calendar, AlertTriangle, Snowflake, Flame, CheckCircle2, ArrowRight, Clock, TrendingDown, LogOut, User } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import { AuthModal } from '@/components/auth/AuthModal';
@@ -21,104 +21,7 @@ interface HealthStatus {
   };
 }
 
-interface MaintenanceTask {
-  id: string;
-  title: string;
-  system: string;
-  dueDate: Date;
-  status: 'overdue' | 'due-soon' | 'upcoming';
-  priority: 'high' | 'medium' | 'low';
-  icon?: React.ReactNode;
-}
 
-interface SystemStatus {
-  id: string;
-  name: string;
-  icon: React.ElementType;
-  status: 'healthy' | 'warning' | 'critical';
-  lastService: string;
-  health: number;
-}
-
-interface ChecklistItem {
-  id: string;
-  title: string;
-  completed: boolean;
-  priority: 'high' | 'medium' | 'low';
-}
-
-const mockTasks: MaintenanceTask[] = [
-  {
-    id: '1',
-    title: 'Furnace Filter Replacement',
-    system: 'Propane Furnace',
-    dueDate: new Date('2026-01-05'),
-    status: 'overdue',
-    priority: 'high',
-    icon: <Flame className="w-4 h-4" />,
-  },
-  {
-    id: '2',
-    title: 'HRV Core Cleaning',
-    system: 'HRV System',
-    dueDate: new Date('2026-01-10'),
-    status: 'due-soon',
-    priority: 'medium',
-    icon: <Wind className="w-4 h-4" />,
-  },
-  {
-    id: '3',
-    title: 'Heat Trace Inspection',
-    system: 'Freeze Protection',
-    dueDate: new Date('2026-01-15'),
-    status: 'upcoming',
-    priority: 'high',
-    icon: <Droplets className="w-4 h-4" />,
-  },
-];
-
-const systems: SystemStatus[] = [
-  {
-    id: '1',
-    name: 'Propane Furnace',
-    icon: Flame,
-    status: 'healthy',
-    lastService: '2 weeks ago',
-    health: 94,
-  },
-  {
-    id: '2',
-    name: 'Water System',
-    icon: Droplets,
-    status: 'warning',
-    lastService: '3 months ago',
-    health: 68,
-  },
-  {
-    id: '3',
-    name: 'HRV Ventilation',
-    icon: Wind,
-    status: 'healthy',
-    lastService: '1 month ago',
-    health: 88,
-  },
-  {
-    id: '4',
-    name: 'Electrical',
-    icon: Zap,
-    status: 'healthy',
-    lastService: '6 months ago',
-    health: 96,
-  },
-];
-
-const winterChecklist: ChecklistItem[] = [
-  { id: '1', title: 'Inspect heat trace cables', completed: true, priority: 'high' },
-  { id: '2', title: 'Test furnace safety systems', completed: true, priority: 'high' },
-  { id: '3', title: 'Clean HRV filters', completed: false, priority: 'medium' },
-  { id: '4', title: 'Check insulation in attic', completed: false, priority: 'medium' },
-  { id: '5', title: 'Stock emergency supplies', completed: false, priority: 'low' },
-];
 
 function HomePage() {
   const [health, setHealth] = useState<HealthStatus | null>(null);
@@ -171,18 +74,6 @@ function HomePage() {
     setShowUserMenu(false);
   };
 
-  // Dashboard widgets data
-  const overdueCount = mockTasks.filter((t) => t.status === 'overdue').length;
-  const dueSoonCount = mockTasks.filter((t) => t.status === 'due-soon').length;
-  const upcomingCount = mockTasks.filter((t) => t.status === 'upcoming').length;
-  const completedCount = winterChecklist.filter((item) => item.completed).length;
-  const totalCount = winterChecklist.length;
-  const progressPercentage = Math.round((completedCount / totalCount) * 100);
-  const currentTemp = -18;
-  const windChill = -28;
-  const humidity = 72;
-  const windSpeed = 15;
-  const hasAlert = currentTemp < -20;
 
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
@@ -221,6 +112,16 @@ function HomePage() {
                   {showUserMenu && (
                     <div className="absolute right-0 mt-2 w-48 bg-[#1a1a1a] border border-[#f4e8d8]/10 rounded-lg py-2">
                       <button
+                        onClick={() => {
+                          navigate('/dashboard');
+                          setShowUserMenu(false);
+                        }}
+                        className="w-full flex items-center gap-2 px-4 py-2 text-sm text-[#d4a373] hover:bg-[#2a2a2a] hover:text-[#f4e8d8] transition-colors"
+                      >
+                        <Home className="w-4 h-4" />
+                        Dashboard
+                      </button>
+                      <button
                         onClick={handleLogout}
                         className="w-full flex items-center gap-2 px-4 py-2 text-sm text-[#d4a373] hover:bg-[#2a2a2a] hover:text-[#f4e8d8] transition-colors"
                       >
@@ -257,352 +158,6 @@ function HomePage() {
         </div>
       </nav>
 
-      {/* Conditional Content - Marketing vs Dashboard */}
-      {user ? (
-        /* DASHBOARD CONTENT (When Logged In) */
-        <div className="relative min-h-screen">
-          {/* Warm gradient background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0a] via-[#1a1a1a] to-[#0a0a0a] opacity-60" />
-          <div className="absolute inset-0 opacity-[0.02]" style={{
-            backgroundImage: `radial-gradient(circle at 50% 50%, rgba(247, 147, 30, 0.15) 0%, transparent 50%)`
-          }} />
-
-          <div className="relative max-w-7xl mx-auto px-6 py-12">
-            <div className="space-y-8">
-              {/* Dashboard Header */}
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <p className="text-[#d4a373] text-sm font-medium mb-2">
-                    {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
-                  </p>
-                  <h2 className="text-4xl font-bold text-[#f4e8d8] tracking-tight">
-                    Welcome Home
-                  </h2>
-                  <p className="text-[#d4a373] mt-2">
-                    Your home is warm and protected. Here's your maintenance overview.
-                  </p>
-                </div>
-                <button className="px-6 py-3 bg-gradient-to-br from-[#ff4500] to-[#ff6a00] hover:from-[#ff6a00] hover:to-[#ff4500] text-[#f4e8d8] text-sm font-semibold rounded-xl transition-all duration-300 flex items-center gap-2">
-                  <Plus className="h-4 w-4" />
-                  Log Maintenance
-                </button>
-              </div>
-
-            {/* Dashboard Grid */}
-            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
-              {/* Maintenance Summary - Spans 2 columns on xl */}
-              <div className="xl:col-span-2 bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#f4e8d8]/10 rounded-2xl p-8 transition-all duration-300">
-                <div className="mb-6">
-                  <h3 className="text-xl font-semibold text-[#f4e8d8]">Maintenance Summary</h3>
-                  <p className="text-sm text-[#d4a373] mt-1">Track your upcoming and overdue tasks</p>
-                </div>
-                <div className="grid grid-cols-3 gap-4 mb-6">
-                  <div className="bg-gradient-to-br from-[#d45d4e]/20 to-[#d45d4e]/10 border border-[#d45d4e]/30 rounded-xl p-4">
-                    <div className="flex items-center justify-center gap-2 mb-2">
-                      <AlertTriangle className="h-5 w-5 text-[#d45d4e]" />
-                      <span className="text-3xl font-bold text-[#f4e8d8]">{overdueCount}</span>
-                    </div>
-                    <p className="text-xs text-[#d45d4e] font-medium text-center uppercase tracking-wide">Overdue</p>
-                  </div>
-                  <div className="bg-gradient-to-br from-[#ff9500]/20 to-[#ff9500]/10 border border-[#ff9500]/30 rounded-xl p-4">
-                    <div className="flex items-center justify-center gap-2 mb-2">
-                      <Clock className="h-5 w-5 text-[#ff9500]" />
-                      <span className="text-3xl font-bold text-[#f4e8d8]">{dueSoonCount}</span>
-                    </div>
-                    <p className="text-xs text-[#ff9500] font-medium text-center uppercase tracking-wide">This Week</p>
-                  </div>
-                  <div className="bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-[#d4a373]/20 rounded-xl p-4">
-                    <div className="flex items-center justify-center gap-2 mb-2">
-                      <CheckCircle2 className="h-5 w-5 text-[#d4a373]" />
-                      <span className="text-3xl font-bold text-[#f4e8d8]">{upcomingCount}</span>
-                    </div>
-                    <p className="text-xs text-[#d4a373] font-medium text-center uppercase tracking-wide">Upcoming</p>
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  {mockTasks.map((task) => (
-                    <div
-                      key={task.id}
-                      className={cn(
-                        'flex items-start gap-4 rounded-xl p-4 transition-all duration-300 cursor-pointer border',
-                        task.status === 'overdue' && 'bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border-[#d45d4e]/30 hover:border-[#d45d4e]/50',
-                        task.status === 'due-soon' && 'bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border-[#ff9500]/30 hover:border-[#ff9500]/50',
-                        task.status === 'upcoming' && 'bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border-[#f4e8d8]/10 hover:border-[#ff4500]/30'
-                      )}
-                    >
-                      <div className={cn(
-                        'flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center',
-                        task.status === 'overdue' && 'bg-gradient-to-br from-[#d45d4e] to-[#d4734e] text-[#f4e8d8]',
-                        task.status === 'due-soon' && 'bg-gradient-to-br from-[#ff9500] to-[#ff6a00] text-[#f4e8d8]',
-                        task.status === 'upcoming' && 'bg-gradient-to-br from-[#d4a373] to-[#ff8c00] text-[#f4e8d8]'
-                      )}>
-                        {task.icon}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-semibold text-[#f4e8d8] text-sm">{task.title}</h4>
-                        <p className="text-xs text-[#d4a373] mt-0.5">{task.system}</p>
-                      </div>
-                      <div className="flex-shrink-0">
-                        <span className={cn(
-                          'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border',
-                          task.status === 'overdue' && 'bg-[#d45d4e]/20 text-[#d45d4e] border-[#d45d4e]/30',
-                          task.status === 'due-soon' && 'bg-[#ff9500]/20 text-[#ff9500] border-[#ff9500]/30',
-                          task.status === 'upcoming' && 'bg-[#d4a373]/20 text-[#d4a373] border-[#d4a373]/30'
-                        )}>
-                          {task.dueDate.toLocaleDateString('en-CA', { month: 'short', day: 'numeric' })}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Weather Widget */}
-              <div className="bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#f4e8d8]/10 rounded-2xl p-8 transition-all duration-300">
-                <div className="mb-6">
-                  <h3 className="text-xl font-semibold text-[#f4e8d8]">Current Weather</h3>
-                  <p className="text-sm text-[#d4a373] mt-1 flex items-center gap-1.5">
-                    <MapPin className="w-3.5 h-3.5" />
-                    Yellowknife, NT
-                  </p>
-                </div>
-                <div className="mb-6">
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <div className="flex items-baseline gap-3">
-                        <span className="text-6xl font-bold bg-gradient-to-br from-[#c4d7e0] to-[#5b8fa3] bg-clip-text text-transparent">{currentTemp}°C</span>
-                      </div>
-                      <p className="text-sm text-[#d4a373] mt-2">
-                        Feels like <span className="text-[#c4d7e0] font-semibold">{windChill}°C</span>
-                      </p>
-                    </div>
-                    <div className="text-6xl opacity-90">🌨️</div>
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-3 mb-6">
-                  <div className="flex items-center gap-3 bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-[#f4e8d8]/10 rounded-xl p-3 hover:border-[#5b8fa3]/30 transition-colors">
-                    <div className="w-10 h-10 bg-gradient-to-br from-[#5b8fa3] to-[#7ea88f] rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Wind className="h-5 w-5 text-[#f4e8d8]" />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-xs text-[#d4a373]">Wind</p>
-                      <p className="text-sm font-semibold text-[#f4e8d8]">{windSpeed} km/h</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3 bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-[#f4e8d8]/10 rounded-xl p-3 hover:border-[#5b8fa3]/30 transition-colors">
-                    <div className="w-10 h-10 bg-gradient-to-br from-[#5b8fa3] to-[#7ea88f] rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Droplets className="h-5 w-5 text-[#f4e8d8]" />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-xs text-[#d4a373]">Humidity</p>
-                      <p className="text-sm font-semibold text-[#f4e8d8]">{humidity}%</p>
-                    </div>
-                  </div>
-                </div>
-                {hasAlert && (
-                  <div className="bg-gradient-to-br from-[#d45d4e]/20 to-[#d45d4e]/10 border border-[#d45d4e]/40 rounded-xl p-4 mb-4">
-                    <div className="flex items-start gap-3">
-                      <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-[#d45d4e] to-[#d4734e] rounded-xl flex items-center justify-center">
-                        <AlertTriangle className="h-6 w-6 text-[#f4e8d8]" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-[#f4e8d8] text-sm mb-1">Extreme Cold Warning</h4>
-                        <p className="text-xs text-[#d4a373] leading-relaxed">
-                          Check heat trace systems and ensure furnace is operating properly.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-                <div className="bg-gradient-to-br from-[#ff9500]/15 to-[#ff6a00]/10 border border-[#ff9500]/30 rounded-xl p-4">
-                  <h4 className="text-sm font-semibold text-[#f4e8d8] mb-3 flex items-center gap-2">
-                    <Thermometer className="w-4 h-4 text-[#ff9500]" />
-                    Recommended Actions
-                  </h4>
-                  <ul className="space-y-2 text-xs text-[#d4a373]">
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#ff4500] mt-0.5 font-bold">•</span>
-                      <span>Monitor furnace operation</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#ff4500] mt-0.5 font-bold">•</span>
-                      <span>Verify heat trace cables are active</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#ff4500] mt-0.5 font-bold">•</span>
-                      <span>Let taps drip to prevent freezing</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              {/* System Status - Spans 2 columns on lg */}
-              <div className="lg:col-span-2 bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#f4e8d8]/10 rounded-2xl p-8 transition-all duration-300">
-                <div className="mb-6">
-                  <h3 className="text-xl font-semibold text-[#f4e8d8]">System Status</h3>
-                  <p className="text-sm text-[#d4a373] mt-1">Monitor your critical home systems</p>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {systems.map((system) => (
-                    <div key={system.id} className="bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-[#f4e8d8]/10 hover:border-[#ff4500]/30 rounded-xl p-5 transition-all duration-300 cursor-pointer group hover:-translate-y-0.5">
-                      <div className="flex items-start gap-3 mb-4">
-                        <div className={cn(
-                          'flex-shrink-0 w-14 h-14 rounded-xl flex items-center justify-center transition-transform group-hover:scale-105',
-                          system.status === 'healthy' && 'bg-gradient-to-br from-[#6a994e] to-[#7ea88f]',
-                          system.status === 'warning' && 'bg-gradient-to-br from-[#ff9500] to-[#ff6a00]',
-                          system.status === 'critical' && 'bg-gradient-to-br from-[#d45d4e] to-[#d4734e]'
-                        )}>
-                          <system.icon className="h-7 w-7 text-[#f4e8d8]" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            <h4 className="text-sm font-semibold text-[#f4e8d8]">{system.name}</h4>
-                            {system.status === 'healthy' && <CheckCircle2 className="h-4 w-4 text-[#6a994e] flex-shrink-0" />}
-                            {system.status === 'warning' && <AlertTriangle className="h-4 w-4 text-[#ff9500] flex-shrink-0" />}
-                          </div>
-                          <p className="text-xs text-[#d4a373]">Last service: {system.lastService}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between pt-3 border-t border-[#f4e8d8]/10">
-                        <span className="text-xs text-[#d4a373] uppercase tracking-wide font-medium">Health Score</span>
-                        <div className="flex items-center gap-2">
-                          <div className="relative w-12 h-12">
-                            <svg className="w-12 h-12 -rotate-90" viewBox="0 0 36 36">
-                              <circle
-                                cx="18"
-                                cy="18"
-                                r="15"
-                                fill="none"
-                                className="stroke-[#2a2a2a]"
-                                strokeWidth="3"
-                              />
-                              <circle
-                                cx="18"
-                                cy="18"
-                                r="15"
-                                fill="none"
-                                className={cn(
-                                  system.status === 'healthy' && 'stroke-[#6a994e]',
-                                  system.status === 'warning' && 'stroke-[#ff9500]',
-                                  system.status === 'critical' && 'stroke-[#d45d4e]'
-                                )}
-                                strokeWidth="3"
-                                strokeDasharray={`${system.health * 0.942} 100`}
-                                strokeLinecap="round"
-                              />
-                            </svg>
-                            <span className="absolute inset-0 flex items-center justify-center text-xs font-bold text-[#f4e8d8]">
-                              {system.health}
-                            </span>
-                          </div>
-                          <span className={cn(
-                            'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border',
-                            system.status === 'healthy' && 'bg-[#6a994e]/20 text-[#6a994e] border-[#6a994e]/30',
-                            system.status === 'warning' && 'bg-[#ff9500]/20 text-[#ff9500] border-[#ff9500]/30',
-                            system.status === 'critical' && 'bg-[#d45d4e]/20 text-[#d45d4e] border-[#d45d4e]/30'
-                          )}>
-                            {system.status}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Seasonal Checklist */}
-              <div className="bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#f4e8d8]/10 rounded-2xl p-8 flex flex-col transition-all duration-300">
-                <div className="mb-6">
-                  <div className="flex items-start justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-xl font-semibold text-[#f4e8d8]">Winter Checklist</h3>
-                      <Snowflake className="w-5 h-5 text-[#c4d7e0]" />
-                    </div>
-                    <span className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold bg-gradient-to-br from-[#ff4500] to-[#ff6a00] text-[#f4e8d8]">
-                      {progressPercentage}%
-                    </span>
-                  </div>
-                  <p className="text-sm text-[#d4a373]">Critical seasonal tasks</p>
-                </div>
-                <div className="mb-6">
-                  <div className="h-3 bg-[#2a2a2a] rounded-full overflow-hidden mb-2">
-                    <div
-                      className="h-full bg-gradient-to-r from-[#ff4500] to-[#ff6a00] transition-all duration-500"
-                      style={{ width: `${progressPercentage}%` }}
-                    />
-                  </div>
-                  <p className="text-xs text-[#d4a373] font-medium">{completedCount} of {totalCount} tasks complete</p>
-                </div>
-                <div className="space-y-2 flex-1 mb-4">
-                  {winterChecklist.slice(0, 4).map((item) => (
-                    <div
-                      key={item.id}
-                      className="flex items-center gap-3 p-3 bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-[#f4e8d8]/10 hover:border-[#ff4500]/30 rounded-xl transition-all duration-300 cursor-pointer group"
-                    >
-                      {item.completed ? (
-                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-gradient-to-br from-[#6a994e] to-[#7ea88f] flex items-center justify-center">
-                          <CheckCircle2 className="h-4 w-4 text-[#f4e8d8]" />
-                        </div>
-                      ) : (
-                        <div className="flex-shrink-0 w-6 h-6 rounded-full border-2 border-[#d4a373]/40 group-hover:border-[#ff4500] transition-colors" />
-                      )}
-                      <span className={`flex-1 text-sm transition-colors ${item.completed ? 'text-[#d4a373]/60 line-through' : 'text-[#f4e8d8] group-hover:text-[#f4e8d8]'}`}>
-                        {item.title}
-                      </span>
-                      {item.priority === 'high' && !item.completed && (
-                        <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-[#d45d4e]/20 text-[#d45d4e] border border-[#d45d4e]/30">
-                          High
-                        </span>
-                      )}
-                    </div>
-                  ))}
-                </div>
-                <button className="w-full px-4 py-3 bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] hover:from-[#ff4500]/20 hover:to-[#ff6a00]/20 border border-[#f4e8d8]/20 hover:border-[#ff4500]/40 text-[#f4e8d8] text-sm font-medium rounded-xl transition-all duration-300 flex items-center justify-center gap-2 group">
-                  View Full Checklist
-                  <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                </button>
-              </div>
-            </div>
-
-            {/* Quick Actions */}
-            <div className="bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#f4e8d8]/10 rounded-2xl p-8 transition-all duration-300">
-              <div className="text-center mb-8">
-                <h3 className="text-xl font-semibold text-[#f4e8d8] mb-2">Quick Actions</h3>
-                <p className="text-sm text-[#d4a373]">Frequently used actions to manage your home</p>
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <button className="flex flex-col items-center gap-4 p-6 bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] hover:from-[#6a994e]/20 hover:to-[#7ea88f]/10 border border-[#f4e8d8]/10 hover:border-[#6a994e]/40 rounded-xl transition-all duration-300 group hover:-translate-y-1">
-                  <div className="w-14 h-14 bg-gradient-to-br from-[#6a994e] to-[#7ea88f] rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Home className="w-7 h-7 text-[#f4e8d8]" />
-                  </div>
-                  <span className="text-sm font-medium text-[#f4e8d8]">Add System</span>
-                </button>
-                <button className="flex flex-col items-center gap-4 p-6 bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] hover:from-[#ff4500]/20 hover:to-[#ff6a00]/10 border border-[#f4e8d8]/10 hover:border-[#ff4500]/40 rounded-xl transition-all duration-300 group hover:-translate-y-1">
-                  <div className="w-14 h-14 bg-gradient-to-br from-[#ff4500] to-[#ff6a00] rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Calendar className="w-7 h-7 text-[#f4e8d8]" />
-                  </div>
-                  <span className="text-sm font-medium text-[#f4e8d8]">Schedule Task</span>
-                </button>
-                <button className="flex flex-col items-center gap-4 p-6 bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] hover:from-[#5b8fa3]/20 hover:to-[#7ea88f]/10 border border-[#f4e8d8]/10 hover:border-[#5b8fa3]/40 rounded-xl transition-all duration-300 group hover:-translate-y-1">
-                  <div className="w-14 h-14 bg-gradient-to-br from-[#5b8fa3] to-[#7ea88f] rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <FileText className="w-7 h-7 text-[#f4e8d8]" />
-                  </div>
-                  <span className="text-sm font-medium text-[#f4e8d8]">Upload Document</span>
-                </button>
-                <button className="flex flex-col items-center gap-4 p-6 bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] hover:from-[#7ea88f]/20 hover:to-[#6a994e]/10 border border-[#f4e8d8]/10 hover:border-[#7ea88f]/40 rounded-xl transition-all duration-300 group hover:-translate-y-1">
-                  <div className="w-14 h-14 bg-gradient-to-br from-[#7ea88f] to-[#6a994e] rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Wrench className="w-7 h-7 text-[#f4e8d8]" />
-                  </div>
-                  <span className="text-sm font-medium text-[#f4e8d8]">Find Provider</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        </div>
-      ) : (
-        /* MARKETING CONTENT (When Logged Out) */
-        <>
           {/* Hero Section */}
           <section className="relative overflow-hidden border-b border-[#d4a373]/10">
             <div className="absolute inset-0 overflow-hidden">
@@ -890,8 +445,6 @@ function HomePage() {
               </div>
             </div>
           </section>
-        </>
-      )}
 
       {/* Footer */}
       <footer className="py-12">
