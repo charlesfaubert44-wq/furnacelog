@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
+import { validateRedirectUrl, createErrorRedirect } from '../utils/redirect';
+import logger from '../utils/logger';
 
 /**
  * OAuth Callback Page
@@ -17,55 +19,47 @@ const AuthCallback: React.FC = () => {
       // Check for error
       const authError = searchParams.get('auth_error');
       if (authError) {
-        console.error('OAuth error:', authError);
-        // Redirect to home with error message
-        navigate('/?error=' + encodeURIComponent('Authentication failed. Please try again.'));
+        logger.error('OAuth error:', authError);
+        // SECURITY: Validate redirect before navigating
+        const safeRedirect = createErrorRedirect('/', 'Authentication failed. Please try again.');
+        navigate(safeRedirect, { replace: true });
         return;
       }
 
-      // Get tokens from URL
-      const accessToken = searchParams.get('access_token');
-      const refreshToken = searchParams.get('refresh_token');
-      const expiresIn = searchParams.get('expires_in');
-
-      if (!accessToken || !refreshToken) {
-        console.error('Missing tokens in OAuth callback');
-        navigate('/?error=' + encodeURIComponent('Authentication failed. Missing credentials.'));
-        return;
-      }
-
+      // SECURITY FIX: No tokens in URL - they're in httpOnly cookies
+      // Just verify authentication by calling the backend
       try {
-        // Store tokens
-        const tokens = {
-          accessToken,
-          refreshToken,
-          expiresIn: expiresIn ? parseInt(expiresIn) : 3600
-        };
-        localStorage.setItem('furnacelog_tokens', JSON.stringify(tokens));
-
-        // Fetch user profile
         const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
         const response = await fetch(`${API_URL}/api/v1/auth/me`, {
-          headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json'
-          },
-          credentials: 'include'
+          credentials: 'include' // IMPORTANT: Send httpOnly cookies
         });
 
         if (response.ok) {
           const data = await response.json();
           if (data.success && data.data.user) {
-            localStorage.setItem('furnacelog_user', JSON.stringify(data.data.user));
+            // User is authenticated via httpOnly cookies
+            // SECURITY: Validate redirect parameter if present
+            const redirectTo = searchParams.get('redirect');
+            const safeRedirect = redirectTo ? validateRedirectUrl(redirectTo) : '/';
+
+            logger.info('OAuth authentication successful', {
+              redirectTo: safeRedirect
+            });
+
+            // Force full page reload to re-initialize AuthContext with new user state
+            window.location.href = safeRedirect;
+            return;
           }
         }
 
-        // Redirect to dashboard (home page will show dashboard content when logged in)
-        navigate('/', { replace: true });
+        // If response not ok or missing user data
+        const safeRedirect = createErrorRedirect('/', 'Authentication failed. Please try again.');
+        navigate(safeRedirect, { replace: true });
 
       } catch (error) {
-        console.error('Error processing OAuth callback:', error);
-        navigate('/?error=' + encodeURIComponent('Authentication failed. Please try again.'));
+        logger.error('OAuth callback error', error, { step: 'user_verification' });
+        const safeRedirect = createErrorRedirect('/', 'Authentication failed. Please try again.');
+        navigate(safeRedirect, { replace: true });
       }
     };
 
