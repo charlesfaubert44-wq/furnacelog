@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Home, LogOut, User, Plus, AlertTriangle, CheckCircle2, Clock, Flame, Droplets, Wind, Zap } from 'lucide-react';
+import { Home, LogOut, User, Plus, AlertTriangle, CheckCircle2, Clock, Flame, Droplets, Wind, Zap, BookOpen, Settings } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import { useScrollPosition } from '@/hooks/useScrollAnimation';
 import { AdSense } from '@/components/ads/AdSense';
+import { LogMaintenanceModal, type MaintenanceTaskInput } from '@/components/modals/LogMaintenanceModal';
 
 /**
  * Dashboard Page
@@ -95,12 +96,25 @@ export function Dashboard() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [isMaintenanceModalOpen, setIsMaintenanceModalOpen] = useState(false);
   const { isScrolled } = useScrollPosition();
 
   const handleLogout = () => {
     logout();
     navigate('/');
     setShowUserMenu(false);
+  };
+
+  const handleSaveTask = (task: MaintenanceTaskInput) => {
+    // TODO: Connect to backend API to save the task
+    console.log('Saving task:', task);
+    // For now, we'll just log it - the modal already shows a success message
+  };
+
+  const handleTaskClick = (taskId: string) => {
+    // TODO: Open task detail modal or navigate to task detail page
+    console.log('Task clicked:', taskId);
+    alert('Task details coming soon! This will show full task information, allow editing, and mark as complete.');
   };
 
   const overdueCount = mockTasks.filter((t) => t.status === 'overdue').length;
@@ -143,6 +157,12 @@ export function Dashboard() {
                 >
                   Dashboard
                 </button>
+                <button
+                  onClick={() => navigate('/wiki')}
+                  className="px-4 py-2 text-sm text-[#d4a373] hover:text-[#f4e8d8] font-medium transition-colors rounded-lg hover:bg-[#2a2a2a]/50"
+                >
+                  Wiki
+                </button>
               </nav>
             </div>
             <div className="flex items-center gap-3">
@@ -165,6 +185,26 @@ export function Dashboard() {
                     >
                       <Home className="w-4 h-4" />
                       Dashboard
+                    </button>
+                    <button
+                      onClick={() => {
+                        navigate('/wiki');
+                        setShowUserMenu(false);
+                      }}
+                      className="w-full flex items-center gap-2 px-4 py-2 text-sm text-[#d4a373] hover:bg-[#2a2a2a] hover:text-[#f4e8d8] transition-colors"
+                    >
+                      <BookOpen className="w-4 h-4" />
+                      Wiki
+                    </button>
+                    <button
+                      onClick={() => {
+                        navigate('/settings');
+                        setShowUserMenu(false);
+                      }}
+                      className="w-full flex items-center gap-2 px-4 py-2 text-sm text-[#d4a373] hover:bg-[#2a2a2a] hover:text-[#f4e8d8] transition-colors"
+                    >
+                      <Settings className="w-4 h-4" />
+                      Settings
                     </button>
                     <button
                       onClick={handleLogout}
@@ -204,7 +244,10 @@ export function Dashboard() {
                   Your home is warm and protected. Here's your maintenance overview.
                 </p>
               </div>
-              <button className="px-6 py-3 bg-gradient-to-br from-[#ff6b35] to-[#f7931e] hover:from-[#f7931e] hover:to-[#ff6b35] text-[#f4e8d8] text-sm font-semibold rounded-xl transition-all duration-300 flex items-center gap-2 shadow-[0_4px_16px_rgba(255,107,53,0.3)]">
+              <button
+                onClick={() => setIsMaintenanceModalOpen(true)}
+                className="px-6 py-3 bg-gradient-to-br from-[#ff6b35] to-[#f7931e] hover:from-[#f7931e] hover:to-[#ff6b35] text-[#f4e8d8] text-sm font-semibold rounded-xl transition-all duration-300 flex items-center gap-2 shadow-[0_4px_16px_rgba(255,107,53,0.3)] hover:shadow-[0_6px_24px_rgba(255,107,53,0.45)]"
+              >
                 <Plus className="h-4 w-4" />
                 Log Maintenance
               </button>
@@ -247,6 +290,7 @@ export function Dashboard() {
                   {mockTasks.map((task) => (
                     <div
                       key={task.id}
+                      onClick={() => handleTaskClick(task.id)}
                       className={cn(
                         "group p-4 rounded-xl border transition-all duration-300 cursor-pointer hover:scale-[1.02]",
                         task.status === 'overdue' && 'bg-gradient-to-br from-[#d45d4e]/10 to-[#0a0a0a] border-[#d45d4e]/30 hover:border-[#d45d4e]/50',
@@ -345,6 +389,13 @@ export function Dashboard() {
           </div>
         </div>
       </div>
+
+      {/* Maintenance Modal */}
+      <LogMaintenanceModal
+        isOpen={isMaintenanceModalOpen}
+        onClose={() => setIsMaintenanceModalOpen(false)}
+        onSave={handleSaveTask}
+      />
     </div>
   );
 }

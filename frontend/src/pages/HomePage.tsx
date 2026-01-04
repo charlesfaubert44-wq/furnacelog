@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Thermometer, Home, Calendar, AlertTriangle, Snowflake, Flame, CheckCircle2, ArrowRight, Clock, TrendingDown, LogOut, User } from 'lucide-react';
+import { Thermometer, Home, Calendar, AlertTriangle, Snowflake, Flame, CheckCircle2, ArrowRight, Clock, TrendingDown, LogOut, User, BookOpen, Settings } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import { AuthModal } from '@/components/auth/AuthModal';
@@ -113,6 +113,12 @@ function HomePage() {
                   >
                     Dashboard
                   </button>
+                  <button
+                    onClick={() => navigate('/wiki')}
+                    className="px-4 py-2 text-sm text-[#d4a373] hover:text-[#f4e8d8] font-medium transition-colors rounded-lg hover:bg-[#2a2a2a]/50"
+                  >
+                    Wiki
+                  </button>
                 </nav>
               )}
             </div>
@@ -137,6 +143,26 @@ function HomePage() {
                       >
                         <Home className="w-4 h-4" />
                         Dashboard
+                      </button>
+                      <button
+                        onClick={() => {
+                          navigate('/wiki');
+                          setShowUserMenu(false);
+                        }}
+                        className="w-full flex items-center gap-2 px-4 py-2 text-sm text-[#d4a373] hover:bg-[#2a2a2a] hover:text-[#f4e8d8] transition-colors"
+                      >
+                        <BookOpen className="w-4 h-4" />
+                        Wiki
+                      </button>
+                      <button
+                        onClick={() => {
+                          navigate('/settings');
+                          setShowUserMenu(false);
+                        }}
+                        className="w-full flex items-center gap-2 px-4 py-2 text-sm text-[#d4a373] hover:bg-[#2a2a2a] hover:text-[#f4e8d8] transition-colors"
+                      >
+                        <Settings className="w-4 h-4" />
+                        Settings
                       </button>
                       <button
                         onClick={handleLogout}

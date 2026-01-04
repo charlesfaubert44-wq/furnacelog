@@ -7,6 +7,9 @@ import Register from './pages/Register';
 import AuthCallback from './pages/AuthCallback';
 import Dashboard from './pages/Dashboard';
 import ClimateTimeMachine from './pages/ClimateTimeMachine';
+import Settings from './pages/Settings';
+import Wiki from './pages/Wiki';
+import Onboarding from './pages/Onboarding';
 
 /**
  * Main App Component
@@ -47,6 +50,30 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/settings"
+              element={
+                <ProtectedRoute>
+                  <Settings />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/wiki"
+              element={
+                <ProtectedRoute>
+                  <Wiki />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/onboarding"
+              element={
+                <ProtectedRoute>
+                  <Onboarding />
                 </ProtectedRoute>
               }
             />

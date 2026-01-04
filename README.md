@@ -20,9 +20,13 @@ FurnaceLog is a comprehensive home maintenance tracking and management platform 
 
 | Document | Description |
 |----------|-------------|
-| [PRD](northern-home-tracker-prd.md) | Complete Product Requirements Document |
-| [TASKS](TASKS.md) | Development task breakdown by epic and phase |
-| [DEPLOYMENT](DOKPLOY_DEPLOYMENT.md) | Dokploy deployment guide for production |
+| [📚 **Documentation Hub**](docs/README.md) | **Complete documentation index and navigation** |
+| [Getting Started Guide](GETTING_STARTED.md) | Setup and installation instructions |
+| [Product Requirements](docs/planning/northern-home-tracker-prd.md) | Complete PRD with all features |
+| [API Specification](docs/architecture/API_SPECIFICATION.md) | REST API documentation |
+| [Database Schema](docs/architecture/DATABASE_SCHEMA.md) | Database design and models |
+| [Deployment Guide](docs/deployment/YOUR_DEPLOYMENT_GUIDE.md) | Step-by-step deployment instructions |
+| [Security Guide](docs/security/SECURITY.md) | Security overview and best practices |
 
 ---
 
@@ -147,6 +151,16 @@ furnacelog/
 │   │   └── main.jsx        # Entry point
 │   ├── package.json
 │   └── ...
+├── docs/                   # 📚 All documentation
+│   ├── README.md           # Documentation hub
+│   ├── architecture/       # Technical specs, API, DB schema
+│   ├── implementation/     # Implementation reports
+│   ├── features/           # Feature specifications
+│   ├── deployment/         # Deployment guides
+│   ├── security/           # Security documentation
+│   ├── guides/             # Quick references
+│   ├── planning/           # PRD, tasks, roadmap
+│   └── archive/            # Deprecated docs
 ├── backend.Dockerfile       # Backend Docker config
 ├── frontend.Dockerfile      # Frontend Docker config
 ├── nginx.conf              # Nginx config for frontend
@@ -154,10 +168,8 @@ furnacelog/
 ├── .env.example            # Environment variables template
 ├── mongo-init.js           # MongoDB initialization
 ├── healthcheck.js          # Docker health check
-├── northern-home-tracker-prd.md  # Product requirements
-├── TASKS.md                # Development tasks
-├── DOKPLOY_DEPLOYMENT.md   # Deployment guide
-└── README.md               # This file
+├── README.md               # This file
+└── GETTING_STARTED.md      # Setup guide
 ```
 
 ---
@@ -211,7 +223,7 @@ furnacelog/
 ### MVP (3-4 months)
 **Team:** 2-3 developers
 **Focus:** Core infrastructure + basic features
-- See [TASKS.md](TASKS.md) for detailed task breakdown
+- See [TASKS.md](docs/planning/TASKS.md) for detailed task breakdown
 
 ### V1 Launch (2-3 months)
 **Team:** 3-4 developers
@@ -237,11 +249,16 @@ FurnaceLog is designed to be deployed on a dedicated server using Dokploy.
 
 **Quick Deploy:**
 
-1. Follow the comprehensive [DOKPLOY_DEPLOYMENT.md](DOKPLOY_DEPLOYMENT.md) guide
+1. Follow the comprehensive [Deployment Guide](docs/deployment/YOUR_DEPLOYMENT_GUIDE.md)
 2. Install MongoDB on server
 3. Install Dokploy
 4. Deploy backend and frontend via Dokploy dashboard
 5. Configure SSL via Let's Encrypt
+
+**Additional Deployment Resources:**
+- [Dokploy Quickstart](docs/deployment/DOKPLOY_QUICKSTART.md) - Quick setup guide
+- [Deployment Checklist](docs/deployment/DEPLOYMENT_CHECKLIST.md) - Pre-deployment checklist
+- [Production Readiness](docs/deployment/PRODUCTION_READINESS_REPORT.md) - Readiness assessment
 
 **Deployment Checklist:**
 - [ ] Server provisioned and secured
@@ -404,11 +421,25 @@ See [.env.example](.env.example) for complete list of environment variables.
 
 ## 🗺️ Roadmap
 
-See [TASKS.md](TASKS.md) for detailed roadmap and task breakdown.
+See [TASKS.md](docs/planning/TASKS.md) for detailed roadmap and task breakdown.
 
 **Current Phase:** MVP Development
 **Next Milestone:** MVP completion (Q2 2026)
 **V1 Launch Target:** Q3 2026
+
+---
+
+## 📚 Documentation
+
+All documentation has been organized into the [docs/](docs/) folder. See the [Documentation Hub](docs/README.md) for complete navigation.
+
+**Quick Links:**
+- [Architecture Documentation](docs/architecture/) - Technical specs, API, database
+- [Feature Specifications](docs/features/) - Detailed feature designs
+- [Implementation Reports](docs/implementation/) - Completed work summaries
+- [Deployment Guides](docs/deployment/) - Production deployment
+- [Security Documentation](docs/security/) - Security implementation
+- [Quick References](docs/guides/) - Developer guides
 
 ---
 
