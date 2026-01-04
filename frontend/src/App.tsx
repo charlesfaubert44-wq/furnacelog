@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import AuthCallback from './pages/AuthCallback';
+import Dashboard from './pages/Dashboard';
 import ClimateTimeMachine from './pages/ClimateTimeMachine';
 
 /**
@@ -41,6 +42,14 @@ function App() {
             />
 
             {/* Protected routes - require authentication */}
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/timeline/:homeId"
               element={
