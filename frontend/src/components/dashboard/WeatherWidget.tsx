@@ -1,7 +1,5 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { AlertTriangle, Wind, Droplets } from 'lucide-react';
+import { AlertTriangle, Wind, Droplets, Thermometer } from 'lucide-react';
 
 export const WeatherWidget: React.FC = () => {
   // Mock weather data
@@ -12,71 +10,96 @@ export const WeatherWidget: React.FC = () => {
   const hasAlert = currentTemp < -20;
 
   return (
-    <Card elevation="elevated">
-      <CardHeader>
-        <CardTitle>Current Weather</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {/* Temperature Display */}
-        <div className="flex items-center justify-between">
+    <div className="bg-stone-900 border border-stone-800 rounded-2xl p-6 h-full">
+      {/* Header */}
+      <div className="mb-6">
+        <h3 className="text-xl font-semibold text-stone-50">
+          Current Weather
+        </h3>
+        <p className="text-sm text-stone-400 mt-1">
+          Yellowknife, NT
+        </p>
+      </div>
+
+      {/* Temperature Display */}
+      <div className="mb-6">
+        <div className="flex items-start justify-between mb-4">
           <div>
-            <div className="flex items-baseline gap-2">
-              <span className="text-4xl font-bold text-ice-blue-600">
+            <div className="flex items-baseline gap-3">
+              <span className="text-5xl font-bold text-sky-400">
                 {currentTemp}°C
               </span>
-              <span className="text-sm text-aluminum-500">
-                Feels like {windChill}°C
-              </span>
             </div>
-            <p className="text-sm text-aluminum-600 mt-1">Yellowknife, NT</p>
+            <p className="text-sm text-stone-400 mt-2">
+              Feels like <span className="text-stone-300 font-medium">{windChill}°C</span>
+            </p>
           </div>
-          <div className="text-6xl">🌨️</div>
+          <div className="text-5xl">🌨️</div>
         </div>
+      </div>
 
-        {/* Weather Details */}
-        <div className="grid grid-cols-2 gap-3">
-          <div className="flex items-center gap-2 rounded-lg bg-aluminum-50 p-2">
-            <Wind className="h-4 w-4 text-aluminum-500" />
-            <div>
-              <p className="text-micro text-aluminum-500">Wind</p>
-              <p className="text-sm font-semibold">{windSpeed} km/h</p>
-            </div>
+      {/* Weather Details */}
+      <div className="grid grid-cols-2 gap-3 mb-6">
+        <div className="flex items-center gap-3 bg-stone-800 border border-stone-700 rounded-lg p-3">
+          <div className="w-10 h-10 bg-stone-700 rounded-lg flex items-center justify-center flex-shrink-0">
+            <Wind className="h-5 w-5 text-stone-300" />
           </div>
-          <div className="flex items-center gap-2 rounded-lg bg-aluminum-50 p-2">
-            <Droplets className="h-4 w-4 text-aluminum-500" />
-            <div>
-              <p className="text-micro text-aluminum-500">Humidity</p>
-              <p className="text-sm font-semibold">{humidity}%</p>
-            </div>
+          <div className="min-w-0">
+            <p className="text-xs text-stone-400">Wind</p>
+            <p className="text-sm font-semibold text-stone-200">{windSpeed} km/h</p>
           </div>
         </div>
+        <div className="flex items-center gap-3 bg-stone-800 border border-stone-700 rounded-lg p-3">
+          <div className="w-10 h-10 bg-stone-700 rounded-lg flex items-center justify-center flex-shrink-0">
+            <Droplets className="h-5 w-5 text-stone-300" />
+          </div>
+          <div className="min-w-0">
+            <p className="text-xs text-stone-400">Humidity</p>
+            <p className="text-sm font-semibold text-stone-200">{humidity}%</p>
+          </div>
+        </div>
+      </div>
 
-        {/* Weather Alert */}
-        {hasAlert && (
-          <Alert variant="warning">
-            <AlertTriangle className="h-4 w-4" />
-            <AlertDescription>
-              <strong>Extreme Cold Warning</strong>
-              <p className="mt-1 text-xs">
-                Check heat trace systems and ensure furnace is operating
-                properly.
+      {/* Weather Alert */}
+      {hasAlert && (
+        <div className="bg-gradient-to-br from-red-950/60 to-red-900/40 border-2 border-red-800/50 rounded-xl p-4 mb-4">
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 w-10 h-10 bg-red-900/50 rounded-lg flex items-center justify-center">
+              <AlertTriangle className="h-5 w-5 text-red-400" />
+            </div>
+            <div>
+              <h4 className="font-semibold text-red-300 text-sm mb-1">
+                Extreme Cold Warning
+              </h4>
+              <p className="text-xs text-red-400 leading-relaxed">
+                Check heat trace systems and ensure furnace is operating properly.
               </p>
-            </AlertDescription>
-          </Alert>
-        )}
-
-        {/* Suggested Actions */}
-        <div className="rounded-lg bg-tech-blue-50 p-3">
-          <h4 className="text-sm font-semibold text-tech-blue-700 mb-2">
-            Recommended Actions
-          </h4>
-          <ul className="space-y-1 text-xs text-tech-blue-600">
-            <li>• Monitor furnace operation</li>
-            <li>• Verify heat trace cables are active</li>
-            <li>• Let taps drip to prevent freezing</li>
-          </ul>
+            </div>
+          </div>
         </div>
-      </CardContent>
-    </Card>
+      )}
+
+      {/* Suggested Actions */}
+      <div className="bg-amber-950/30 border border-amber-900/40 rounded-xl p-4">
+        <h4 className="text-sm font-semibold text-amber-300 mb-3 flex items-center gap-2">
+          <Thermometer className="w-4 h-4" />
+          Recommended Actions
+        </h4>
+        <ul className="space-y-2 text-xs text-amber-400/90">
+          <li className="flex items-start gap-2">
+            <span className="text-amber-500 mt-0.5">•</span>
+            <span>Monitor furnace operation</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-amber-500 mt-0.5">•</span>
+            <span>Verify heat trace cables are active</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-amber-500 mt-0.5">•</span>
+            <span>Let taps drip to prevent freezing</span>
+          </li>
+        </ul>
+      </div>
+    </div>
   );
 };

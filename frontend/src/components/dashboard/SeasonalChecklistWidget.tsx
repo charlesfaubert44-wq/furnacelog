@@ -1,7 +1,4 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { CheckCircle2, Circle, ChevronRight } from 'lucide-react';
 
 interface ChecklistItem {
@@ -25,63 +22,70 @@ export const SeasonalChecklistWidget: React.FC = () => {
   const progressPercentage = Math.round((completedCount / totalCount) * 100);
 
   return (
-    <Card elevation="elevated">
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <CardTitle>Winter Operations Checklist</CardTitle>
-          <Badge variant="info">{progressPercentage}%</Badge>
+    <div className="bg-stone-900 border border-stone-800 rounded-2xl p-6 h-full flex flex-col">
+      {/* Header */}
+      <div className="mb-6">
+        <div className="flex items-start justify-between mb-2">
+          <h3 className="text-xl font-semibold text-stone-50">
+            Winter Checklist
+          </h3>
+          <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-sky-950/40 text-sky-400">
+            {progressPercentage}%
+          </span>
         </div>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {/* Progress Bar */}
-        <div className="space-y-2">
-          <div className="progress-bar">
-            <div
-              className="progress-fill"
-              style={{ width: `${progressPercentage}%` }}
-            />
-          </div>
-          <p className="text-small text-aluminum-500">
-            {completedCount} of {totalCount} tasks complete
-          </p>
-        </div>
+        <p className="text-sm text-stone-400">
+          Critical seasonal tasks
+        </p>
+      </div>
 
-        {/* Checklist Items */}
-        <div className="space-y-2">
-          {winterChecklist.slice(0, 4).map((item) => (
-            <div
-              key={item.id}
-              className="flex items-center gap-3 rounded-lg border border-aluminum-200 p-3 hover:bg-aluminum-50 transition-colors cursor-pointer"
+      {/* Progress Bar */}
+      <div className="mb-6">
+        <div className="h-2 bg-stone-800 rounded-full overflow-hidden mb-2">
+          <div
+            className="h-full bg-gradient-to-r from-amber-600 to-amber-500 transition-all duration-300"
+            style={{ width: `${progressPercentage}%` }}
+          />
+        </div>
+        <p className="text-xs text-stone-400">
+          {completedCount} of {totalCount} tasks complete
+        </p>
+      </div>
+
+      {/* Checklist Items */}
+      <div className="space-y-2 flex-1 mb-4">
+        {winterChecklist.slice(0, 4).map((item) => (
+          <div
+            key={item.id}
+            className="flex items-center gap-3 p-3 bg-stone-800 border border-stone-700 hover:border-stone-600 rounded-lg transition-all cursor-pointer group"
+          >
+            {item.completed ? (
+              <CheckCircle2 className="h-5 w-5 text-emerald-500 flex-shrink-0" />
+            ) : (
+              <Circle className="h-5 w-5 text-stone-500 flex-shrink-0" />
+            )}
+            <span
+              className={`flex-1 text-sm ${
+                item.completed
+                  ? 'text-stone-500 line-through'
+                  : 'text-stone-200'
+              }`}
             >
-              {item.completed ? (
-                <CheckCircle2 className="h-5 w-5 text-system-green-600 flex-shrink-0" />
-              ) : (
-                <Circle className="h-5 w-5 text-aluminum-300 flex-shrink-0" />
-              )}
-              <span
-                className={`flex-1 text-sm ${
-                  item.completed
-                    ? 'text-aluminum-500 line-through'
-                    : 'text-graphite-900'
-                }`}
-              >
-                {item.title}
+              {item.title}
+            </span>
+            {item.priority === 'high' && !item.completed && (
+              <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-950/40 text-red-400">
+                High
               </span>
-              {item.priority === 'high' && !item.completed && (
-                <Badge variant="error" className="text-micro">
-                  High
-                </Badge>
-              )}
-            </div>
-          ))}
-        </div>
+            )}
+          </div>
+        ))}
+      </div>
 
-        {/* View All Button */}
-        <Button variant="outline" className="w-full">
-          View Full Checklist
-          <ChevronRight className="h-4 w-4 ml-2" />
-        </Button>
-      </CardContent>
-    </Card>
+      {/* View All Button */}
+      <button className="w-full px-4 py-2.5 bg-stone-800 hover:bg-stone-700 border border-stone-700 text-stone-200 text-sm font-medium rounded-lg transition-all duration-200 flex items-center justify-center gap-2">
+        View Full Checklist
+        <ChevronRight className="h-4 w-4" />
+      </button>
+    </div>
   );
 };

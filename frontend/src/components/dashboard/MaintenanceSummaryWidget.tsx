@@ -1,7 +1,5 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { AlertCircle, Clock, CheckCircle2 } from 'lucide-react';
+import { AlertCircle, Clock, CheckCircle2, Flame, Wind, Droplets } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface MaintenanceTask {
@@ -11,24 +9,27 @@ interface MaintenanceTask {
   dueDate: Date;
   status: 'overdue' | 'due-soon' | 'upcoming';
   priority: 'high' | 'medium' | 'low';
+  icon?: React.ReactNode;
 }
 
 const mockTasks: MaintenanceTask[] = [
   {
     id: '1',
     title: 'Furnace Filter Replacement',
-    system: 'Heating',
+    system: 'Propane Furnace',
     dueDate: new Date('2026-01-05'),
     status: 'overdue',
     priority: 'high',
+    icon: <Flame className="w-4 h-4" />,
   },
   {
     id: '2',
     title: 'HRV Core Cleaning',
-    system: 'Ventilation',
+    system: 'HRV System',
     dueDate: new Date('2026-01-10'),
     status: 'due-soon',
     priority: 'medium',
+    icon: <Wind className="w-4 h-4" />,
   },
   {
     id: '3',
@@ -37,6 +38,7 @@ const mockTasks: MaintenanceTask[] = [
     dueDate: new Date('2026-01-15'),
     status: 'upcoming',
     priority: 'high',
+    icon: <Droplets className="w-4 h-4" />,
   },
 ];
 
@@ -46,82 +48,102 @@ export const MaintenanceSummaryWidget: React.FC = () => {
   const upcomingCount = mockTasks.filter((t) => t.status === 'upcoming').length;
 
   return (
-    <Card elevation="elevated">
-      <CardHeader>
-        <CardTitle>Maintenance Summary</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {/* Summary Stats */}
-        <div className="grid grid-cols-3 gap-3">
-          <div className="rounded-lg bg-flame-red-50 p-3 text-center">
-            <div className="flex items-center justify-center gap-1 mb-1">
-              <AlertCircle className="h-4 w-4 text-flame-red-600" />
-              <span className="text-2xl font-bold text-flame-red-700">
-                {overdueCount}
-              </span>
-            </div>
-            <p className="text-micro text-flame-red-600 font-medium">Overdue</p>
-          </div>
+    <div className="bg-stone-900 border border-stone-800 rounded-2xl p-6 h-full">
+      {/* Header */}
+      <div className="mb-6">
+        <h3 className="text-xl font-semibold text-stone-50">
+          Maintenance Summary
+        </h3>
+        <p className="text-sm text-stone-400 mt-1">
+          Track your upcoming and overdue tasks
+        </p>
+      </div>
 
-          <div className="rounded-lg bg-caution-yellow-50 p-3 text-center">
-            <div className="flex items-center justify-center gap-1 mb-1">
-              <Clock className="h-4 w-4 text-caution-yellow-600" />
-              <span className="text-2xl font-bold text-caution-yellow-700">
-                {dueSoonCount}
-              </span>
-            </div>
-            <p className="text-micro text-caution-yellow-600 font-medium">
-              Due This Week
-            </p>
+      {/* Summary Stats */}
+      <div className="grid grid-cols-3 gap-4 mb-6">
+        <div className="bg-gradient-to-br from-red-950/60 to-red-900/40 border border-red-800/40 rounded-xl p-4">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <AlertCircle className="h-5 w-5 text-red-400" />
+            <span className="text-3xl font-bold text-red-300">
+              {overdueCount}
+            </span>
           </div>
-
-          <div className="rounded-lg bg-tech-blue-50 p-3 text-center">
-            <div className="flex items-center justify-center gap-1 mb-1">
-              <CheckCircle2 className="h-4 w-4 text-tech-blue-600" />
-              <span className="text-2xl font-bold text-tech-blue-700">
-                {upcomingCount}
-              </span>
-            </div>
-            <p className="text-micro text-tech-blue-600 font-medium">Upcoming</p>
-          </div>
+          <p className="text-xs text-red-400 font-medium text-center uppercase tracking-wide">
+            Overdue
+          </p>
         </div>
 
-        {/* Task List */}
-        <div className="space-y-2">
-          {mockTasks.map((task) => (
+        <div className="bg-gradient-to-br from-amber-950/60 to-amber-900/40 border border-amber-800/40 rounded-xl p-4">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <Clock className="h-5 w-5 text-amber-400" />
+            <span className="text-3xl font-bold text-amber-300">
+              {dueSoonCount}
+            </span>
+          </div>
+          <p className="text-xs text-amber-400 font-medium text-center uppercase tracking-wide">
+            This Week
+          </p>
+        </div>
+
+        <div className="bg-gradient-to-br from-sky-950/60 to-sky-900/40 border border-sky-800/40 rounded-xl p-4">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <CheckCircle2 className="h-5 w-5 text-sky-400" />
+            <span className="text-3xl font-bold text-sky-300">
+              {upcomingCount}
+            </span>
+          </div>
+          <p className="text-xs text-sky-400 font-medium text-center uppercase tracking-wide">
+            Upcoming
+          </p>
+        </div>
+      </div>
+
+      {/* Task List */}
+      <div className="space-y-3">
+        {mockTasks.map((task) => (
+          <div
+            key={task.id}
+            className={cn(
+              'flex items-start gap-4 rounded-xl p-4 transition-all cursor-pointer border-2',
+              task.status === 'overdue' && 'bg-red-950/30 border-red-900/50 hover:border-red-800/70',
+              task.status === 'due-soon' && 'bg-amber-950/30 border-amber-900/50 hover:border-amber-800/70',
+              task.status === 'upcoming' && 'bg-stone-800/50 border-stone-700 hover:border-stone-600'
+            )}
+          >
             <div
-              key={task.id}
               className={cn(
-                'flex items-center justify-between rounded-lg border-2 p-3 transition-all hover:shadow-md cursor-pointer',
-                task.status === 'overdue' && 'border-flame-red-200 bg-flame-red-50',
-                task.status === 'due-soon' && 'border-caution-yellow-200 bg-caution-yellow-50',
-                task.status === 'upcoming' && 'border-aluminum-200 bg-white'
+                'flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center',
+                task.status === 'overdue' && 'bg-red-900/40 text-red-400',
+                task.status === 'due-soon' && 'bg-amber-900/40 text-amber-400',
+                task.status === 'upcoming' && 'bg-stone-700 text-stone-300'
               )}
             >
-              <div className="flex-1">
-                <h4 className="font-medium text-sm">{task.title}</h4>
-                <p className="text-micro text-aluminum-500">{task.system}</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <Badge
-                  variant={
-                    task.status === 'overdue'
-                      ? 'error'
-                      : task.status === 'due-soon'
-                      ? 'warning'
-                      : 'default'
-                  }
-                >
-                  {task.dueDate.toLocaleDateString('en-CA', {
-                    month: 'short',
-                    day: 'numeric',
-                  })}
-                </Badge>
-              </div>
+              {task.icon}
             </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+            <div className="flex-1 min-w-0">
+              <h4 className="font-semibold text-stone-100 text-sm">
+                {task.title}
+              </h4>
+              <p className="text-xs text-stone-400 mt-0.5">{task.system}</p>
+            </div>
+            <div className="flex-shrink-0">
+              <span
+                className={cn(
+                  'inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium',
+                  task.status === 'overdue' && 'bg-red-900/40 text-red-300',
+                  task.status === 'due-soon' && 'bg-amber-900/40 text-amber-300',
+                  task.status === 'upcoming' && 'bg-stone-700 text-stone-300'
+                )}
+              >
+                {task.dueDate.toLocaleDateString('en-CA', {
+                  month: 'short',
+                  day: 'numeric',
+                })}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
