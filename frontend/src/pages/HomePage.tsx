@@ -432,12 +432,7 @@ function HomePage() {
       <footer className="py-12 bg-wood-dark">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6 pb-8 border-b border-wood-light/20">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-fireplace rounded-lg flex items-center justify-center shadow-warm-sm">
-                <Flame className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-cream font-semibold">FurnaceLog</span>
-            </div>
+            <Logo size="sm" className="[&_path]:fill-cream [&_path]:stroke-cream [&_span]:!text-cream" />
             {!loading && health?.status === 'healthy' && (
               <div className="flex items-center gap-2 text-sm text-soft-beige/80">
                 <div className="w-2 h-2 bg-soft-amber rounded-full animate-pulse" />

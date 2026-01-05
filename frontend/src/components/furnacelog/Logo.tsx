@@ -7,173 +7,213 @@ interface LogoProps {
 }
 
 export const Logo: React.FC<LogoProps> = ({ size = 'md', showSlogan = false, className = '' }) => {
-  const sizeClasses = {
+  const sizes = {
     sm: {
-      text: 'text-2xl md:text-3xl',
-      dot: 'text-base md:text-xl',
+      icon: 32,
+      text: 'text-xl',
       slogan: 'text-xs',
     },
     md: {
-      text: 'text-3xl md:text-4xl',
-      dot: 'text-lg md:text-2xl',
-      slogan: 'text-xs md:text-sm',
+      icon: 40,
+      text: 'text-2xl',
+      slogan: 'text-sm',
     },
     lg: {
-      text: 'text-4xl md:text-5xl',
-      dot: 'text-2xl md:text-3xl',
-      slogan: 'text-sm md:text-base',
+      icon: 56,
+      text: 'text-4xl',
+      slogan: 'text-base',
     },
     xl: {
-      text: 'text-5xl md:text-7xl',
-      dot: 'text-2xl md:text-4xl',
-      slogan: 'text-sm md:text-base',
+      icon: 72,
+      text: 'text-5xl',
+      slogan: 'text-lg',
     },
   };
 
-  return (
-    <div className={`flex flex-col ${className}`}>
-      <h1
-        className={`${sizeClasses[size].text} font-black tracking-tight flex items-baseline`}
-        style={{ WebkitFontSmoothing: 'antialiased', MozOsxFontSmoothing: 'grayscale', textRendering: 'optimizeLegibility' }}
-      >
-        <span className="text-white">FURNACE</span>
-        <span className="relative inline-block">
-          {/* Steam smoke from top of L */}
-          <div
-            className="absolute pointer-events-none"
-            style={{
-              top: size === 'sm' ? '-2px' : size === 'md' ? '-3px' : size === 'lg' ? '-4px' : '-2px',
-              left: size === 'sm' ? '3px' : size === 'md' ? '4px' : size === 'lg' ? '5px' : '6px',
-            }}
-          >
-            {/* Steam wisps - scaled based on size */}
-            <div className="absolute steam-1" style={{ left: size === 'sm' ? '0px' : size === 'md' ? '0px' : '1px', top: size === 'sm' ? '-4px' : size === 'md' ? '-5px' : size === 'lg' ? '-6px' : '-8px' }}>
-              <svg width={size === 'sm' ? '8' : size === 'md' ? '10' : '12'} height={size === 'sm' ? '14' : size === 'md' ? '16' : '20'} viewBox="0 0 12 20" fill="none" style={{ transform: 'translateY(-100%)' }}>
-                <path
-                  d="M6 20 Q3 16 6 12 Q2 8 6 4 Q4 0 6 -4"
-                  stroke="rgba(200,200,200,0.6)"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  fill="none"
-                  style={{ filter: 'blur(1px)' }}
-                />
-              </svg>
-            </div>
-            <div className="absolute steam-2" style={{ left: size === 'sm' ? '1px' : size === 'md' ? '1px' : '2px', top: size === 'sm' ? '-3px' : size === 'md' ? '-4px' : size === 'lg' ? '-5px' : '-6px' }}>
-              <svg width={size === 'sm' ? '7' : size === 'md' ? '8' : '10'} height={size === 'sm' ? '12' : size === 'md' ? '14' : '18'} viewBox="0 0 10 18" fill="none" style={{ transform: 'translateY(-100%)' }}>
-                <path
-                  d="M5 18 Q8 14 5 10 Q9 6 5 2 Q7 -2 5 -5"
-                  stroke="rgba(180,180,180,0.5)"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  fill="none"
-                  style={{ filter: 'blur(1.5px)' }}
-                />
-              </svg>
-            </div>
-            <div className="absolute steam-3" style={{ left: size === 'sm' ? '0.5px' : size === 'md' ? '0.5px' : '1px', top: size === 'sm' ? '-2px' : size === 'md' ? '-3px' : size === 'lg' ? '-4px' : '-5px' }}>
-              <svg width={size === 'sm' ? '7' : size === 'md' ? '8' : '10'} height={size === 'sm' ? '10' : size === 'md' ? '12' : '16'} viewBox="0 0 10 16" fill="none" style={{ transform: 'translateY(-100%)' }}>
-                <path
-                  d="M5 16 Q2 12 5 8 Q1 4 5 0 Q3 -3 5 -6"
-                  stroke="rgba(170,170,170,0.45)"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  fill="none"
-                  style={{ filter: 'blur(2px)' }}
-                />
-              </svg>
-            </div>
-          </div>
-          <span
-            className="log-text"
-            style={{
-              WebkitFontSmoothing: 'antialiased',
-              MozOsxFontSmoothing: 'grayscale',
-              textRendering: 'optimizeLegibility',
-              color: '#A33D05',
-            }}
-          >LOG</span>
-          <span className={`text-gray-500 font-bold ${sizeClasses[size].dot}`}>.com</span>
-        </span>
-      </h1>
+  const iconSize = sizes[size].icon;
 
-      {showSlogan && (
-        <p className={`${sizeClasses[size].slogan} text-gray-500 tracking-wide mt-1`}>
-          When did you last change your filter? <span className="text-gray-600 italic">...exactly.</span>
-        </p>
-      )}
+  return (
+    <div className={`flex items-center gap-3 ${className}`}>
+      {/* House Icon with Fireplace */}
+      <div className="relative group" style={{ width: iconSize, height: iconSize }}>
+        <svg
+          width={iconSize}
+          height={iconSize}
+          viewBox="0 0 48 48"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="drop-shadow-warm-sm"
+        >
+          {/* House Shape */}
+          <path
+            d="M4 20L24 4L44 20V42C44 43.1046 43.1046 44 42 44H6C4.89543 44 4 43.1046 4 42V20Z"
+            fill="url(#houseGradient)"
+            stroke="#8B6F47"
+            strokeWidth="2"
+            strokeLinejoin="round"
+          />
+
+          {/* Roof */}
+          <path
+            d="M2 22L24 2L46 22"
+            stroke="#5C4A3A"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+
+          {/* Window Left */}
+          <rect
+            x="10"
+            y="16"
+            width="10"
+            height="10"
+            rx="2"
+            fill="#F5F1E8"
+            opacity="0.6"
+          />
+
+          {/* Window Right */}
+          <rect
+            x="28"
+            y="16"
+            width="10"
+            height="10"
+            rx="2"
+            fill="#F5F1E8"
+            opacity="0.6"
+          />
+
+          {/* Door */}
+          <rect
+            x="18"
+            y="30"
+            width="12"
+            height="14"
+            rx="1"
+            fill="#8B6F47"
+          />
+
+          {/* Fireplace Flame */}
+          <g className="flame-glow">
+            <path
+              d="M24 26C24 26 20 24 20 20C20 16 22 14 24 14C26 14 28 16 28 20C28 24 24 26 24 26Z"
+              fill="url(#flameGradient)"
+              className="animate-pulse"
+              style={{ transformOrigin: '24px 20px' }}
+            />
+            {/* Flame Core */}
+            <ellipse
+              cx="24"
+              cy="20"
+              rx="2"
+              ry="3"
+              fill="#FAF8F3"
+              opacity="0.9"
+            />
+          </g>
+
+          {/* Chimney */}
+          <rect
+            x="30"
+            y="6"
+            width="6"
+            height="10"
+            fill="#5C4A3A"
+            stroke="#4A3628"
+            strokeWidth="1"
+          />
+
+          {/* Smoke wisps */}
+          <g className="smoke" opacity="0.4">
+            <path
+              d="M33 6Q31 4 33 2"
+              stroke="#6B5D50"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              fill="none"
+              className="wisp-1"
+            />
+            <path
+              d="M35 5Q37 3 35 1"
+              stroke="#6B5D50"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              fill="none"
+              className="wisp-2"
+            />
+          </g>
+
+          {/* Gradients */}
+          <defs>
+            <linearGradient id="houseGradient" x1="24" y1="4" x2="24" y2="44" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="#E8DCC4" />
+              <stop offset="100%" stopColor="#D4A574" />
+            </linearGradient>
+            <linearGradient id="flameGradient" x1="24" y1="14" x2="24" y2="26" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="#F4A582" />
+              <stop offset="50%" stopColor="#E88D5A" />
+              <stop offset="100%" stopColor="#D4A574" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      {/* Wordmark */}
+      <div className="flex flex-col">
+        <h1
+          className={`${sizes[size].text} font-black tracking-tight leading-none`}
+          style={{
+            WebkitFontSmoothing: 'antialiased',
+            MozOsxFontSmoothing: 'grayscale',
+            fontFamily: 'system-ui, -apple-system, sans-serif',
+          }}
+        >
+          <span className="bg-gradient-to-r from-wood-dark to-wood-light bg-clip-text text-transparent">
+            Furnace
+          </span>
+          <span className="bg-gradient-to-r from-warm-orange to-soft-amber bg-clip-text text-transparent">
+            Log
+          </span>
+        </h1>
+        {showSlogan && (
+          <p className={`${sizes[size].slogan} text-warm-gray font-medium mt-0.5`}>
+            Your Home, Always Protected
+          </p>
+        )}
+      </div>
 
       <style>{`
-        @keyframes steamRise1 {
+        @keyframes gentleGlow {
+          0%, 100% { opacity: 0.8; }
+          50% { opacity: 1; }
+        }
+
+        @keyframes smokeRise {
           0% {
             opacity: 0;
-            transform: translateY(0) scaleY(0.5);
+            transform: translateY(0);
           }
-          15% {
+          50% {
             opacity: 0.6;
           }
           100% {
             opacity: 0;
-            transform: translateY(-30px) scaleY(1) translateX(-3px);
+            transform: translateY(-8px);
           }
         }
-        @keyframes steamRise2 {
-          0% {
-            opacity: 0;
-            transform: translateY(0) scaleY(0.5);
-          }
-          15% {
-            opacity: 0.5;
-          }
-          100% {
-            opacity: 0;
-            transform: translateY(-35px) scaleY(1) translateX(4px);
-          }
+
+        .flame-glow {
+          animation: gentleGlow 2s ease-in-out infinite;
         }
-        @keyframes steamRise3 {
-          0% {
-            opacity: 0;
-            transform: translateY(0) scaleY(0.5);
-          }
-          15% {
-            opacity: 0.45;
-          }
-          100% {
-            opacity: 0;
-            transform: translateY(-28px) scaleY(1) translateX(-2px);
-          }
+
+        .wisp-1 {
+          animation: smokeRise 3s ease-out infinite;
         }
-        .steam-1 {
-          animation: steamRise1 3s ease-out infinite;
-        }
-        .steam-2 {
-          animation: steamRise2 3.5s ease-out infinite;
-          animation-delay: 1s;
-        }
-        .steam-3 {
-          animation: steamRise3 4s ease-out infinite;
-          animation-delay: 2s;
-        }
-        .log-text {
-          animation: furnaceBurn 3s ease-in-out infinite;
-        }
-        @keyframes furnaceBurn {
-          0%, 100% {
-            filter: brightness(1);
-            text-shadow: 0 0 2px rgba(163, 61, 5, 0.3);
-          }
-          25% {
-            filter: brightness(1.08);
-            text-shadow: 0 0 4px rgba(201, 74, 6, 0.4);
-          }
-          50% {
-            filter: brightness(1.12);
-            text-shadow: 0 0 6px rgba(229, 88, 7, 0.5);
-          }
-          75% {
-            filter: brightness(1.05);
-            text-shadow: 0 0 3px rgba(180, 65, 5, 0.35);
-          }
+
+        .wisp-2 {
+          animation: smokeRise 3.5s ease-out infinite;
+          animation-delay: 0.5s;
         }
       `}</style>
     </div>
