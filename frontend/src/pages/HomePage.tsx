@@ -9,6 +9,7 @@ import logger from '@/utils/logger';
 import { PricingPlans } from '@/components/pricing/PricingPlans';
 import { AdSense } from '@/components/ads/AdSense';
 import { HeroCarousel, type HeroSlide } from '@/components/hero/HeroCarousel';
+import { Logo } from '@/components/furnacelog/Logo';
 
 interface HealthStatus {
   status: string;
@@ -119,45 +120,35 @@ function HomePage() {
 
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
+    <div className="min-h-screen bg-black">
       {/* Navigation */}
       <nav className={cn(
         "sticky top-0 z-50 border-b transition-all duration-300",
         isScrolled
-          ? "border-[#d4a373]/10 bg-[#0a0a0a]/80 backdrop-blur-md"
-          : "border-[#d4a373]/10 bg-[#0a0a0a]/80 backdrop-blur-sm"
+          ? "border-furnace-primary/10 bg-black/80 backdrop-blur-md"
+          : "border-furnace-primary/10 bg-black/80 backdrop-blur-sm"
       )}>
         <div className="max-w-7xl mx-auto px-6 py-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-[#ff4500] to-[#ff6a00] rounded-xl flex items-center justify-center">
-                  <Flame className="w-6 h-6 text-[#f4e8d8]" strokeWidth={2.5} />
-                </div>
-                <div>
-                  <h1 className="text-xl font-bold text-[#f4e8d8] tracking-tight">
-                    FurnaceLog
-                  </h1>
-                  <p className="text-xs text-[#d4a373] font-medium">Northern Home Tracker</p>
-                </div>
-              </div>
+              <Logo size="sm" className="cursor-pointer" />
               {user && (
                 <nav className="hidden md:flex items-center gap-1 ml-8">
                   <button
                     onClick={() => navigate('/')}
-                    className="px-4 py-2 text-sm text-[#d4a373] hover:text-[#f4e8d8] font-medium transition-colors rounded-lg hover:bg-[#2a2a2a]/50"
+                    className="px-4 py-2 text-sm text-fl-text-secondary hover:text-white font-medium transition-colors rounded-lg hover:bg-fl-card-bg"
                   >
                     Home
                   </button>
                   <button
                     onClick={() => navigate('/dashboard')}
-                    className="px-4 py-2 text-sm text-[#d4a373] hover:text-[#f4e8d8] font-medium transition-colors rounded-lg hover:bg-[#2a2a2a]/50"
+                    className="px-4 py-2 text-sm text-fl-text-secondary hover:text-white font-medium transition-colors rounded-lg hover:bg-fl-card-bg"
                   >
                     Dashboard
                   </button>
                   <button
                     onClick={() => navigate('/wiki')}
-                    className="px-4 py-2 text-sm text-[#d4a373] hover:text-[#f4e8d8] font-medium transition-colors rounded-lg hover:bg-[#2a2a2a]/50"
+                    className="px-4 py-2 text-sm text-fl-text-secondary hover:text-white font-medium transition-colors rounded-lg hover:bg-fl-card-bg"
                   >
                     Wiki
                   </button>
@@ -169,19 +160,19 @@ function HomePage() {
                 <div className="relative">
                   <button
                     onClick={() => setShowUserMenu(!showUserMenu)}
-                    className="flex items-center gap-2 px-4 py-2 text-sm text-[#d4a373] hover:text-[#f4e8d8] font-medium transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 text-sm text-fl-text-secondary hover:text-white font-medium transition-colors"
                   >
                     <User className="w-4 h-4" />
                     <span>{user.email}</span>
                   </button>
                   {showUserMenu && (
-                    <div className="absolute right-0 mt-2 w-48 bg-[#1a1a1a] border border-[#f4e8d8]/10 rounded-lg py-2">
+                    <div className="absolute right-0 mt-2 w-48 bg-fl-card-bg border border-fl-card-border rounded-lg py-2">
                       <button
                         onClick={() => {
                           navigate('/dashboard');
                           setShowUserMenu(false);
                         }}
-                        className="w-full flex items-center gap-2 px-4 py-2 text-sm text-[#d4a373] hover:bg-[#2a2a2a] hover:text-[#f4e8d8] transition-colors"
+                        className="w-full flex items-center gap-2 px-4 py-2 text-sm text-fl-text-secondary hover:bg-fl-card-border hover:text-white transition-colors"
                       >
                         <Home className="w-4 h-4" />
                         Dashboard
@@ -191,7 +182,7 @@ function HomePage() {
                           navigate('/wiki');
                           setShowUserMenu(false);
                         }}
-                        className="w-full flex items-center gap-2 px-4 py-2 text-sm text-[#d4a373] hover:bg-[#2a2a2a] hover:text-[#f4e8d8] transition-colors"
+                        className="w-full flex items-center gap-2 px-4 py-2 text-sm text-fl-text-secondary hover:bg-fl-card-border hover:text-white transition-colors"
                       >
                         <BookOpen className="w-4 h-4" />
                         Wiki
@@ -201,14 +192,14 @@ function HomePage() {
                           navigate('/settings');
                           setShowUserMenu(false);
                         }}
-                        className="w-full flex items-center gap-2 px-4 py-2 text-sm text-[#d4a373] hover:bg-[#2a2a2a] hover:text-[#f4e8d8] transition-colors"
+                        className="w-full flex items-center gap-2 px-4 py-2 text-sm text-fl-text-secondary hover:bg-fl-card-border hover:text-white transition-colors"
                       >
                         <Settings className="w-4 h-4" />
                         Settings
                       </button>
                       <button
                         onClick={handleLogout}
-                        className="w-full flex items-center gap-2 px-4 py-2 text-sm text-[#d4a373] hover:bg-[#2a2a2a] hover:text-[#f4e8d8] transition-colors"
+                        className="w-full flex items-center gap-2 px-4 py-2 text-sm text-fl-text-secondary hover:bg-fl-card-border hover:text-white transition-colors"
                       >
                         <LogOut className="w-4 h-4" />
                         Sign Out
@@ -223,7 +214,7 @@ function HomePage() {
                       setAuthModalTab('login');
                       setAuthModalOpen(true);
                     }}
-                    className="px-4 py-2 text-sm text-[#d4a373] hover:text-[#f4e8d8] font-medium transition-colors"
+                    className="px-4 py-2 text-sm text-fl-text-secondary hover:text-white font-medium transition-colors"
                   >
                     Sign In
                   </button>
@@ -232,7 +223,7 @@ function HomePage() {
                       setAuthModalTab('register');
                       setAuthModalOpen(true);
                     }}
-                    className="px-5 py-2.5 bg-gradient-to-r from-[#ff4500] to-[#ff6a00] hover:brightness-110 text-[#f4e8d8] text-sm font-semibold rounded-xl transition-all duration-300"
+                    className="px-5 py-2.5 bg-furnace-primary hover:bg-furnace-light text-white text-sm font-semibold rounded-xl transition-all duration-300 shadow-lg shadow-orange-900/20 hover:shadow-orange-900/40"
                   >
                     Get Started
                   </button>
@@ -244,11 +235,11 @@ function HomePage() {
       </nav>
 
           {/* Hero Section */}
-          <section className="relative overflow-hidden border-b border-[#d4a373]/10">
+          <section className="relative overflow-hidden border-b border-furnace-primary/10">
             <div className="absolute inset-0 overflow-hidden">
-              <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#ff4500]/10 rounded-full blur-3xl" />
-              <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#ff6a00]/12 rounded-full blur-3xl" />
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#ff8c00]/8 rounded-full blur-3xl" />
+              <div className="absolute top-0 left-1/4 w-96 h-96 bg-furnace-primary/10 rounded-full blur-3xl" />
+              <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-furnace-light/12 rounded-full blur-3xl" />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-orange-600/8 rounded-full blur-3xl" />
             </div>
 
             <div className="relative max-w-7xl mx-auto px-6 py-8 md:py-10">
@@ -266,72 +257,72 @@ function HomePage() {
           </div>
 
           {/* Features Grid */}
-          <section id="features" className="py-24 border-b border-[#d4a373]/10">
+          <section id="features" className="py-24 border-b border-furnace-primary/10">
             <div className="max-w-7xl mx-auto px-6">
               <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-                <h2 className="text-4xl md:text-5xl font-bold text-[#f4e8d8]">Purpose-Built for the North</h2>
-                <p className="text-xl text-[#d4a373]">
+                <h2 className="text-4xl md:text-5xl font-bold text-white">Purpose-Built for the North</h2>
+                <p className="text-xl text-fl-text-secondary">
                   Every feature designed for extreme climates, modular housing, and remote communities
                 </p>
               </div>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div className="group bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#f4e8d8]/10 hover:border-[#ff4500]/30 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1  /20">
-                  <div className="w-14 h-14 bg-gradient-to-br from-[#ff4500] to-[#ff6a00] rounded-xl flex items-center justify-center mb-6  transition-all duration-300 group-hover:scale-110">
-                    <Flame className="w-7 h-7 text-[#f4e8d8] group-hover:animate-flicker" />
+                <div className="group bg-fl-card-bg border border-fl-card-border hover:border-furnace-primary/30 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1">
+                  <div className="w-14 h-14 bg-furnace-primary/10 border border-furnace-primary/30 rounded-xl flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-110 group-hover:bg-furnace-primary/20">
+                    <Flame className="w-7 h-7 text-furnace-primary group-hover:animate-flicker" />
                   </div>
-                  <h3 className="text-xl font-semibold text-[#f4e8d8] mb-3">Heating System Tracking</h3>
-                  <p className="text-[#d4a373] leading-relaxed">
+                  <h3 className="text-xl font-semibold text-white mb-3">Heating System Tracking</h3>
+                  <p className="text-fl-text-secondary leading-relaxed">
                     Monitor propane furnaces, oil boilers, heat trace cables, and HRV systems with northern-specific maintenance schedules.
                   </p>
                 </div>
 
-                <div className="group bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#f4e8d8]/10 hover:border-[#6a994e]/30 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1  /20">
-                  <div className="w-14 h-14 bg-gradient-to-br from-[#6a994e] to-[#7ea88f] rounded-xl flex items-center justify-center mb-6  transition-all duration-300 group-hover:scale-110">
-                    <Calendar className="w-7 h-7 text-[#f4e8d8]" />
+                <div className="group bg-fl-card-bg border border-fl-card-border hover:border-furnace-primary/30 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1">
+                  <div className="w-14 h-14 bg-furnace-primary/10 border border-furnace-primary/30 rounded-xl flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-110 group-hover:bg-furnace-primary/20">
+                    <Calendar className="w-7 h-7 text-furnace-primary" />
                   </div>
-                  <h3 className="text-xl font-semibold text-[#f4e8d8] mb-3">Seasonal Checklists</h3>
-                  <p className="text-[#d4a373] leading-relaxed">
+                  <h3 className="text-xl font-semibold text-white mb-3">Seasonal Checklists</h3>
+                  <p className="text-fl-text-secondary leading-relaxed">
                     Automated freeze-up, winter operations, break-up, and summer task lists tailored to territorial weather patterns.
                   </p>
                 </div>
 
-                <div className="group bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#f4e8d8]/10 hover:border-[#5b8fa3]/30 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1  /20">
-                  <div className="w-14 h-14 bg-gradient-to-br from-[#5b8fa3] to-[#7ea88f] rounded-xl flex items-center justify-center mb-6  transition-all duration-300 group-hover:scale-110">
-                    <Snowflake className="w-7 h-7 text-[#f4e8d8] group-hover:animate-float" />
+                <div className="group bg-fl-card-bg border border-fl-card-border hover:border-furnace-primary/30 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1">
+                  <div className="w-14 h-14 bg-furnace-primary/10 border border-furnace-primary/30 rounded-xl flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-110 group-hover:bg-furnace-primary/20">
+                    <Snowflake className="w-7 h-7 text-furnace-primary group-hover:animate-float" />
                   </div>
-                  <h3 className="text-xl font-semibold text-[#f4e8d8] mb-3">Weather Alerts</h3>
-                  <p className="text-[#d4a373] leading-relaxed">
+                  <h3 className="text-xl font-semibold text-white mb-3">Weather Alerts</h3>
+                  <p className="text-fl-text-secondary leading-relaxed">
                     Real-time extreme cold warnings, wind chill alerts, and automated maintenance reminders based on temperature.
                   </p>
                 </div>
 
-                <div className="group bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#f4e8d8]/10 hover:border-[#ff8c00]/30 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1  /20">
-                  <div className="w-14 h-14 bg-gradient-to-br from-[#ff8c00] to-[#d4a373] rounded-xl flex items-center justify-center mb-6  transition-all duration-300 group-hover:scale-110">
-                    <Home className="w-7 h-7 text-[#f4e8d8]" />
+                <div className="group bg-fl-card-bg border border-fl-card-border hover:border-furnace-primary/30 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1">
+                  <div className="w-14 h-14 bg-furnace-primary/10 border border-furnace-primary/30 rounded-xl flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-110 group-hover:bg-furnace-primary/20">
+                    <Home className="w-7 h-7 text-furnace-primary" />
                   </div>
-                  <h3 className="text-xl font-semibold text-[#f4e8d8] mb-3">Modular Home Support</h3>
-                  <p className="text-[#d4a373] leading-relaxed">
+                  <h3 className="text-xl font-semibold text-white mb-3">Modular Home Support</h3>
+                  <p className="text-fl-text-secondary leading-relaxed">
                     Track marriage walls, skirting maintenance, foundation piles, and belly board inspections specific to manufactured homes.
                   </p>
                 </div>
 
-                <div className="group bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#f4e8d8]/10 hover:border-[#d45d4e]/30 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1  /20">
-                  <div className="w-14 h-14 bg-gradient-to-br from-[#d45d4e] to-[#d4734e] rounded-xl flex items-center justify-center mb-6  transition-all duration-300 group-hover:scale-110">
-                    <AlertTriangle className="w-7 h-7 text-[#f4e8d8]" />
+                <div className="group bg-fl-card-bg border border-fl-card-border hover:border-furnace-primary/30 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1">
+                  <div className="w-14 h-14 bg-furnace-primary/10 border border-furnace-primary/30 rounded-xl flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-110 group-hover:bg-furnace-primary/20">
+                    <AlertTriangle className="w-7 h-7 text-furnace-primary" />
                   </div>
-                  <h3 className="text-xl font-semibold text-[#f4e8d8] mb-3">Freeze Prevention</h3>
-                  <p className="text-[#d4a373] leading-relaxed">
+                  <h3 className="text-xl font-semibold text-white mb-3">Freeze Prevention</h3>
+                  <p className="text-fl-text-secondary leading-relaxed">
                     Log freeze events, track heat trace cable zones, and receive proactive alerts before pipes freeze at -40°C.
                   </p>
                 </div>
 
-                <div className="group bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#f4e8d8]/10 hover:border-[#d4a373]/30 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1  /20">
-                  <div className="w-14 h-14 bg-gradient-to-br from-[#d4a373] to-[#ff8c00] rounded-xl flex items-center justify-center mb-6  transition-all duration-300 group-hover:scale-110">
-                    <TrendingDown className="w-7 h-7 text-[#f4e8d8]" />
+                <div className="group bg-fl-card-bg border border-fl-card-border hover:border-furnace-primary/30 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1">
+                  <div className="w-14 h-14 bg-furnace-primary/10 border border-furnace-primary/30 rounded-xl flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-110 group-hover:bg-furnace-primary/20">
+                    <TrendingDown className="w-7 h-7 text-furnace-primary" />
                   </div>
-                  <h3 className="text-xl font-semibold text-[#f4e8d8] mb-3">Offline-First Design</h3>
-                  <p className="text-[#d4a373] leading-relaxed">
+                  <h3 className="text-xl font-semibold text-white mb-3">Offline-First Design</h3>
+                  <p className="text-fl-text-secondary leading-relaxed">
                     Full functionality without internet connection. Perfect for remote communities with limited connectivity.
                   </p>
                 </div>
@@ -345,13 +336,13 @@ function HomePage() {
           </div>
 
           {/* Pricing Section */}
-          <section id="pricing" className="py-24 border-b border-[#d4a373]/10">
+          <section id="pricing" className="py-24 border-b border-furnace-primary/10">
             <div className="max-w-7xl mx-auto px-6">
               <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-                <h2 className="text-4xl md:text-5xl font-bold text-[#f4e8d8]">
+                <h2 className="text-4xl md:text-5xl font-bold text-white">
                   Choose Your Plan
                 </h2>
-                <p className="text-xl text-[#d4a373]">
+                <p className="text-xl text-fl-text-secondary">
                   Start free with ads, or go ad-free for just $6.99/month. All plans include core features.
                 </p>
               </div>
@@ -359,7 +350,7 @@ function HomePage() {
               <PricingPlans />
 
               <div className="mt-16 text-center">
-                <p className="text-sm text-[#d4a373]/70 max-w-2xl mx-auto">
+                <p className="text-sm text-fl-text-secondary/70 max-w-2xl mx-auto">
                   All plans include unlimited homes, maintenance tracking, weather alerts, and community support.
                   Upgrade anytime to remove ads and unlock advanced features. No credit card required to start.
                 </p>
@@ -368,12 +359,12 @@ function HomePage() {
           </section>
 
           {/* CTA Section */}
-          <section className="py-24 border-b border-[#d4a373]/10">
+          <section className="py-24 border-b border-furnace-primary/10">
             <div className="max-w-4xl mx-auto px-6 text-center space-y-8">
-              <h2 className="text-4xl md:text-5xl font-bold text-[#f4e8d8]">
+              <h2 className="text-4xl md:text-5xl font-bold text-white">
                 Start Protecting Your Home Today
               </h2>
-              <p className="text-xl text-[#d4a373] max-w-2xl mx-auto">
+              <p className="text-xl text-fl-text-secondary max-w-2xl mx-auto">
                 Join northern homeowners who trust FurnaceLog to keep their homes safe, warm, and well-maintained through extreme winters.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -382,7 +373,7 @@ function HomePage() {
                     setAuthModalTab('register');
                     setAuthModalOpen(true);
                   }}
-                  className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-gradient-to-r from-[#ff4500] to-[#ff6a00] text-[#f4e8d8] font-semibold rounded-xl transition-all duration-300"
+                  className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-gradient-to-r from-furnace-primary to-furnace-light text-white font-semibold rounded-xl transition-all duration-300"
                 >
                   Create Free Account
                   <ArrowRight className="w-5 h-5" />
@@ -399,22 +390,22 @@ function HomePage() {
       {/* Footer */}
       <footer className="py-12">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6 pb-8 border-b border-[#f4e8d8]/10">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6 pb-8 border-b border-fl-card-border">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-[#ff4500] to-[#ff6a00] rounded-lg flex items-center justify-center">
-                <Flame className="w-5 h-5 text-[#f4e8d8]" />
+              <div className="w-8 h-8 bg-gradient-to-br from-furnace-primary to-furnace-light rounded-lg flex items-center justify-center">
+                <Flame className="w-5 h-5 text-white" />
               </div>
-              <span className="text-[#f4e8d8] font-semibold">FurnaceLog</span>
+              <span className="text-white font-semibold">FurnaceLog</span>
             </div>
             {!loading && health?.status === 'healthy' && (
-              <div className="flex items-center gap-2 text-sm text-[#d4a373]">
-                <div className="w-2 h-2 bg-[#6a994e] rounded-full" />
+              <div className="flex items-center gap-2 text-sm text-fl-text-secondary">
+                <div className="w-2 h-2 bg-furnace-primary rounded-full" />
                 <span>All Systems Operational</span>
               </div>
             )}
-            <p className="text-sm text-[#d4a373]/70">Built for Canada's North</p>
+            <p className="text-sm text-fl-text-secondary/70">Built for Canada's North</p>
           </div>
-          <div className="pt-8 text-center text-sm text-[#d4a373]/70">
+          <div className="pt-8 text-center text-sm text-fl-text-secondary/70">
             © 2026 FurnaceLog. Open source home maintenance tracking.
           </div>
         </div>

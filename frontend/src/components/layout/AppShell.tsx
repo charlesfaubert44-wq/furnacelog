@@ -9,7 +9,7 @@ export const AppShell: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
+    <div className="min-h-screen bg-black">
       {/* Sidebar - Desktop */}
       <aside
         className={cn(
@@ -26,7 +26,7 @@ export const AppShell: React.FC = () => {
       {/* Mobile Sidebar Overlay */}
       {mobileMenuOpen && (
         <div
-          className="fixed inset-0 z-40 bg-[#0a0a0a]/80 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-40 bg-black/80 backdrop-blur-sm lg:hidden"
           onClick={() => setMobileMenuOpen(false)}
         />
       )}
@@ -59,27 +59,27 @@ export const AppShell: React.FC = () => {
         />
 
         {/* Page Content */}
-        <main className="min-h-[calc(100vh-4rem)] p-4 md:p-6 lg:p-8 bg-gradient-to-br from-[#0a0a0a] via-[#1a1a1a] to-[#0a0a0a]">
+        <main className="min-h-[calc(100vh-4rem)] p-4 md:p-6 lg:p-8 bg-black">
           <div className="mx-auto max-w-7xl">
             <Outlet />
           </div>
         </main>
 
         {/* Footer */}
-        <footer className="border-t border-[#f4e8d8]/10 bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] px-4 py-6 md:px-6 lg:px-8">
+        <footer className="border-t border-fl-card-border bg-fl-card-bg px-4 py-6 md:px-6 lg:px-8">
           <div className="mx-auto max-w-7xl">
             <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-              <p className="text-sm text-[#d4a373]">
+              <p className="text-sm text-fl-text-secondary">
                 © 2026 FurnaceLog. Built for Canada's North.
               </p>
-              <div className="flex gap-4 text-sm text-[#d4a373]">
-                <a href="#" className="hover:text-[#ff4500] transition-colors">
+              <div className="flex gap-4 text-sm text-fl-text-secondary">
+                <a href="#" className="hover:text-furnace-primary transition-colors">
                   Documentation
                 </a>
-                <a href="#" className="hover:text-[#ff4500] transition-colors">
+                <a href="#" className="hover:text-furnace-primary transition-colors">
                   Support
                 </a>
-                <a href="#" className="hover:text-[#ff4500] transition-colors">
+                <a href="#" className="hover:text-furnace-primary transition-colors">
                   Privacy
                 </a>
               </div>

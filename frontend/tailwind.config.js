@@ -17,6 +17,24 @@ export default {
     },
     extend: {
       colors: {
+        // FurnaceLog - Primary Palette
+        furnace: {
+          primary: '#C94A06',
+          dark: '#A33D05',
+          light: '#E55807',
+          hover: '#9a3412',
+        },
+
+        // FurnaceLog - Background & Card Colors
+        'fl-background': '#000000',
+        'fl-card-bg': '#0a0a0a',
+        'fl-card-border': '#1a1a1a',
+
+        // FurnaceLog - Text Colors
+        'fl-text': '#ffffff',
+        'fl-text-muted': '#6b7280',
+        'fl-text-secondary': '#9ca3af',
+
         // Territorial Homestead - Hearth & Home Palette
         // Foundation (Backgrounds)
         'deep-charcoal': '#1a1412',
