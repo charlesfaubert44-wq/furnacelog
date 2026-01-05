@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, ArrowRight, Filter, DollarSign, Thermometer, Brain, MapPin } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowRight, Filter, DollarSign, Thermometer, Brain } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export interface HeroSlide {
@@ -128,43 +128,6 @@ const CognitiveReliefVisual = () => (
   </div>
 );
 
-const NorthernBuiltVisual = () => (
-  <div className="absolute inset-0 overflow-hidden opacity-20 pointer-events-none">
-    {/* Map pins */}
-    <div className="absolute top-20 left-1/4 animate-bounce" style={{ animationDuration: '3s' }}>
-      <MapPin className="w-16 h-16 text-furnace-primary" fill="#C94A06" />
-    </div>
-    <div className="absolute top-40 right-1/3 animate-bounce" style={{ animationDuration: '3s', animationDelay: '0.5s' }}>
-      <MapPin className="w-20 h-20 text-furnace-light" fill="#E55807" />
-    </div>
-    {/* Northern lights waves */}
-    <div className="absolute bottom-0 left-0 right-0">
-      <svg width="100%" height="200" viewBox="0 0 1200 200" preserveAspectRatio="none">
-        <path d="M0 100 Q300 50 600 100 T1200 100 L1200 200 L0 200 Z" fill="url(#aurora1)" className="animate-aurora"/>
-        <path d="M0 120 Q300 80 600 120 T1200 120 L1200 200 L0 200 Z" fill="url(#aurora2)" className="animate-aurora" style={{ animationDelay: '1s' }}/>
-        <defs>
-          <linearGradient id="aurora1" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#10b981" stopOpacity="0.3"/>
-            <stop offset="100%" stopColor="#10b981" stopOpacity="0"/>
-          </linearGradient>
-          <linearGradient id="aurora2" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.2"/>
-            <stop offset="100%" stopColor="#3b82f6" stopOpacity="0"/>
-          </linearGradient>
-        </defs>
-      </svg>
-    </div>
-    {/* Mountains */}
-    <div className="absolute bottom-0 left-0 right-0">
-      <svg width="100%" height="150" viewBox="0 0 1200 150" preserveAspectRatio="none">
-        <path d="M0 150 L200 50 L400 150 Z" fill="#1a1a1a" opacity="0.8"/>
-        <path d="M300 150 L600 30 L900 150 Z" fill="#2a2a2a" opacity="0.8"/>
-        <path d="M800 150 L1000 70 L1200 150 Z" fill="#1a1a1a" opacity="0.8"/>
-      </svg>
-    </div>
-  </div>
-);
-
 const getSlideVisual = (slideId: string) => {
   switch (slideId) {
     case 'filter-question':
@@ -175,8 +138,6 @@ const getSlideVisual = (slideId: string) => {
       return <FurnaceFailureVisual />;
     case 'cognitive-relief':
       return <CognitiveReliefVisual />;
-    case 'northern-built':
-      return <NorthernBuiltVisual />;
     default:
       return null;
   }

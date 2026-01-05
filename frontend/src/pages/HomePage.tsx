@@ -134,25 +134,6 @@ function HomePage() {
         href: '#features',
       },
     },
-    {
-      id: 'northern-built',
-      headline: {
-        normal: 'Built for Yellowknife.',
-        highlight: 'Works in Whitehorse.',
-      },
-      subtitle: 'Purpose-built for extreme northern climates. From -40°C freeze protection to modular home maintenance, we speak your language.',
-      ctaPrimary: {
-        text: 'Start Free Today',
-        onClick: () => {
-          setAuthModalTab('register');
-          setAuthModalOpen(true);
-        },
-      },
-      ctaSecondary: {
-        text: 'Why Northern-Specific?',
-        href: '#features',
-      },
-    },
   ];
 
 
