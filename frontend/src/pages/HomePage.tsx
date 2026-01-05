@@ -251,7 +251,7 @@ function HomePage() {
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#ff8c00]/8 rounded-full blur-3xl" />
             </div>
 
-            <div className="relative max-w-7xl mx-auto px-6 py-20 md:py-28">
+            <div className="relative max-w-7xl mx-auto px-6 py-8 md:py-10">
               <HeroCarousel
                 slides={heroSlides}
                 autoAdvance={true}
@@ -261,7 +261,7 @@ function HomePage() {
           </section>
 
           {/* Ad Placement 1 */}
-          <div className="max-w-7xl mx-auto px-6 py-8">
+          <div className="max-w-7xl mx-auto px-6 py-2">
             <AdSense format="horizontal" className="max-w-4xl mx-auto" />
           </div>
 
@@ -340,7 +340,7 @@ function HomePage() {
           </section>
 
           {/* Ad Placement 2 */}
-          <div className="max-w-7xl mx-auto px-6 py-8">
+          <div className="max-w-7xl mx-auto px-6 py-2">
             <AdSense format="horizontal" className="max-w-4xl mx-auto" />
           </div>
 
@@ -392,7 +392,7 @@ function HomePage() {
           </section>
 
       {/* Ad Placement 3 */}
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="max-w-7xl mx-auto px-6 py-2">
         <AdSense format="horizontal" className="max-w-4xl mx-auto" />
       </div>
 

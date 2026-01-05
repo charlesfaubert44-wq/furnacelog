@@ -17,16 +17,36 @@ import componentRoutes from './routes/componentRoutes.js';
 import templateRoutes from './routes/templateRoutes.js';
 import maintenanceRoutes from './routes/maintenanceRoutes.js';
 import timelineRoutes from './routes/timelineRoutes.js';
+import iotRoutes from './routes/iot.routes.js';
+import iotService from './services/iotService.js';
+import alertService from './services/alertService.js';
+import websocketService from './services/websocketService.js';
+import Home from './models/Home.js';
 import logger from './utils/logger.js';
 
 // Load environment variables
 dotenv.config();
 
-// Connect to MongoDB and Redis
+// Connect to MongoDB, Redis, and IoT services
 const startServer = async () => {
   try {
     await connectDB();
     await connectRedis();
+
+    // Initialize IoT service (MQTT connection)
+    try {
+      await iotService.connect();
+
+      // Listen for sensor alerts
+      iotService.on('alert', async (alertData) => {
+        await alertService.processAlert(alertData);
+      });
+
+      logger.info('IoT services initialized');
+    } catch (iotError) {
+      logger.warn('IoT service initialization failed (non-critical):', iotError.message);
+      // Continue even if MQTT fails - system can still function without real-time sensors
+    }
   } catch (error) {
     console.error('Failed to connect to databases:', error);
     process.exit(1);
@@ -132,6 +152,10 @@ app.use('/api/v1/timeline', timelineRoutes); // Climate Time Machine (read-only,
 app.use('/api/v1/homes/:homeId/systems', doubleCsrfProtection, systemRoutes);
 app.use('/api/v1/homes/:homeId/components', doubleCsrfProtection, componentRoutes);
 
+// IoT routes (sensors and readings)
+app.use('/api/v1/iot', iotRoutes); // General IoT endpoints
+app.use('/api/v1/homes/:homeId/sensors', doubleCsrfProtection, iotRoutes); // Home-specific sensor endpoints
+
 // 404 handler
 app.use((req, res) => {
   res.status(404).json({
@@ -153,7 +177,7 @@ app.use((err, req, res, next) => {
 
 // Start server
 const PORT = process.env.PORT || 3000;
-startServer().then(() => {
+startServer().then(async () => {
   const server = app.listen(PORT, () => {
     console.log('=================================');
     console.log('FurnaceLog API Server Running');
@@ -161,6 +185,60 @@ startServer().then(() => {
     console.log('Environment:', process.env.NODE_ENV || 'development');
     console.log('=================================');
   });
+
+  // Initialize WebSocket server
+  websocketService.initialize(server);
+
+  // Connect IoT service events to WebSocket broadcasting
+  iotService.on('reading', async (sensorData) => {
+    try {
+      // Get home to find userId
+      const home = await Home.findById(sensorData.homeId).lean();
+      if (home) {
+        websocketService.broadcastSensorReading(home.userId, sensorData);
+      }
+    } catch (error) {
+      logger.error('Error broadcasting sensor reading:', error);
+    }
+  });
+
+  iotService.on('alert', async (alertData) => {
+    try {
+      // Get home to find userId
+      const home = await Home.findById(alertData.homeId).lean();
+      if (home) {
+        websocketService.broadcastAlert(home.userId, alertData);
+      }
+    } catch (error) {
+      logger.error('Error broadcasting alert:', error);
+    }
+  });
+
+  // Handle graceful shutdown
+  const gracefulShutdown = async (signal) => {
+    logger.info(`${signal} received. Starting graceful shutdown...`);
+
+    // Close WebSocket connections
+    websocketService.close();
+
+    // Close MQTT connection
+    await iotService.disconnect();
+
+    // Close HTTP server
+    server.close(() => {
+      logger.info('HTTP server closed');
+      process.exit(0);
+    });
+
+    // Force exit if shutdown takes too long
+    setTimeout(() => {
+      logger.error('Forceful shutdown due to timeout');
+      process.exit(1);
+    }, 10000);
+  };
+
+  process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+  process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 
   // Handle unhandled promise rejections
   process.on('unhandledRejection', (err) => {

@@ -35,6 +35,7 @@ export function HeroCarousel({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [direction, setDirection] = useState<'left' | 'right'>('right');
 
   const currentSlide = slides[currentIndex];
 
@@ -50,57 +51,64 @@ export function HeroCarousel({
 
   const handleNext = () => {
     if (isTransitioning) return;
+    setDirection('right');
     setIsTransitioning(true);
     setCurrentIndex((prev) => (prev + 1) % slides.length);
-    setTimeout(() => setIsTransitioning(false), 700);
+    setTimeout(() => setIsTransitioning(false), 600);
   };
 
   const handlePrevious = () => {
     if (isTransitioning) return;
+    setDirection('left');
     setIsTransitioning(true);
     setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
-    setTimeout(() => setIsTransitioning(false), 700);
+    setTimeout(() => setIsTransitioning(false), 600);
   };
 
   const handleDotClick = (index: number) => {
     if (isTransitioning || index === currentIndex) return;
+    setDirection(index > currentIndex ? 'right' : 'left');
     setIsTransitioning(true);
     setCurrentIndex(index);
-    setTimeout(() => setIsTransitioning(false), 700);
+    setTimeout(() => setIsTransitioning(false), 600);
   };
 
   return (
     <div
-      className={cn('relative', className)}
+      className={cn('relative overflow-hidden', className)}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
       {/* Centered Content Container */}
-      <div className="relative min-h-[600px] flex flex-col items-center justify-center">
-        {/* Content Wrapper with Fade Transition */}
+      <div className="relative min-h-[400px] md:min-h-[450px] flex flex-col items-center justify-center">
+        {/* Content Wrapper with Slide Transition */}
         <div
           className={cn(
-            'w-full transition-all duration-700 ease-out',
-            isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
+            'w-full transition-all duration-600 ease-in-out',
+            isTransitioning
+              ? direction === 'right'
+                ? '-translate-x-full opacity-0'
+                : 'translate-x-full opacity-0'
+              : 'translate-x-0 opacity-100'
           )}
         >
           {/* Headline */}
-          <div className="text-center max-w-[900px] mx-auto mb-6 animate-fade-slide-up">
-            <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-[#f4e8d8] leading-[1.1] tracking-tight mb-4">
+          <div className="text-center max-w-[900px] mx-auto mb-4 animate-fade-slide-up">
+            <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-[#f4e8d8] leading-[1.1] tracking-tight mb-3">
               {currentSlide.headline.normal}
-              <span className="block bg-gradient-to-r from-[#ff4500] to-[#ff6a00] bg-clip-text text-transparent mt-3">
+              <span className="block bg-gradient-to-r from-[#ff4500] to-[#ff6a00] bg-clip-text text-transparent mt-2">
                 {currentSlide.headline.highlight}
               </span>
             </h2>
           </div>
 
           {/* Subtitle */}
-          <p className="text-center text-lg md:text-xl lg:text-2xl text-[#d4a373] leading-relaxed max-w-[700px] mx-auto mb-10 animate-fade-slide-up animate-delay-100">
+          <p className="text-center text-lg md:text-xl lg:text-2xl text-[#d4a373] leading-relaxed max-w-[700px] mx-auto mb-6 animate-fade-slide-up animate-delay-100">
             {currentSlide.subtitle}
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8 animate-fade-slide-up animate-delay-200">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-4 animate-fade-slide-up animate-delay-200">
             <button
               onClick={currentSlide.ctaPrimary.onClick}
               className="group inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-gradient-to-r from-[#ff4500] to-[#ff6a00] text-[#f4e8d8] text-lg font-semibold rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-[#ff4500]/30"
@@ -120,7 +128,7 @@ export function HeroCarousel({
 
           {/* Dot Indicators */}
           {slides.length > 1 && (
-            <div className="flex items-center justify-center gap-3 mb-12 animate-fade-slide-up animate-delay-300">
+            <div className="flex items-center justify-center gap-3 mb-4 animate-fade-slide-up animate-delay-300">
               {slides.map((slide, idx) => (
                 <button
                   key={slide.id}
