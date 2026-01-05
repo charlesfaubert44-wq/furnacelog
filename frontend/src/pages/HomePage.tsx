@@ -364,102 +364,69 @@ function HomePage() {
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {/* Heating System Tracking */}
-                <div className="group relative bg-gradient-to-br from-fl-card-bg to-black border border-fl-card-border hover:border-furnace-primary/50 rounded-2xl p-8 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-furnace-primary/20 overflow-hidden">
-                  {/* Top accent border */}
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-furnace-primary to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                  {/* Background glow effect */}
-                  <div className="absolute -top-24 -right-24 w-48 h-48 bg-furnace-primary/5 rounded-full blur-3xl group-hover:bg-furnace-primary/10 transition-all duration-500" />
-
-                  <div className="relative">
-                    <div className="w-16 h-16 bg-gradient-to-br from-furnace-primary/20 to-furnace-primary/5 border border-furnace-primary/40 rounded-2xl flex items-center justify-center mb-6 transition-all duration-500 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-furnace-primary/30 group-hover:border-furnace-primary/60">
-                      <Flame className="w-8 h-8 text-furnace-primary group-hover:animate-flicker" strokeWidth={2} />
-                    </div>
-                    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-furnace-light transition-colors duration-300">Heating System Tracking</h3>
-                    <p className="text-fl-text-secondary leading-relaxed text-sm">
-                      Monitor propane furnaces, oil boilers, heat trace cables, and HRV systems with northern-specific maintenance schedules.
-                    </p>
+                <div className="group bg-[#2a2a2a] border border-[#3a3a3a] hover:border-furnace-primary/40 rounded-3xl p-8 transition-all duration-300 hover:-translate-y-1">
+                  <div className="w-16 h-16 bg-furnace-primary rounded-2xl flex items-center justify-center mb-5">
+                    <Flame className="w-8 h-8 text-white" strokeWidth={2.5} />
                   </div>
+                  <h3 className="text-2xl font-bold text-white mb-3">Heating System Tracking</h3>
+                  <p className="text-[#a0a0a0] leading-relaxed">
+                    Monitor propane furnaces, oil boilers, heat trace cables, and HRV systems with northern-specific maintenance schedules.
+                  </p>
                 </div>
 
                 {/* Seasonal Checklists */}
-                <div className="group relative bg-gradient-to-br from-fl-card-bg to-black border border-fl-card-border hover:border-furnace-primary/50 rounded-2xl p-8 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-furnace-primary/20 overflow-hidden">
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-furnace-primary to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="absolute -top-24 -right-24 w-48 h-48 bg-furnace-primary/5 rounded-full blur-3xl group-hover:bg-furnace-primary/10 transition-all duration-500" />
-
-                  <div className="relative">
-                    <div className="w-16 h-16 bg-gradient-to-br from-furnace-primary/20 to-furnace-primary/5 border border-furnace-primary/40 rounded-2xl flex items-center justify-center mb-6 transition-all duration-500 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-furnace-primary/30 group-hover:border-furnace-primary/60">
-                      <Calendar className="w-8 h-8 text-furnace-primary" strokeWidth={2} />
-                    </div>
-                    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-furnace-light transition-colors duration-300">Seasonal Checklists</h3>
-                    <p className="text-fl-text-secondary leading-relaxed text-sm">
-                      Automated freeze-up, winter operations, break-up, and summer task lists tailored to territorial weather patterns.
-                    </p>
+                <div className="group bg-[#2a2a2a] border border-[#3a3a3a] hover:border-furnace-primary/40 rounded-3xl p-8 transition-all duration-300 hover:-translate-y-1">
+                  <div className="w-16 h-16 bg-furnace-primary rounded-2xl flex items-center justify-center mb-5">
+                    <Calendar className="w-8 h-8 text-white" strokeWidth={2.5} />
                   </div>
+                  <h3 className="text-2xl font-bold text-white mb-3">Seasonal Checklists</h3>
+                  <p className="text-[#a0a0a0] leading-relaxed">
+                    Automated freeze-up, winter operations, break-up, and summer task lists tailored to territorial weather patterns.
+                  </p>
                 </div>
 
                 {/* Weather Alerts */}
-                <div className="group relative bg-gradient-to-br from-fl-card-bg to-black border border-fl-card-border hover:border-furnace-primary/50 rounded-2xl p-8 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-furnace-primary/20 overflow-hidden">
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-furnace-primary to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="absolute -top-24 -right-24 w-48 h-48 bg-furnace-primary/5 rounded-full blur-3xl group-hover:bg-furnace-primary/10 transition-all duration-500" />
-
-                  <div className="relative">
-                    <div className="w-16 h-16 bg-gradient-to-br from-furnace-primary/20 to-furnace-primary/5 border border-furnace-primary/40 rounded-2xl flex items-center justify-center mb-6 transition-all duration-500 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-furnace-primary/30 group-hover:border-furnace-primary/60">
-                      <Snowflake className="w-8 h-8 text-furnace-primary group-hover:animate-float" strokeWidth={2} />
-                    </div>
-                    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-furnace-light transition-colors duration-300">Weather Alerts</h3>
-                    <p className="text-fl-text-secondary leading-relaxed text-sm">
-                      Real-time extreme cold warnings, wind chill alerts, and automated maintenance reminders based on temperature.
-                    </p>
+                <div className="group bg-[#2a2a2a] border border-[#3a3a3a] hover:border-furnace-primary/40 rounded-3xl p-8 transition-all duration-300 hover:-translate-y-1">
+                  <div className="w-16 h-16 bg-furnace-primary rounded-2xl flex items-center justify-center mb-5">
+                    <Snowflake className="w-8 h-8 text-white" strokeWidth={2.5} />
                   </div>
+                  <h3 className="text-2xl font-bold text-white mb-3">Weather Alerts</h3>
+                  <p className="text-[#a0a0a0] leading-relaxed">
+                    Real-time extreme cold warnings, wind chill alerts, and automated maintenance reminders based on temperature.
+                  </p>
                 </div>
 
                 {/* Modular Home Support */}
-                <div className="group relative bg-gradient-to-br from-fl-card-bg to-black border border-fl-card-border hover:border-furnace-primary/50 rounded-2xl p-8 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-furnace-primary/20 overflow-hidden">
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-furnace-primary to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="absolute -top-24 -right-24 w-48 h-48 bg-furnace-primary/5 rounded-full blur-3xl group-hover:bg-furnace-primary/10 transition-all duration-500" />
-
-                  <div className="relative">
-                    <div className="w-16 h-16 bg-gradient-to-br from-furnace-primary/20 to-furnace-primary/5 border border-furnace-primary/40 rounded-2xl flex items-center justify-center mb-6 transition-all duration-500 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-furnace-primary/30 group-hover:border-furnace-primary/60">
-                      <Home className="w-8 h-8 text-furnace-primary" strokeWidth={2} />
-                    </div>
-                    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-furnace-light transition-colors duration-300">Modular Home Support</h3>
-                    <p className="text-fl-text-secondary leading-relaxed text-sm">
-                      Track marriage walls, skirting maintenance, foundation piles, and belly board inspections specific to manufactured homes.
-                    </p>
+                <div className="group bg-[#2a2a2a] border border-[#3a3a3a] hover:border-furnace-primary/40 rounded-3xl p-8 transition-all duration-300 hover:-translate-y-1">
+                  <div className="w-16 h-16 bg-furnace-primary rounded-2xl flex items-center justify-center mb-5">
+                    <Home className="w-8 h-8 text-white" strokeWidth={2.5} />
                   </div>
+                  <h3 className="text-2xl font-bold text-white mb-3">Modular Home Support</h3>
+                  <p className="text-[#a0a0a0] leading-relaxed">
+                    Track marriage walls, skirting maintenance, foundation piles, and belly board inspections specific to manufactured homes.
+                  </p>
                 </div>
 
                 {/* Freeze Prevention */}
-                <div className="group relative bg-gradient-to-br from-fl-card-bg to-black border border-fl-card-border hover:border-furnace-primary/50 rounded-2xl p-8 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-furnace-primary/20 overflow-hidden">
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-furnace-primary to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="absolute -top-24 -right-24 w-48 h-48 bg-furnace-primary/5 rounded-full blur-3xl group-hover:bg-furnace-primary/10 transition-all duration-500" />
-
-                  <div className="relative">
-                    <div className="w-16 h-16 bg-gradient-to-br from-furnace-primary/20 to-furnace-primary/5 border border-furnace-primary/40 rounded-2xl flex items-center justify-center mb-6 transition-all duration-500 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-furnace-primary/30 group-hover:border-furnace-primary/60">
-                      <AlertTriangle className="w-8 h-8 text-furnace-primary" strokeWidth={2} />
-                    </div>
-                    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-furnace-light transition-colors duration-300">Freeze Prevention</h3>
-                    <p className="text-fl-text-secondary leading-relaxed text-sm">
-                      Log freeze events, track heat trace cable zones, and receive proactive alerts before pipes freeze at -40°C.
-                    </p>
+                <div className="group bg-[#2a2a2a] border border-[#3a3a3a] hover:border-furnace-primary/40 rounded-3xl p-8 transition-all duration-300 hover:-translate-y-1">
+                  <div className="w-16 h-16 bg-furnace-primary rounded-2xl flex items-center justify-center mb-5">
+                    <AlertTriangle className="w-8 h-8 text-white" strokeWidth={2.5} />
                   </div>
+                  <h3 className="text-2xl font-bold text-white mb-3">Freeze Prevention</h3>
+                  <p className="text-[#a0a0a0] leading-relaxed">
+                    Log freeze events, track heat trace cable zones, and receive proactive alerts before pipes freeze at -40°C.
+                  </p>
                 </div>
 
                 {/* Offline-First Design */}
-                <div className="group relative bg-gradient-to-br from-fl-card-bg to-black border border-fl-card-border hover:border-furnace-primary/50 rounded-2xl p-8 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-furnace-primary/20 overflow-hidden">
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-furnace-primary to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="absolute -top-24 -right-24 w-48 h-48 bg-furnace-primary/5 rounded-full blur-3xl group-hover:bg-furnace-primary/10 transition-all duration-500" />
-
-                  <div className="relative">
-                    <div className="w-16 h-16 bg-gradient-to-br from-furnace-primary/20 to-furnace-primary/5 border border-furnace-primary/40 rounded-2xl flex items-center justify-center mb-6 transition-all duration-500 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-furnace-primary/30 group-hover:border-furnace-primary/60">
-                      <TrendingDown className="w-8 h-8 text-furnace-primary" strokeWidth={2} />
-                    </div>
-                    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-furnace-light transition-colors duration-300">Offline-First Design</h3>
-                    <p className="text-fl-text-secondary leading-relaxed text-sm">
-                      Full functionality without internet connection. Perfect for remote communities with limited connectivity.
-                    </p>
+                <div className="group bg-[#2a2a2a] border border-[#3a3a3a] hover:border-furnace-primary/40 rounded-3xl p-8 transition-all duration-300 hover:-translate-y-1">
+                  <div className="w-16 h-16 bg-furnace-primary rounded-2xl flex items-center justify-center mb-5">
+                    <TrendingDown className="w-8 h-8 text-white" strokeWidth={2.5} />
                   </div>
+                  <h3 className="text-2xl font-bold text-white mb-3">Offline-First Design</h3>
+                  <p className="text-[#a0a0a0] leading-relaxed">
+                    Full functionality without internet connection. Perfect for remote communities with limited connectivity.
+                  </p>
                 </div>
               </div>
             </div>
