@@ -226,20 +226,74 @@ function HomePage() {
             </div>
           </section>
 
-          {/* Trust Bar */}
-          <section className="py-8 bg-cream/50 border-b border-soft-beige/30">
-            <div className="max-w-7xl mx-auto px-6">
-              <p className="text-center text-sm text-warm-gray mb-6">Trusted by northern homeowners in:</p>
-              <div className="flex flex-wrap justify-center items-center gap-8 text-charcoal/60 font-medium">
-                <span>Yellowknife</span>
-                <span className="w-1 h-1 rounded-full bg-warm-gray/30" />
-                <span>Whitehorse</span>
-                <span className="w-1 h-1 rounded-full bg-warm-gray/30" />
-                <span>Inuvik</span>
-                <span className="w-1 h-1 rounded-full bg-warm-gray/30" />
-                <span>Iqaluit</span>
-                <span className="w-1 h-1 rounded-full bg-warm-gray/30" />
-                <span>Fort Smith</span>
+          {/* Northern Territories Section */}
+          <section className="py-16 bg-cream border-b border-soft-beige/30 relative overflow-hidden">
+            {/* Subtle Map Background */}
+            <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none">
+              <svg width="800" height="400" viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                {/* Simplified outline of Canadian Northern Territories */}
+                {/* Yukon - Left territory */}
+                <path d="M 50 100 L 150 80 L 180 120 L 200 180 L 180 240 L 140 260 L 80 250 L 60 200 Z"
+                      stroke="#C47A53" strokeWidth="2" fill="#D4A574" fillOpacity="0.2"/>
+
+                {/* Northwest Territories - Middle territory */}
+                <path d="M 200 80 L 350 60 L 450 80 L 480 120 L 500 180 L 480 240 L 420 280 L 350 290 L 280 270 L 240 220 L 220 160 Z"
+                      stroke="#C47A53" strokeWidth="2" fill="#D4A574" fillOpacity="0.2"/>
+
+                {/* Nunavut - Right territory (largest) */}
+                <path d="M 480 70 L 580 50 L 650 60 L 720 80 L 750 120 L 760 180 L 750 250 L 720 300 L 650 330 L 580 340 L 520 320 L 490 270 L 480 200 L 490 140 Z"
+                      stroke="#C47A53" strokeWidth="2" fill="#D4A574" fillOpacity="0.2"/>
+
+                {/* Hudson Bay (negative space in Nunavut) */}
+                <path d="M 550 150 L 620 140 L 660 170 L 670 220 L 650 260 L 600 270 L 560 250 L 550 200 Z"
+                      stroke="#C47A53" strokeWidth="1" fill="#FAF8F3" fillOpacity="0.5"/>
+              </svg>
+            </div>
+
+            <div className="relative max-w-7xl mx-auto px-6">
+              <div className="text-center max-w-3xl mx-auto mb-10">
+                <h2 className="text-3xl md:text-4xl font-bold text-charcoal mb-4">Serving Canada's North</h2>
+                <p className="text-lg text-warm-gray leading-relaxed">
+                  Built specifically for homeowners in the territories where maintenance isn't optional—it's survival
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                {/* Yukon */}
+                <div className="bg-gradient-warm-card border border-soft-beige/60 rounded-2xl p-6 text-center hover:border-soft-amber/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-card-cozy">
+                  <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-fireplace rounded-xl mb-4">
+                    <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-bold text-charcoal mb-2">Yukon</h3>
+                  <p className="text-sm text-warm-gray">Territory of adventure and resilient homes</p>
+                </div>
+
+                {/* Northwest Territories */}
+                <div className="bg-gradient-warm-card border border-soft-beige/60 rounded-2xl p-6 text-center hover:border-soft-amber/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-card-cozy">
+                  <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-fireplace rounded-xl mb-4">
+                    <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-bold text-charcoal mb-2">Northwest Territories</h3>
+                  <p className="text-sm text-warm-gray">Where the midnight sun meets modern living</p>
+                </div>
+
+                {/* Nunavut */}
+                <div className="bg-gradient-warm-card border border-soft-beige/60 rounded-2xl p-6 text-center hover:border-soft-amber/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-card-cozy">
+                  <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-fireplace rounded-xl mb-4">
+                    <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-bold text-charcoal mb-2">Nunavut</h3>
+                  <p className="text-sm text-warm-gray">Canada's newest and largest territory</p>
+                </div>
               </div>
             </div>
           </section>
