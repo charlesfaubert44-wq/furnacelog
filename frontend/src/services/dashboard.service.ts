@@ -96,7 +96,15 @@ export async function getDashboardData(): Promise<DashboardData> {
     return response.data.data;
   } catch (error: any) {
     console.error('Error fetching dashboard data:', error);
-    throw error.response?.data || error;
+    // Extract error message from backend error response structure
+    const errorData = error.response?.data;
+    if (errorData?.error?.message) {
+      throw new Error(errorData.error.message);
+    }
+    if (error.message) {
+      throw error;
+    }
+    throw new Error('Failed to load dashboard data');
   }
 }
 
@@ -116,7 +124,15 @@ export async function getMaintenanceTasks(params?: {
     return response.data.data;
   } catch (error: any) {
     console.error('Error fetching maintenance tasks:', error);
-    throw error.response?.data || error;
+    // Extract error message from backend error response structure
+    const errorData = error.response?.data;
+    if (errorData?.error?.message) {
+      throw new Error(errorData.error.message);
+    }
+    if (error.message) {
+      throw error;
+    }
+    throw new Error('Failed to load maintenance tasks');
   }
 }
 
