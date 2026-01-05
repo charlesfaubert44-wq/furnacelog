@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, ArrowRight, Filter, DollarSign, Thermometer, Brain } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export interface HeroSlide {
@@ -26,122 +26,6 @@ interface HeroCarouselProps {
   className?: string;
 }
 
-// Slide-specific visual components
-const FilterSlideVisual = () => (
-  <div className="absolute inset-0 overflow-hidden opacity-20 pointer-events-none">
-    <div className="absolute top-20 right-20 animate-float">
-      <Filter className="w-32 h-32 text-furnace-primary" strokeWidth={1} />
-    </div>
-    <div className="absolute bottom-20 left-20 animate-float" style={{ animationDelay: '1s' }}>
-      <Filter className="w-24 h-24 text-furnace-light" strokeWidth={1} />
-    </div>
-    {/* Question marks floating */}
-    <div className="absolute top-40 left-1/4 text-6xl text-furnace-primary/30 animate-pulse">?</div>
-    <div className="absolute bottom-40 right-1/3 text-4xl text-furnace-light/20 animate-pulse" style={{ animationDelay: '0.5s' }}>?</div>
-  </div>
-);
-
-const CostComparisonVisual = () => (
-  <div className="absolute inset-0 overflow-hidden opacity-15 pointer-events-none">
-    {/* Broken pipe visual */}
-    <div className="absolute top-10 left-10">
-      <svg width="120" height="120" viewBox="0 0 120 120" className="animate-pulse">
-        <line x1="20" y1="60" x2="100" y2="60" stroke="#ef4444" strokeWidth="8" strokeLinecap="round"/>
-        <line x1="60" y1="20" x2="60" y2="100" stroke="#ef4444" strokeWidth="3" strokeDasharray="5,5"/>
-        <circle cx="60" cy="60" r="15" fill="#ef4444" opacity="0.3"/>
-      </svg>
-    </div>
-    {/* Dollar signs */}
-    <div className="absolute top-20 right-20 animate-float">
-      <DollarSign className="w-24 h-24 text-red-500" strokeWidth={1.5} />
-    </div>
-    <div className="absolute bottom-20 right-40 animate-float" style={{ animationDelay: '0.7s' }}>
-      <DollarSign className="w-16 h-16 text-furnace-primary" strokeWidth={1.5} />
-    </div>
-    {/* Shield (protection) */}
-    <div className="absolute bottom-10 left-20">
-      <svg width="100" height="100" viewBox="0 0 100 100" className="animate-pulse">
-        <path d="M50 10 L90 30 L90 50 Q90 80 50 90 Q10 80 10 50 L10 30 Z" fill="none" stroke="#C94A06" strokeWidth="3"/>
-        <path d="M35 50 L45 60 L65 35" stroke="#C94A06" strokeWidth="4" fill="none" strokeLinecap="round"/>
-      </svg>
-    </div>
-  </div>
-);
-
-const FurnaceFailureVisual = () => (
-  <div className="absolute inset-0 overflow-hidden opacity-20 pointer-events-none">
-    {/* Temperature gauge */}
-    <div className="absolute top-10 right-10 animate-pulse">
-      <Thermometer className="w-32 h-32 text-blue-400" strokeWidth={1} />
-    </div>
-    {/* Alert symbols */}
-    <div className="absolute top-1/2 left-10">
-      <svg width="80" height="80" viewBox="0 0 80 80" className="animate-pulse">
-        <path d="M40 10 L70 65 L10 65 Z" fill="none" stroke="#ef4444" strokeWidth="3"/>
-        <line x1="40" y1="35" x2="40" y2="50" stroke="#ef4444" strokeWidth="4" strokeLinecap="round"/>
-        <circle cx="40" cy="58" r="3" fill="#ef4444"/>
-      </svg>
-    </div>
-    {/* Snowflakes */}
-    <div className="absolute bottom-20 right-20 animate-float">
-      <svg width="60" height="60" viewBox="0 0 60 60">
-        <path d="M30 5 L30 55 M5 30 L55 30 M15 15 L45 45 M45 15 L15 45" stroke="#60a5fa" strokeWidth="2"/>
-        <circle cx="30" cy="30" r="8" fill="none" stroke="#60a5fa" strokeWidth="2"/>
-      </svg>
-    </div>
-    <div className="absolute top-40 right-40 animate-float" style={{ animationDelay: '1.5s' }}>
-      <svg width="40" height="40" viewBox="0 0 60 60">
-        <path d="M30 5 L30 55 M5 30 L55 30 M15 15 L45 45 M45 15 L15 45" stroke="#93c5fd" strokeWidth="2"/>
-      </svg>
-    </div>
-  </div>
-);
-
-const CognitiveReliefVisual = () => (
-  <div className="absolute inset-0 overflow-hidden opacity-15 pointer-events-none">
-    {/* Brain icon */}
-    <div className="absolute top-10 left-10 animate-pulse">
-      <Brain className="w-28 h-28 text-furnace-primary" strokeWidth={1} />
-    </div>
-    {/* Checklist items with checkmarks */}
-    <div className="absolute right-20 top-20 space-y-4">
-      {[0, 1, 2, 3].map((i) => (
-        <div key={i} className="flex items-center gap-3 animate-slide-in" style={{ animationDelay: `${i * 0.2}s` }}>
-          <div className="w-6 h-6 rounded border-2 border-furnace-primary flex items-center justify-center">
-            <svg width="16" height="16" viewBox="0 0 16 16" className="animate-check-scale" style={{ animationDelay: `${i * 0.2 + 0.3}s` }}>
-              <path d="M3 8 L6 11 L13 4" stroke="#C94A06" strokeWidth="2" fill="none" strokeLinecap="round"/>
-            </svg>
-          </div>
-          <div className="w-24 h-2 bg-furnace-primary/30 rounded"></div>
-        </div>
-      ))}
-    </div>
-    {/* Crossed out stress lines */}
-    <div className="absolute bottom-20 left-20">
-      <svg width="120" height="80" viewBox="0 0 120 80">
-        <line x1="10" y1="20" x2="110" y2="20" stroke="#6b7280" strokeWidth="2" opacity="0.5"/>
-        <line x1="10" y1="40" x2="110" y2="40" stroke="#6b7280" strokeWidth="2" opacity="0.5"/>
-        <line x1="10" y1="60" x2="110" y2="60" stroke="#6b7280" strokeWidth="2" opacity="0.5"/>
-        <line x1="0" y1="0" x2="120" y2="80" stroke="#C94A06" strokeWidth="3" strokeLinecap="round" className="animate-draw-line"/>
-      </svg>
-    </div>
-  </div>
-);
-
-const getSlideVisual = (slideId: string) => {
-  switch (slideId) {
-    case 'filter-question':
-      return <FilterSlideVisual />;
-    case 'cost-comparison':
-      return <CostComparisonVisual />;
-    case 'furnace-failure':
-      return <FurnaceFailureVisual />;
-    case 'cognitive-relief':
-      return <CognitiveReliefVisual />;
-    default:
-      return null;
-  }
-};
 
 export function HeroCarouselImmersive({
   slides,
@@ -196,11 +80,6 @@ export function HeroCarouselImmersive({
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      {/* Slide-specific visual background */}
-      <div className="absolute inset-0 transition-opacity duration-600">
-        {getSlideVisual(currentSlide.id)}
-      </div>
-
       {/* Centered Content Container */}
       <div className="relative min-h-[400px] md:min-h-[450px] flex flex-col items-center justify-center px-4 sm:px-6">
         {/* Content Wrapper with Slide Transition */}
@@ -310,23 +189,6 @@ export function HeroCarouselImmersive({
         </>
       )}
 
-      {/* Additional animations CSS */}
-      <style>{`
-        @keyframes aurora {
-          0%, 100% { transform: translateX(0) scaleY(1); }
-          50% { transform: translateX(-50px) scaleY(1.1); }
-        }
-        @keyframes draw-line {
-          0% { stroke-dasharray: 0, 200; }
-          100% { stroke-dasharray: 200, 0; }
-        }
-        .animate-aurora {
-          animation: aurora 8s ease-in-out infinite;
-        }
-        .animate-draw-line {
-          animation: draw-line 2s ease-out forwards;
-        }
-      `}</style>
     </div>
   );
 }
