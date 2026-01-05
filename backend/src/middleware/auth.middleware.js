@@ -216,8 +216,12 @@ export const clearLoginAttempts = async (email) => {
   }
 };
 
+// Alias for backward compatibility
+export const protect = authenticate;
+
 export default {
   authenticate,
+  protect,
   requireRole,
   optionalAuth,
   loginRateLimiter,
