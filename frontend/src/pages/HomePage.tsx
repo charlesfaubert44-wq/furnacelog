@@ -162,7 +162,7 @@ function HomePage() {
                     setAuthModalTab('login');
                     setAuthModalOpen(true);
                   }}
-                  className="px-5 py-2.5 bg-gradient-fireplace hover:shadow-warm-glow text-white text-sm font-semibold rounded-xl transition-all duration-300 shadow-warm-sm"
+                  className="px-5 py-2.5 bg-gradient-fireplace text-white text-sm font-semibold rounded-xl transition-all duration-300"
                 >
                   Sign In
                 </button>
@@ -174,8 +174,6 @@ function HomePage() {
 
           {/* Modern SaaS Hero Section */}
           <section className="relative overflow-hidden bg-gradient-paper border-b border-soft-beige/30">
-            {/* Subtle warm glow background */}
-            <div className="absolute inset-0 bg-gradient-warm-glow opacity-30 pointer-events-none" />
 
             <div className="relative max-w-7xl mx-auto px-6 py-12 md:py-16">
               <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -204,7 +202,7 @@ function HomePage() {
                         setAuthModalTab('register');
                         setAuthModalOpen(true);
                       }}
-                      className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-gradient-fireplace hover:shadow-warm-glow text-white text-lg font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-warm-md"
+                      className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-gradient-fireplace text-white text-lg font-bold rounded-xl transition-all duration-300 hover:scale-105"
                     >
                       Get Started Free
                       <ArrowRight className="w-5 h-5" />
@@ -611,7 +609,7 @@ function HomePage() {
               </p>
               {!loading && health?.status === 'healthy' && (
                 <div className="flex items-center gap-2 text-sm text-soft-beige/80">
-                  <div className="w-2 h-2 bg-soft-amber rounded-full animate-pulse" />
+                  <div className="w-2 h-2 bg-soft-amber rounded-full" />
                   <span>All Systems Running</span>
                 </div>
               )}
