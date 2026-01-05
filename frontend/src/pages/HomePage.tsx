@@ -71,28 +71,39 @@ function HomePage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Logo size="sm" className="cursor-pointer" />
-              {user && (
-                <nav className="hidden md:flex items-center gap-1 ml-8">
-                  <button
-                    onClick={() => navigate('/')}
-                    className="px-4 py-2 text-sm text-warm-gray hover:text-charcoal font-medium transition-colors rounded-xl hover:bg-soft-beige/30"
-                  >
-                    Home
-                  </button>
-                  <button
-                    onClick={() => navigate('/dashboard')}
-                    className="px-4 py-2 text-sm text-warm-gray hover:text-charcoal font-medium transition-colors rounded-xl hover:bg-soft-beige/30"
-                  >
-                    Dashboard
-                  </button>
-                  <button
-                    onClick={() => navigate('/wiki')}
-                    className="px-4 py-2 text-sm text-warm-gray hover:text-charcoal font-medium transition-colors rounded-xl hover:bg-soft-beige/30"
-                  >
-                    Wiki
-                  </button>
-                </nav>
-              )}
+              {/* Main Navigation Menu */}
+              <nav className="hidden md:flex items-center gap-1 ml-8">
+                <button
+                  onClick={() => navigate('/')}
+                  className="px-4 py-2 text-sm text-warm-gray hover:text-charcoal font-medium transition-colors rounded-xl hover:bg-soft-beige/30"
+                >
+                  Homepage
+                </button>
+                <button
+                  onClick={() => navigate('/dashboard')}
+                  className="px-4 py-2 text-sm text-warm-gray hover:text-charcoal font-medium transition-colors rounded-xl hover:bg-soft-beige/30"
+                >
+                  Dashboard
+                </button>
+                <button
+                  onClick={() => navigate('/wiki')}
+                  className="px-4 py-2 text-sm text-warm-gray hover:text-charcoal font-medium transition-colors rounded-xl hover:bg-soft-beige/30"
+                >
+                  Knowledge Base
+                </button>
+                <button
+                  onClick={() => navigate('/about')}
+                  className="px-4 py-2 text-sm text-warm-gray hover:text-charcoal font-medium transition-colors rounded-xl hover:bg-soft-beige/30"
+                >
+                  About
+                </button>
+                <button
+                  onClick={() => navigate('/contact')}
+                  className="px-4 py-2 text-sm text-warm-gray hover:text-charcoal font-medium transition-colors rounded-xl hover:bg-soft-beige/30"
+                >
+                  Contact Us
+                </button>
+              </nav>
             </div>
             <div className="flex items-center gap-3">
               {user ? (
@@ -147,26 +158,15 @@ function HomePage() {
                   )}
                 </div>
               ) : (
-                <>
-                  <button
-                    onClick={() => {
-                      setAuthModalTab('login');
-                      setAuthModalOpen(true);
-                    }}
-                    className="px-4 py-2 text-sm text-warm-gray hover:text-charcoal font-medium transition-colors"
-                  >
-                    Sign In
-                  </button>
-                  <button
-                    onClick={() => {
-                      setAuthModalTab('register');
-                      setAuthModalOpen(true);
-                    }}
-                    className="px-5 py-2.5 bg-gradient-fireplace hover:shadow-warm-glow text-white text-sm font-semibold rounded-xl transition-all duration-300 shadow-warm-sm"
-                  >
-                    Start Free Today
-                  </button>
-                </>
+                <button
+                  onClick={() => {
+                    setAuthModalTab('login');
+                    setAuthModalOpen(true);
+                  }}
+                  className="px-5 py-2.5 bg-gradient-fireplace hover:shadow-warm-glow text-white text-sm font-semibold rounded-xl transition-all duration-300 shadow-warm-sm"
+                >
+                  Sign In
+                </button>
               )}
             </div>
           </div>
