@@ -31,13 +31,12 @@ interface HeroCarouselProps {
 export function HeroCarousel({
   slides,
   autoAdvance = true,
-  autoAdvanceInterval = 10000,
+  autoAdvanceInterval = 8000,
   className,
 }: HeroCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [direction, setDirection] = useState<'left' | 'right'>('right');
 
   const currentSlide = slides[currentIndex];
 
@@ -53,26 +52,23 @@ export function HeroCarousel({
 
   const handleNext = () => {
     if (isTransitioning) return;
-    setDirection('right');
     setIsTransitioning(true);
     setCurrentIndex((prev) => (prev + 1) % slides.length);
-    setTimeout(() => setIsTransitioning(false), 600);
+    setTimeout(() => setIsTransitioning(false), 700);
   };
 
   const handlePrevious = () => {
     if (isTransitioning) return;
-    setDirection('left');
     setIsTransitioning(true);
     setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
-    setTimeout(() => setIsTransitioning(false), 600);
+    setTimeout(() => setIsTransitioning(false), 700);
   };
 
   const handleDotClick = (index: number) => {
     if (isTransitioning || index === currentIndex) return;
-    setDirection(index > currentIndex ? 'right' : 'left');
     setIsTransitioning(true);
     setCurrentIndex(index);
-    setTimeout(() => setIsTransitioning(false), 600);
+    setTimeout(() => setIsTransitioning(false), 700);
   };
 
   return (
@@ -81,79 +77,95 @@ export function HeroCarousel({
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      {/* Hero Content */}
-      <div className="relative overflow-hidden">
+      {/* Centered Content Container */}
+      <div className="relative min-h-[600px] flex flex-col items-center justify-center">
+        {/* Content Wrapper with Fade Transition */}
         <div
           className={cn(
-            'transition-all duration-600 ease-out',
-            isTransitioning && direction === 'right' && '-translate-x-8 opacity-0',
-            isTransitioning && direction === 'left' && 'translate-x-8 opacity-0',
-            !isTransitioning && 'translate-x-0 opacity-100'
+            'w-full transition-all duration-700 ease-out',
+            isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
           )}
         >
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-            {/* Left Column - Headline & CTAs */}
-            <div className="space-y-8">
-              <div className="space-y-6">
-                <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-[#f4e8d8] leading-[1.05] tracking-tight">
-                  {currentSlide.headline.normal}
-                  <span className="block bg-gradient-to-r from-[#ff4500] to-[#ff6a00] bg-clip-text text-transparent mt-2">
-                    {currentSlide.headline.highlight}
-                  </span>
-                </h2>
-                <p className="text-xl text-[#d4a373] leading-relaxed max-w-xl">
-                  {currentSlide.subtitle}
-                </p>
-              </div>
+          {/* Headline */}
+          <div className="text-center max-w-[900px] mx-auto mb-6 animate-fade-slide-up">
+            <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-[#f4e8d8] leading-[1.1] tracking-tight mb-4">
+              {currentSlide.headline.normal}
+              <span className="block bg-gradient-to-r from-[#ff4500] to-[#ff6a00] bg-clip-text text-transparent mt-3">
+                {currentSlide.headline.highlight}
+              </span>
+            </h2>
+          </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+          {/* Subtitle */}
+          <p className="text-center text-lg md:text-xl lg:text-2xl text-[#d4a373] leading-relaxed max-w-[700px] mx-auto mb-10 animate-fade-slide-up animate-delay-100">
+            {currentSlide.subtitle}
+          </p>
+
+          {/* CTAs */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8 animate-fade-slide-up animate-delay-200">
+            <button
+              onClick={currentSlide.ctaPrimary.onClick}
+              className="group inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-gradient-to-r from-[#ff4500] to-[#ff6a00] text-[#f4e8d8] text-lg font-semibold rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-[#ff4500]/30"
+            >
+              {currentSlide.ctaPrimary.text}
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </button>
+            {currentSlide.ctaSecondary && (
+              <a
+                href={currentSlide.ctaSecondary.href}
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] hover:from-[#2a2a2a] hover:to-[#2a2a2a] border border-[#f4e8d8]/20 text-[#f4e8d8] text-lg font-semibold rounded-xl transition-all duration-300 hover:scale-105 active:scale-95"
+              >
+                {currentSlide.ctaSecondary.text}
+              </a>
+            )}
+          </div>
+
+          {/* Dot Indicators */}
+          {slides.length > 1 && (
+            <div className="flex items-center justify-center gap-3 mb-12 animate-fade-slide-up animate-delay-300">
+              {slides.map((slide, idx) => (
                 <button
-                  onClick={currentSlide.ctaPrimary.onClick}
-                  className="group inline-flex items-center justify-center gap-2.5 px-7 py-4 bg-gradient-to-r from-[#ff4500] to-[#ff6a00] text-[#f4e8d8] font-semibold rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:shadow-lg hover:shadow-[#ff4500]/20"
-                >
-                  {currentSlide.ctaPrimary.text}
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </button>
-                {currentSlide.ctaSecondary && (
-                  <a
-                    href={currentSlide.ctaSecondary.href}
-                    className="inline-flex items-center justify-center gap-2 px-7 py-4 bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] hover:from-[#2a2a2a] hover:to-[#2a2a2a] border border-[#f4e8d8]/20 text-[#f4e8d8] font-semibold rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-                  >
-                    {currentSlide.ctaSecondary.text}
-                  </a>
-                )}
-              </div>
+                  key={slide.id}
+                  onClick={() => handleDotClick(idx)}
+                  disabled={isTransitioning}
+                  className={cn(
+                    'h-2 rounded-full transition-all duration-300',
+                    idx === currentIndex
+                      ? 'w-8 bg-gradient-to-r from-[#ff4500] to-[#ff6a00]'
+                      : 'w-2 bg-[#f4e8d8]/30 hover:bg-[#f4e8d8]/50',
+                    'disabled:cursor-not-allowed'
+                  )}
+                  aria-label={`Go to slide ${idx + 1}`}
+                  aria-current={idx === currentIndex ? 'true' : 'false'}
+                />
+              ))}
             </div>
+          )}
 
-            {/* Right Column - Alert Display */}
-            <div className="relative lg:pt-12">
-              <AlertDisplay
-                alerts={currentSlide.alerts}
-                autoAdvance={false}
-                autoAdvanceInterval={6000}
-              />
-              <div className="absolute -top-8 -right-8 w-32 h-32 bg-gradient-to-br from-[#ff4500]/10 to-transparent rounded-full blur-3xl pointer-events-none" />
-              <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-gradient-to-tr from-[#6a994e]/10 to-transparent rounded-full blur-3xl pointer-events-none" />
-            </div>
+          {/* Featured Alert Card */}
+          <div className="max-w-[600px] mx-auto animate-fade-slide-up animate-delay-400">
+            <AlertDisplay
+              alerts={currentSlide.alerts}
+              autoAdvance={false}
+            />
           </div>
         </div>
       </div>
 
-      {/* Navigation Controls */}
+      {/* Navigation Arrows - Outside content, absolute positioned */}
       {slides.length > 1 && (
         <>
-          {/* Navigation Arrows */}
           <button
             onClick={handlePrevious}
             disabled={isTransitioning}
             className={cn(
-              'absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 lg:-translate-x-8',
-              'w-10 h-10 rounded-full bg-[#1a1a1a] border border-[#f4e8d8]/30',
-              'flex items-center justify-center z-10',
-              'text-[#f4e8d8] hover:border-[#ff4500]/50 hover:bg-[#2a2a2a]',
+              'hidden lg:flex absolute left-10 top-1/2 -translate-y-1/2',
+              'w-12 h-12 rounded-full items-center justify-center',
+              'bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#f4e8d8]/20',
+              'text-[#f4e8d8] hover:border-[#ff4500]/50 hover:bg-[#2a2a2a]/90',
               'transition-all duration-300 hover:scale-110',
               'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100',
-              'opacity-0 lg:opacity-100 hover:opacity-100'
+              'z-10'
             )}
             aria-label="Previous slide"
           >
@@ -163,51 +175,32 @@ export function HeroCarousel({
             onClick={handleNext}
             disabled={isTransitioning}
             className={cn(
-              'absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 lg:translate-x-8',
-              'w-10 h-10 rounded-full bg-[#1a1a1a] border border-[#f4e8d8]/30',
-              'flex items-center justify-center z-10',
-              'text-[#f4e8d8] hover:border-[#ff4500]/50 hover:bg-[#2a2a2a]',
+              'hidden lg:flex absolute right-10 top-1/2 -translate-y-1/2',
+              'w-12 h-12 rounded-full items-center justify-center',
+              'bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#f4e8d8]/20',
+              'text-[#f4e8d8] hover:border-[#ff4500]/50 hover:bg-[#2a2a2a]/90',
               'transition-all duration-300 hover:scale-110',
               'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100',
-              'opacity-0 lg:opacity-100 hover:opacity-100'
+              'z-10'
             )}
             aria-label="Next slide"
           >
             <ChevronRight className="w-6 h-6" />
           </button>
-
-          {/* Dot Indicators */}
-          <div className="flex items-center justify-center gap-2 mt-8">
-            {slides.map((slide, idx) => (
-              <button
-                key={slide.id}
-                onClick={() => handleDotClick(idx)}
-                disabled={isTransitioning}
-                className={cn(
-                  'h-2 rounded-full transition-all duration-300',
-                  idx === currentIndex
-                    ? 'w-8 bg-gradient-to-r from-[#ff4500] to-[#ff6a00]'
-                    : 'w-2 bg-[#f4e8d8]/30 hover:bg-[#f4e8d8]/50',
-                  'disabled:cursor-not-allowed'
-                )}
-                aria-label={`Go to slide ${idx + 1}`}
-              />
-            ))}
-          </div>
-
-          {/* Progress Bar (for auto-advance) */}
-          {autoAdvance && !isPaused && (
-            <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#2a2a2a]/50 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-[#ff4500] to-[#ff6a00]"
-                style={{
-                  animation: `progressBar ${autoAdvanceInterval}ms linear`,
-                  animationPlayState: isPaused ? 'paused' : 'running',
-                }}
-              />
-            </div>
-          )}
         </>
+      )}
+
+      {/* Progress Bar - Bottom of section */}
+      {autoAdvance && !isPaused && slides.length > 1 && (
+        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#2a2a2a]/50 rounded-full overflow-hidden">
+          <div
+            key={currentIndex}
+            className="h-full bg-gradient-to-r from-[#ff4500] to-[#ff6a00]"
+            style={{
+              animation: `progressBar ${autoAdvanceInterval}ms linear`,
+            }}
+          />
+        </div>
       )}
 
       {/* CSS Animation for Progress Bar */}
