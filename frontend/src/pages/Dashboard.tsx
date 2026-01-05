@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Home, LogOut, User, Plus, AlertTriangle, CheckCircle2, Clock, Flame, Droplets, Wind, Zap, BookOpen, Settings, Loader2 } from 'lucide-react';
+import { Home, LogOut, User, Plus, AlertTriangle, CheckCircle2, Clock, Flame, Droplets, Wind, Zap, BookOpen, Settings as SettingsIcon, Loader2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import { useScrollPosition } from '@/hooks/useScrollAnimation';
 import { LogMaintenanceModal, type MaintenanceTaskInput } from '@/components/modals/LogMaintenanceModal';
 import { getDashboardData, type DashboardData } from '@/services/dashboard.service';
+import { Logo } from '@/components/furnacelog/Logo';
 
 /**
  * Dashboard Page
@@ -38,7 +39,7 @@ const getSystemIcon = (category: string): React.ElementType => {
     ventilation: Wind,
     electrical: Zap,
     sewage: Wind,
-    default: Settings,
+    default: SettingsIcon,
   };
   return iconMap[category.toLowerCase()] || iconMap.default;
 };
@@ -117,66 +118,71 @@ export function Dashboard() {
   const upcomingCount = dashboardData?.maintenanceSummary.upcoming || 0;
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
+    <div className="min-h-screen bg-warm-white">
       {/* Navigation */}
       <nav className={cn(
         "sticky top-0 z-50 border-b transition-all duration-300",
         isScrolled
-          ? "border-[#d4a373]/10 bg-[#0a0a0a]/80 backdrop-blur-md"
-          : "border-[#d4a373]/10 bg-[#0a0a0a]/80 backdrop-blur-sm"
+          ? "border-soft-amber/20 bg-warm-white/95 backdrop-blur-md shadow-sm"
+          : "border-soft-amber/10 bg-warm-white/80 backdrop-blur-sm"
       )}>
-        <div className="max-w-7xl mx-auto px-6 py-5">
+        <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-[#ff6b35] to-[#f7931e] rounded-xl flex items-center justify-center shadow-[0_4px_16px_rgba(255,107,53,0.3)]">
-                  <Flame className="w-6 h-6 text-[#f4e8d8]" strokeWidth={2.5} />
-                </div>
-                <div>
-                  <h1 className="text-xl font-bold text-[#f4e8d8] tracking-tight">
-                    FurnaceLog
-                  </h1>
-                  <p className="text-xs text-[#d4a373] font-medium">Northern Home Tracker</p>
-                </div>
-              </div>
+              <Logo size="sm" />
+
+              {/* Main Navigation Menu */}
               <nav className="hidden md:flex items-center gap-1 ml-8">
                 <button
                   onClick={() => navigate('/')}
-                  className="px-4 py-2 text-sm text-[#d4a373] hover:text-[#f4e8d8] font-medium transition-colors rounded-lg hover:bg-[#2a2a2a]/50"
+                  className="px-4 py-2 text-sm text-warm-gray hover:text-charcoal font-medium transition-colors rounded-lg hover:bg-cream"
                 >
-                  Home
+                  Homepage
                 </button>
                 <button
                   onClick={() => navigate('/dashboard')}
-                  className="px-4 py-2 text-sm text-[#ff6b35] font-medium transition-colors rounded-lg bg-[#2a2a2a]/50"
+                  className="px-4 py-2 text-sm text-charcoal font-semibold transition-colors rounded-lg bg-cream"
                 >
                   Dashboard
                 </button>
                 <button
                   onClick={() => navigate('/wiki')}
-                  className="px-4 py-2 text-sm text-[#d4a373] hover:text-[#f4e8d8] font-medium transition-colors rounded-lg hover:bg-[#2a2a2a]/50"
+                  className="px-4 py-2 text-sm text-warm-gray hover:text-charcoal font-medium transition-colors rounded-lg hover:bg-cream"
                 >
-                  Wiki
+                  Knowledge Base
+                </button>
+                <button
+                  onClick={() => navigate('/about')}
+                  className="px-4 py-2 text-sm text-warm-gray hover:text-charcoal font-medium transition-colors rounded-lg hover:bg-cream"
+                >
+                  About
+                </button>
+                <button
+                  onClick={() => navigate('/contact')}
+                  className="px-4 py-2 text-sm text-warm-gray hover:text-charcoal font-medium transition-colors rounded-lg hover:bg-cream"
+                >
+                  Contact Us
                 </button>
               </nav>
             </div>
+
             <div className="flex items-center gap-3">
               <div className="relative">
                 <button
                   onClick={() => setShowUserMenu(!showUserMenu)}
-                  className="flex items-center gap-2 px-4 py-2 text-sm text-[#d4a373] hover:text-[#f4e8d8] font-medium transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 text-sm text-warm-gray hover:text-charcoal font-medium transition-colors rounded-lg hover:bg-cream"
                 >
                   <User className="w-4 h-4" />
                   <span>{user?.email}</span>
                 </button>
                 {showUserMenu && (
-                  <div className="absolute right-0 mt-2 w-48 bg-[#1a1a1a] border border-[#f4e8d8]/10 rounded-lg py-2">
+                  <div className="absolute right-0 mt-2 w-48 bg-white border border-soft-amber/20 rounded-xl shadow-lg py-2">
                     <button
                       onClick={() => {
                         navigate('/dashboard');
                         setShowUserMenu(false);
                       }}
-                      className="w-full flex items-center gap-2 px-4 py-2 text-sm text-[#d4a373] hover:bg-[#2a2a2a] hover:text-[#f4e8d8] transition-colors"
+                      className="w-full flex items-center gap-2 px-4 py-2 text-sm text-warm-gray hover:bg-cream hover:text-charcoal transition-colors"
                     >
                       <Home className="w-4 h-4" />
                       Dashboard
@@ -186,24 +192,25 @@ export function Dashboard() {
                         navigate('/wiki');
                         setShowUserMenu(false);
                       }}
-                      className="w-full flex items-center gap-2 px-4 py-2 text-sm text-[#d4a373] hover:bg-[#2a2a2a] hover:text-[#f4e8d8] transition-colors"
+                      className="w-full flex items-center gap-2 px-4 py-2 text-sm text-warm-gray hover:bg-cream hover:text-charcoal transition-colors"
                     >
                       <BookOpen className="w-4 h-4" />
-                      Wiki
+                      Knowledge Base
                     </button>
                     <button
                       onClick={() => {
                         navigate('/settings');
                         setShowUserMenu(false);
                       }}
-                      className="w-full flex items-center gap-2 px-4 py-2 text-sm text-[#d4a373] hover:bg-[#2a2a2a] hover:text-[#f4e8d8] transition-colors"
+                      className="w-full flex items-center gap-2 px-4 py-2 text-sm text-warm-gray hover:bg-cream hover:text-charcoal transition-colors"
                     >
-                      <Settings className="w-4 h-4" />
+                      <SettingsIcon className="w-4 h-4" />
                       Settings
                     </button>
+                    <div className="border-t border-soft-amber/10 my-1"></div>
                     <button
                       onClick={handleLogout}
-                      className="w-full flex items-center gap-2 px-4 py-2 text-sm text-[#d4a373] hover:bg-[#2a2a2a] hover:text-[#f4e8d8] transition-colors"
+                      className="w-full flex items-center gap-2 px-4 py-2 text-sm text-warm-gray hover:bg-cream hover:text-charcoal transition-colors"
                     >
                       <LogOut className="w-4 h-4" />
                       Sign Out
@@ -218,10 +225,10 @@ export function Dashboard() {
 
       {/* Dashboard Content */}
       <div className="relative min-h-screen">
-        {/* Warm gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0a] via-[#1a1a1a] to-[#0a0a0a] opacity-60" />
-        <div className="absolute inset-0 opacity-[0.02]" style={{
-          backgroundImage: `radial-gradient(circle at 50% 50%, rgba(247, 147, 30, 0.15) 0%, transparent 50%)`
+        {/* Subtle warm background texture */}
+        <div className="absolute inset-0 bg-gradient-to-br from-warm-white via-cream to-warm-white opacity-60" />
+        <div className="absolute inset-0 opacity-[0.03]" style={{
+          backgroundImage: `radial-gradient(circle at 50% 50%, rgba(212, 165, 116, 0.15) 0%, transparent 50%)`
         }} />
 
         <div className="relative max-w-7xl mx-auto px-6 py-12">
@@ -229,8 +236,8 @@ export function Dashboard() {
           {isLoading && (
             <div className="flex items-center justify-center min-h-[60vh]">
               <div className="text-center">
-                <Loader2 className="w-12 h-12 text-[#ff6b35] animate-spin mx-auto mb-4" />
-                <p className="text-[#d4a373] text-lg">Loading your dashboard...</p>
+                <Loader2 className="w-12 h-12 text-warm-orange animate-spin mx-auto mb-4" />
+                <p className="text-warm-gray text-lg">Loading your dashboard...</p>
               </div>
             </div>
           )}
@@ -238,13 +245,13 @@ export function Dashboard() {
           {/* Error State */}
           {error && !isLoading && (
             <div className="max-w-2xl mx-auto">
-              <div className="bg-gradient-to-br from-[#d45d4e]/20 to-[#d45d4e]/10 border border-[#d45d4e]/30 rounded-2xl p-8 text-center">
-                <AlertTriangle className="w-12 h-12 text-[#d45d4e] mx-auto mb-4" />
-                <h3 className="text-xl font-bold text-[#f4e8d8] mb-2">Unable to Load Dashboard</h3>
-                <p className="text-[#d4a373] mb-6">{error}</p>
+              <div className="bg-white border-2 border-warm-orange/30 rounded-2xl p-8 text-center shadow-lg">
+                <AlertTriangle className="w-12 h-12 text-warm-orange mx-auto mb-4" />
+                <h3 className="text-xl font-bold text-charcoal mb-2">Unable to Load Dashboard</h3>
+                <p className="text-warm-gray mb-6">{error}</p>
                 <button
                   onClick={() => window.location.reload()}
-                  className="px-6 py-3 bg-gradient-to-br from-[#ff6b35] to-[#f7931e] hover:from-[#f7931e] hover:to-[#ff6b35] text-[#f4e8d8] text-sm font-semibold rounded-xl transition-all duration-300"
+                  className="px-6 py-3 bg-gradient-to-r from-burnt-sienna to-warm-orange hover:from-warm-orange hover:to-burnt-sienna text-white text-sm font-semibold rounded-xl transition-all duration-300 shadow-md hover:shadow-lg"
                 >
                   Retry
                 </button>
@@ -258,19 +265,19 @@ export function Dashboard() {
             {/* Dashboard Header */}
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-[#d4a373] text-sm font-medium mb-2">
+                <p className="text-warm-gray text-sm font-medium mb-2">
                   {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
                 </p>
-                <h2 className="text-4xl font-bold text-[#f4e8d8] tracking-tight">
+                <h2 className="text-4xl font-bold text-charcoal tracking-tight">
                   Welcome Home
                 </h2>
-                <p className="text-[#d4a373] mt-2">
+                <p className="text-warm-gray mt-2">
                   Your home is warm and protected. Here's your maintenance overview.
                 </p>
               </div>
               <button
                 onClick={() => setIsMaintenanceModalOpen(true)}
-                className="px-6 py-3 bg-gradient-to-br from-[#ff6b35] to-[#f7931e] hover:from-[#f7931e] hover:to-[#ff6b35] text-[#f4e8d8] text-sm font-semibold rounded-xl transition-all duration-300 flex items-center gap-2 shadow-[0_4px_16px_rgba(255,107,53,0.3)] hover:shadow-[0_6px_24px_rgba(255,107,53,0.45)]"
+                className="px-6 py-3 bg-gradient-to-r from-burnt-sienna to-warm-orange hover:from-warm-orange hover:to-burnt-sienna text-white text-sm font-semibold rounded-xl transition-all duration-300 flex items-center gap-2 shadow-md hover:shadow-lg"
               >
                 <Plus className="h-4 w-4" />
                 Log Maintenance
@@ -280,32 +287,32 @@ export function Dashboard() {
             {/* Dashboard Grid */}
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
               {/* Maintenance Summary */}
-              <div className="xl:col-span-2 bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#f4e8d8]/10 rounded-2xl p-8 transition-all duration-300">
+              <div className="xl:col-span-2 bg-white border border-soft-amber/20 rounded-2xl p-8 shadow-md transition-all duration-300">
                 <div className="mb-6">
-                  <h3 className="text-xl font-semibold text-[#f4e8d8]">Maintenance Summary</h3>
-                  <p className="text-sm text-[#d4a373] mt-1">Track your upcoming and overdue tasks</p>
+                  <h3 className="text-xl font-semibold text-charcoal">Maintenance Summary</h3>
+                  <p className="text-sm text-warm-gray mt-1">Track your upcoming and overdue tasks</p>
                 </div>
                 <div className="grid grid-cols-3 gap-4 mb-6">
-                  <div className="bg-gradient-to-br from-[#d45d4e]/20 to-[#d45d4e]/10 border border-[#d45d4e]/30 rounded-xl p-4">
+                  <div className="bg-warm-coral/10 border-2 border-warm-coral/30 rounded-xl p-4">
                     <div className="flex items-center justify-center gap-2 mb-2">
-                      <AlertTriangle className="h-5 w-5 text-[#d45d4e]" />
-                      <span className="text-3xl font-bold text-[#f4e8d8]">{overdueCount}</span>
+                      <AlertTriangle className="h-5 w-5 text-warm-coral" />
+                      <span className="text-3xl font-bold text-charcoal">{overdueCount}</span>
                     </div>
-                    <p className="text-center text-sm text-[#d45d4e] font-medium">Overdue</p>
+                    <p className="text-center text-sm text-warm-coral font-semibold">Overdue</p>
                   </div>
-                  <div className="bg-gradient-to-br from-[#f7931e]/20 to-[#f7931e]/10 border border-[#f7931e]/30 rounded-xl p-4">
+                  <div className="bg-warm-orange/10 border-2 border-warm-orange/30 rounded-xl p-4">
                     <div className="flex items-center justify-center gap-2 mb-2">
-                      <Clock className="h-5 w-5 text-[#f7931e]" />
-                      <span className="text-3xl font-bold text-[#f4e8d8]">{dueSoonCount}</span>
+                      <Clock className="h-5 w-5 text-warm-orange" />
+                      <span className="text-3xl font-bold text-charcoal">{dueSoonCount}</span>
                     </div>
-                    <p className="text-center text-sm text-[#f7931e] font-medium">Due Soon</p>
+                    <p className="text-center text-sm text-warm-orange font-semibold">Due Soon</p>
                   </div>
-                  <div className="bg-gradient-to-br from-[#d4a373]/20 to-[#d4a373]/10 border border-[#d4a373]/30 rounded-xl p-4">
+                  <div className="bg-soft-amber/10 border-2 border-soft-amber/30 rounded-xl p-4">
                     <div className="flex items-center justify-center gap-2 mb-2">
-                      <CheckCircle2 className="h-5 w-5 text-[#d4a373]" />
-                      <span className="text-3xl font-bold text-[#f4e8d8]">{upcomingCount}</span>
+                      <CheckCircle2 className="h-5 w-5 text-soft-amber" />
+                      <span className="text-3xl font-bold text-charcoal">{upcomingCount}</span>
                     </div>
-                    <p className="text-center text-sm text-[#d4a373] font-medium">Upcoming</p>
+                    <p className="text-center text-sm text-soft-amber font-semibold">Upcoming</p>
                   </div>
                 </div>
 
@@ -313,9 +320,9 @@ export function Dashboard() {
                 <div className="space-y-3">
                   {tasks.length === 0 ? (
                     <div className="text-center py-8">
-                      <CheckCircle2 className="w-12 h-12 text-[#7ea88f] mx-auto mb-3" />
-                      <p className="text-[#d4a373] text-sm">No upcoming maintenance tasks</p>
-                      <p className="text-[#d4a373]/70 text-xs mt-1">You're all caught up!</p>
+                      <CheckCircle2 className="w-12 h-12 text-sage mx-auto mb-3" />
+                      <p className="text-warm-gray text-sm">No upcoming maintenance tasks</p>
+                      <p className="text-warm-gray/70 text-xs mt-1">You're all caught up!</p>
                     </div>
                   ) : (
                     tasks.map((task) => (
@@ -323,22 +330,22 @@ export function Dashboard() {
                       key={task.id}
                       onClick={() => handleTaskClick(task.id)}
                       className={cn(
-                        "group p-4 rounded-xl border transition-all duration-300 cursor-pointer hover:scale-[1.02]",
-                        task.status === 'overdue' && 'bg-gradient-to-br from-[#d45d4e]/10 to-[#0a0a0a] border-[#d45d4e]/30 hover:border-[#d45d4e]/50',
-                        task.status === 'due-soon' && 'bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border-[#f7931e]/30 hover:border-[#f7931e]/50',
-                        task.status === 'upcoming' && 'bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border-[#f4e8d8]/10 hover:border-[#ff6b35]/30'
+                        "group p-4 rounded-xl border-2 transition-all duration-300 cursor-pointer hover:shadow-md",
+                        task.status === 'overdue' && 'bg-warm-coral/5 border-warm-coral/30 hover:border-warm-coral/50 hover:bg-warm-coral/10',
+                        task.status === 'due-soon' && 'bg-warm-orange/5 border-warm-orange/30 hover:border-warm-orange/50 hover:bg-warm-orange/10',
+                        task.status === 'upcoming' && 'bg-soft-amber/5 border-soft-amber/20 hover:border-soft-amber/40 hover:bg-soft-amber/10'
                       )}
                     >
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex-1">
-                          <h4 className="text-sm font-semibold text-[#f4e8d8] mb-1">{task.title}</h4>
-                          <p className="text-xs text-[#d4a373]">{task.system}</p>
+                          <h4 className="text-sm font-semibold text-charcoal mb-1">{task.title}</h4>
+                          <p className="text-xs text-warm-gray">{task.system}</p>
                         </div>
                         <span className={cn(
-                          "text-xs px-2 py-1 rounded-lg border font-medium",
-                          task.status === 'overdue' && 'bg-[#d45d4e]/20 text-[#d45d4e] border-[#d45d4e]/30',
-                          task.status === 'due-soon' && 'bg-[#f7931e]/20 text-[#f7931e] border-[#f7931e]/30',
-                          task.status === 'upcoming' && 'bg-[#d4a373]/20 text-[#d4a373] border-[#d4a373]/30'
+                          "text-xs px-2 py-1 rounded-lg border font-semibold",
+                          task.status === 'overdue' && 'bg-warm-coral/20 text-warm-coral border-warm-coral/30',
+                          task.status === 'due-soon' && 'bg-warm-orange/20 text-warm-orange border-warm-orange/30',
+                          task.status === 'upcoming' && 'bg-soft-amber/20 text-soft-amber border-soft-amber/30'
                         )}>
                           {task.dueDate.toLocaleDateString('en-CA', { month: 'short', day: 'numeric' })}
                         </span>
@@ -350,30 +357,30 @@ export function Dashboard() {
               </div>
 
               {/* System Status */}
-              <div className="bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#f4e8d8]/10 rounded-2xl p-8">
-                <h3 className="text-xl font-semibold text-[#f4e8d8] mb-6">System Status</h3>
+              <div className="bg-white border border-soft-amber/20 rounded-2xl p-8 shadow-md">
+                <h3 className="text-xl font-semibold text-charcoal mb-6">System Status</h3>
                 <div className="space-y-4">
                   {systems.length === 0 ? (
                     <div className="text-center py-8">
-                      <Settings className="w-12 h-12 text-[#d4a373] mx-auto mb-3" />
-                      <p className="text-[#d4a373] text-sm">No systems configured yet</p>
-                      <p className="text-[#d4a373]/70 text-xs mt-1">Complete onboarding to add systems</p>
+                      <SettingsIcon className="w-12 h-12 text-soft-amber mx-auto mb-3" />
+                      <p className="text-warm-gray text-sm">No systems configured yet</p>
+                      <p className="text-warm-gray/70 text-xs mt-1">Complete onboarding to add systems</p>
                     </div>
                   ) : (
                     systems.map((system) => (
-                    <div key={system.id} className="group p-4 bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] hover:from-[#2a2a2a] hover:to-[#2a2a2a] border border-[#f4e8d8]/10 hover:border-[#ff6b35]/30 rounded-xl transition-all duration-300 cursor-pointer">
+                    <div key={system.id} className="group p-4 bg-cream/50 hover:bg-cream border-2 border-soft-amber/20 hover:border-soft-amber/40 rounded-xl transition-all duration-300 cursor-pointer hover:shadow-md">
                       <div className="flex items-center gap-4">
                         <div className={cn(
-                          "w-12 h-12 rounded-xl flex items-center justify-center",
-                          system.status === 'healthy' && 'bg-gradient-to-br from-[#7ea88f] to-[#6a994e]',
-                          system.status === 'warning' && 'bg-gradient-to-br from-[#f7931e] to-[#ff6b35]',
-                          system.status === 'critical' && 'bg-gradient-to-br from-[#d45d4e] to-[#d4734e]'
+                          "w-12 h-12 rounded-xl flex items-center justify-center shadow-md",
+                          system.status === 'healthy' && 'bg-gradient-to-br from-sage to-soft-sage',
+                          system.status === 'warning' && 'bg-gradient-to-br from-warm-orange to-soft-amber',
+                          system.status === 'critical' && 'bg-gradient-to-br from-warm-coral to-burnt-sienna'
                         )}>
-                          <system.icon className="h-7 w-7 text-[#f4e8d8]" />
+                          <system.icon className="h-7 w-7 text-white" />
                         </div>
                         <div className="flex-1">
-                          <h4 className="text-sm font-semibold text-[#f4e8d8]">{system.name}</h4>
-                          <p className="text-xs text-[#d4a373]">{system.lastService}</p>
+                          <h4 className="text-sm font-semibold text-charcoal">{system.name}</h4>
+                          <p className="text-xs text-warm-gray">{system.lastService}</p>
                         </div>
                         <div className="flex flex-col items-end gap-1">
                           <div className="relative w-12 h-12">
@@ -382,7 +389,7 @@ export function Dashboard() {
                                 cx="24"
                                 cy="24"
                                 r="15"
-                                stroke="#2a2a2a"
+                                stroke="#E8DCC4"
                                 strokeWidth="3"
                                 fill="none"
                               />
@@ -391,9 +398,9 @@ export function Dashboard() {
                                 cy="24"
                                 r="15"
                                 className={cn(
-                                  system.status === 'healthy' && 'stroke-[#7ea88f]',
-                                  system.status === 'warning' && 'stroke-[#f7931e]',
-                                  system.status === 'critical' && 'stroke-[#d45d4e]'
+                                  system.status === 'healthy' && 'stroke-sage',
+                                  system.status === 'warning' && 'stroke-warm-orange',
+                                  system.status === 'critical' && 'stroke-warm-coral'
                                 )}
                                 strokeWidth="3"
                                 strokeDasharray={`${system.health * 0.942} 100`}
@@ -401,15 +408,15 @@ export function Dashboard() {
                                 fill="none"
                               />
                             </svg>
-                            <span className="absolute inset-0 flex items-center justify-center text-xs font-bold text-[#f4e8d8]">
+                            <span className="absolute inset-0 flex items-center justify-center text-xs font-bold text-charcoal">
                               {system.health}%
                             </span>
                           </div>
                           <span className={cn(
-                            "text-xs px-2 py-0.5 rounded-lg border font-medium",
-                            system.status === 'healthy' && 'bg-[#7ea88f]/20 text-[#7ea88f] border-[#7ea88f]/30',
-                            system.status === 'warning' && 'bg-[#f7931e]/20 text-[#f7931e] border-[#f7931e]/30',
-                            system.status === 'critical' && 'bg-[#d45d4e]/20 text-[#d45d4e] border-[#d45d4e]/30'
+                            "text-xs px-2 py-0.5 rounded-lg border font-semibold",
+                            system.status === 'healthy' && 'bg-sage/20 text-sage border-sage/30',
+                            system.status === 'warning' && 'bg-warm-orange/20 text-warm-orange border-warm-orange/30',
+                            system.status === 'critical' && 'bg-warm-coral/20 text-warm-coral border-warm-coral/30'
                           )}>
                             {system.status}
                           </span>

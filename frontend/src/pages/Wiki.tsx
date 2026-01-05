@@ -19,9 +19,14 @@ import {
   Plus,
   ExternalLink,
   Youtube,
-  Link as LinkIcon
+  Link as LinkIcon,
+  Home,
+  Settings as SettingsIcon
 } from 'lucide-react';
 import { AddArticleModal, type ArticleInput } from '@/components/modals/AddArticleModal';
+import { Logo } from '@/components/furnacelog/Logo';
+import { cn } from '@/lib/utils';
+import { useScrollPosition } from '@/hooks/useScrollAnimation';
 
 /**
  * Wiki Page Component
@@ -56,6 +61,7 @@ const Wiki: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>('all');
   const [isAddArticleModalOpen, setIsAddArticleModalOpen] = useState(false);
+  const { isScrolled } = useScrollPosition();
 
   // Mock articles data (will be replaced with API call)
   const articles: Article[] = [
@@ -173,90 +179,105 @@ const Wiki: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] relative overflow-hidden">
-      {/* Warm Background Gradient */}
+    <div className="min-h-screen bg-warm-white relative overflow-hidden">
+      {/* Subtle warm background texture */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#ff4500]/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#ff6a00]/12 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#ff8c00]/8 rounded-full blur-3xl" />
+        <div className="absolute inset-0 bg-gradient-to-br from-warm-white via-cream to-warm-white opacity-60" />
+        <div className="absolute inset-0 opacity-[0.03]" style={{
+          backgroundImage: `radial-gradient(circle at 50% 50%, rgba(212, 165, 116, 0.15) 0%, transparent 50%)`
+        }} />
       </div>
 
       {/* Navigation */}
-      <nav className="relative border-b border-[#d4a373]/10 bg-[#0a0a0a]/80 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-6 py-5">
+      <nav className={cn(
+        "sticky top-0 z-50 border-b transition-all duration-300",
+        isScrolled
+          ? "border-soft-amber/20 bg-warm-white/95 backdrop-blur-md shadow-sm"
+          : "border-soft-amber/10 bg-warm-white/80 backdrop-blur-sm"
+      )}>
+        <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <button onClick={() => navigate('/')} className="flex items-center gap-3 group">
-              <div className="w-10 h-10 bg-gradient-to-br from-[#ff4500] to-[#ff6a00] rounded-xl flex items-center justify-center shadow-[0_4px_16px_rgba(255,107,53,0.3)]">
-                <Flame className="w-6 h-6 text-[#f4e8d8]" strokeWidth={2.5} />
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-[#f4e8d8] tracking-tight">
-                  FurnaceLog
-                </h1>
-                <p className="text-xs text-[#d4a373] font-medium">Northern Home Tracker</p>
-              </div>
-            </button>
+            <div className="flex items-center gap-4">
+              <button onClick={() => navigate('/')} className="transition-opacity hover:opacity-80">
+                <Logo size="sm" />
+              </button>
 
-            {/* Navigation Links */}
-            <nav className="hidden md:flex items-center gap-1 ml-8">
-              <button
-                onClick={() => navigate('/')}
-                className="px-4 py-2 text-[#d4a373] hover:text-[#ff6a00] transition-colors duration-200"
-              >
-                Home
-              </button>
-              <button
-                onClick={() => navigate('/dashboard')}
-                className="px-4 py-2 text-[#d4a373] hover:text-[#ff6a00] transition-colors duration-200"
-              >
-                Dashboard
-              </button>
-              <button
-                onClick={() => navigate('/wiki')}
-                className="px-4 py-2 text-[#ff6a00] font-semibold transition-colors duration-200"
-              >
-                Wiki
-              </button>
-              <button
-                onClick={() => navigate('/settings')}
-                className="px-4 py-2 text-[#d4a373] hover:text-[#ff6a00] transition-colors duration-200"
-              >
-                Settings
-              </button>
-            </nav>
+              {/* Main Navigation Menu */}
+              <nav className="hidden md:flex items-center gap-1 ml-8">
+                <button
+                  onClick={() => navigate('/')}
+                  className="px-4 py-2 text-sm text-warm-gray hover:text-charcoal font-medium transition-colors rounded-lg hover:bg-cream"
+                >
+                  Homepage
+                </button>
+                <button
+                  onClick={() => navigate('/dashboard')}
+                  className="px-4 py-2 text-sm text-warm-gray hover:text-charcoal font-medium transition-colors rounded-lg hover:bg-cream"
+                >
+                  Dashboard
+                </button>
+                <button
+                  onClick={() => navigate('/wiki')}
+                  className="px-4 py-2 text-sm text-charcoal font-semibold transition-colors rounded-lg bg-cream"
+                >
+                  Knowledge Base
+                </button>
+                <button
+                  onClick={() => navigate('/about')}
+                  className="px-4 py-2 text-sm text-warm-gray hover:text-charcoal font-medium transition-colors rounded-lg hover:bg-cream"
+                >
+                  About
+                </button>
+                <button
+                  onClick={() => navigate('/contact')}
+                  className="px-4 py-2 text-sm text-warm-gray hover:text-charcoal font-medium transition-colors rounded-lg hover:bg-cream"
+                >
+                  Contact Us
+                </button>
+              </nav>
+            </div>
 
             {/* User Menu */}
             {user && (
               <div className="relative">
                 <button
                   onClick={() => setShowUserMenu(!showUserMenu)}
-                  className="flex items-center gap-3 px-4 py-2 bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#d4a373]/20 rounded-xl hover:border-[#ff6a00]/40 transition-all duration-300"
+                  className="flex items-center gap-2 px-4 py-2 text-sm text-warm-gray hover:text-charcoal font-medium transition-colors rounded-lg hover:bg-cream"
                 >
-                  <div className="w-8 h-8 bg-gradient-to-br from-[#ff4500] to-[#ff6a00] rounded-lg flex items-center justify-center">
-                    <User className="w-4 h-4 text-[#f4e8d8]" />
-                  </div>
-                  <span className="text-[#f4e8d8] font-medium">{user?.profile?.firstName || 'User'}</span>
-                  <ChevronDown className={`w-4 h-4 text-[#d4a373] transition-transform ${showUserMenu ? 'rotate-180' : ''}`} />
+                  <User className="w-4 h-4" />
+                  <span>{user?.profile?.firstName || user?.email || 'User'}</span>
+                  <ChevronDown className={`w-3 h-3 transition-transform ${showUserMenu ? 'rotate-180' : ''}`} />
                 </button>
 
                 {showUserMenu && (
-                  <div className="absolute right-0 mt-2 w-48 bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#d4a373]/20 rounded-xl shadow-2xl overflow-hidden z-50">
+                  <div className="absolute right-0 mt-2 w-48 bg-white border border-soft-amber/20 rounded-xl shadow-lg py-2">
+                    <button
+                      onClick={() => {
+                        setShowUserMenu(false);
+                        navigate('/dashboard');
+                      }}
+                      className="w-full flex items-center gap-2 px-4 py-2 text-sm text-warm-gray hover:bg-cream hover:text-charcoal transition-colors"
+                    >
+                      <Home className="w-4 h-4" />
+                      Dashboard
+                    </button>
                     <button
                       onClick={() => {
                         setShowUserMenu(false);
                         navigate('/settings');
                       }}
-                      className="w-full px-4 py-3 text-left text-[#d4a373] hover:bg-[#ff6a00]/10 hover:text-[#ff6a00] transition-colors flex items-center gap-2"
+                      className="w-full flex items-center gap-2 px-4 py-2 text-sm text-warm-gray hover:bg-cream hover:text-charcoal transition-colors"
                     >
-                      <User className="w-4 h-4" />
+                      <SettingsIcon className="w-4 h-4" />
                       Settings
                     </button>
+                    <div className="border-t border-soft-amber/10 my-1"></div>
                     <button
                       onClick={handleLogout}
-                      className="w-full px-4 py-3 text-left text-[#d45d4e] hover:bg-[#d45d4e]/10 transition-colors flex items-center gap-2"
+                      className="w-full flex items-center gap-2 px-4 py-2 text-sm text-warm-gray hover:bg-cream hover:text-charcoal transition-colors"
                     >
                       <LogOut className="w-4 h-4" />
-                      Logout
+                      Sign Out
                     </button>
                   </div>
                 )}
@@ -272,18 +293,18 @@ const Wiki: React.FC = () => {
         <div className="mb-8">
           <div className="flex items-center justify-between gap-4 mb-4">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-[#ff4500] to-[#ff6a00] rounded-2xl flex items-center justify-center shadow-[0_8px_24px_rgba(255,107,53,0.4)]">
-                <BookOpen className="w-8 h-8 text-[#f4e8d8]" strokeWidth={2.5} />
+              <div className="w-16 h-16 bg-gradient-to-br from-burnt-sienna to-warm-orange rounded-2xl flex items-center justify-center shadow-md">
+                <BookOpen className="w-8 h-8 text-white" strokeWidth={2.5} />
               </div>
               <div>
-                <h1 className="text-4xl font-bold text-[#f4e8d8]">Knowledge Base</h1>
-                <p className="text-[#d4a373] text-lg">Expert guides for northern home maintenance</p>
+                <h1 className="text-4xl font-bold text-charcoal">Knowledge Base</h1>
+                <p className="text-warm-gray text-lg">Expert guides for northern home maintenance</p>
               </div>
             </div>
             {user && (
               <button
                 onClick={() => setIsAddArticleModalOpen(true)}
-                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#ff4500] to-[#ff6a00] hover:shadow-[0_8px_32px_rgba(255,107,53,0.5)] text-[#f4e8d8] font-bold rounded-xl transition-all duration-300 shadow-[0_4px_16px_rgba(255,107,53,0.35)]"
+                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-burnt-sienna to-warm-orange hover:from-warm-orange hover:to-burnt-sienna text-white font-bold rounded-xl transition-all duration-300 shadow-md hover:shadow-lg"
               >
                 <Plus className="w-5 h-5" />
                 Add Article
@@ -295,13 +316,13 @@ const Wiki: React.FC = () => {
         {/* Search Bar */}
         <div className="mb-8">
           <div className="relative max-w-2xl">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#d4a373]" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-warm-gray" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search articles..."
-              className="w-full pl-12 pr-4 py-4 bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#d4a373]/20 text-[#f4e8d8] placeholder-[#d4a373]/50 rounded-xl focus:outline-none focus:border-[#ff6a00]/40 focus:shadow-[0_4px_16px_rgba(255,107,53,0.15)] transition-all duration-300"
+              className="w-full pl-12 pr-4 py-4 bg-white border-2 border-soft-amber/20 text-charcoal placeholder-warm-gray/50 rounded-xl focus:outline-none focus:border-warm-orange/40 focus:shadow-md transition-all duration-300"
             />
           </div>
         </div>
@@ -309,8 +330,8 @@ const Wiki: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Category Sidebar */}
           <div className="lg:col-span-1">
-            <div className="bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#d4a373]/10 rounded-2xl p-6 shadow-2xl sticky top-6">
-              <h2 className="text-lg font-bold text-[#f4e8d8] mb-4">Categories</h2>
+            <div className="bg-white border border-soft-amber/20 rounded-2xl p-6 shadow-md sticky top-24">
+              <h2 className="text-lg font-bold text-charcoal mb-4">Categories</h2>
               <div className="space-y-2">
                 {categories.map((category) => {
                   const Icon = category.icon;
@@ -319,21 +340,23 @@ const Wiki: React.FC = () => {
                     <button
                       key={category.id}
                       onClick={() => setCategoryFilter(category.id)}
-                      className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 ${
+                      className={cn(
+                        "w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300",
                         categoryFilter === category.id
-                          ? 'bg-gradient-to-r from-[#ff4500] to-[#ff6a00] text-[#f4e8d8] font-semibold shadow-[0_4px_16px_rgba(255,107,53,0.3)]'
-                          : 'text-[#d4a373] hover:bg-[#2a2a2a]/60 hover:text-[#ff6a00]'
-                      }`}
+                          ? 'bg-gradient-to-r from-burnt-sienna to-warm-orange text-white font-semibold shadow-md'
+                          : 'text-warm-gray hover:bg-cream hover:text-charcoal'
+                      )}
                     >
                       <div className="flex items-center gap-3">
                         <Icon className="w-4 h-4" />
                         <span className="text-sm">{category.label}</span>
                       </div>
-                      <span className={`text-xs px-2 py-1 rounded-full ${
+                      <span className={cn(
+                        "text-xs px-2 py-1 rounded-full font-semibold",
                         categoryFilter === category.id
-                          ? 'bg-[#f4e8d8]/20'
-                          : 'bg-[#2a2a2a]/60'
-                      }`}>
+                          ? 'bg-white/20'
+                          : 'bg-soft-amber/20'
+                      )}>
                         {count}
                       </span>
                     </button>
@@ -352,24 +375,24 @@ const Wiki: React.FC = () => {
                   return (
                     <div
                       key={article.id}
-                      className="bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#d4a373]/10 rounded-2xl p-6 shadow-2xl hover:border-[#ff6a00]/30 hover:shadow-[0_8px_32px_rgba(255,107,53,0.15)] transition-all duration-300 group"
+                      className="bg-white border border-soft-amber/20 rounded-2xl p-6 shadow-md hover:border-warm-orange/40 hover:shadow-lg transition-all duration-300 group"
                     >
                       <div className="flex items-start gap-4 mb-4">
-                        <div className="w-12 h-12 bg-gradient-to-br from-[#ff4500] to-[#ff6a00] rounded-xl flex items-center justify-center flex-shrink-0 shadow-[0_4px_16px_rgba(255,107,53,0.3)]">
-                          <Icon className="w-6 h-6 text-[#f4e8d8]" />
+                        <div className="w-12 h-12 bg-gradient-to-br from-burnt-sienna to-warm-orange rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+                          <Icon className="w-6 h-6 text-white" />
                         </div>
                         <div className="flex-1">
-                          <h3 className="text-xl font-bold text-[#f4e8d8] mb-2 group-hover:text-[#ff6a00] transition-colors">
+                          <h3 className="text-xl font-bold text-charcoal mb-2 group-hover:text-warm-orange transition-colors">
                             {article.title}
                           </h3>
-                          <p className="text-[#d4a373] mb-4 leading-relaxed">
+                          <p className="text-warm-gray mb-4 leading-relaxed">
                             {article.excerpt}
                           </p>
 
                           {/* YouTube Video */}
                           {article.videoUrl && (
                             <div className="mb-4">
-                              <div className="aspect-video rounded-xl overflow-hidden border border-[#d4a373]/20">
+                              <div className="aspect-video rounded-xl overflow-hidden border border-soft-amber/20">
                                 <iframe
                                   width="100%"
                                   height="100%"
@@ -381,7 +404,7 @@ const Wiki: React.FC = () => {
                                   className="w-full h-full"
                                 />
                               </div>
-                              <div className="flex items-center gap-2 mt-2 text-sm text-[#d4a373]/70">
+                              <div className="flex items-center gap-2 mt-2 text-sm text-warm-gray/70">
                                 <Youtube className="w-4 h-4" />
                                 <span>Video guide included</span>
                               </div>
@@ -390,8 +413,8 @@ const Wiki: React.FC = () => {
 
                           {/* External Links */}
                           {article.externalLinks && article.externalLinks.length > 0 && (
-                            <div className="mb-4 bg-[#2a2a2a]/40 rounded-xl p-4 border border-[#d4a373]/10">
-                              <div className="flex items-center gap-2 text-sm font-semibold text-[#f4e8d8] mb-3">
+                            <div className="mb-4 bg-cream/50 rounded-xl p-4 border border-soft-amber/20">
+                              <div className="flex items-center gap-2 text-sm font-semibold text-charcoal mb-3">
                                 <LinkIcon className="w-4 h-4" />
                                 External References
                               </div>
@@ -403,7 +426,7 @@ const Wiki: React.FC = () => {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     onClick={(e) => e.stopPropagation()}
-                                    className="flex items-center gap-2 text-sm text-[#d4a373] hover:text-[#ff6a00] transition-colors group/link"
+                                    className="flex items-center gap-2 text-sm text-warm-gray hover:text-warm-orange transition-colors group/link"
                                   >
                                     <ExternalLink className="w-3 h-3 flex-shrink-0" />
                                     <span className="group-hover/link:underline">{link.title}</span>
@@ -413,7 +436,7 @@ const Wiki: React.FC = () => {
                             </div>
                           )}
 
-                          <div className="flex items-center gap-6 text-sm text-[#d4a373]/70">
+                          <div className="flex items-center gap-6 text-sm text-warm-gray/70">
                             <div className="flex items-center gap-2">
                               <Clock className="w-4 h-4" />
                               {article.readTime}
@@ -431,7 +454,7 @@ const Wiki: React.FC = () => {
                                 <User className="w-4 h-4" />
                                 {article.author}
                                 {article.authorType === 'admin' && (
-                                  <span className="px-2 py-0.5 bg-[#ff6a00]/20 text-[#ff6a00] text-xs rounded-full border border-[#ff6a00]/30">
+                                  <span className="px-2 py-0.5 bg-warm-orange/20 text-warm-orange text-xs rounded-full border border-warm-orange/30 font-semibold">
                                     Admin
                                   </span>
                                 )}
@@ -445,10 +468,10 @@ const Wiki: React.FC = () => {
                 })}
               </div>
             ) : (
-              <div className="bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#d4a373]/10 rounded-2xl p-12 shadow-2xl text-center">
-                <Search className="w-16 h-16 text-[#d4a373]/30 mx-auto mb-4" />
-                <h3 className="text-xl font-bold text-[#f4e8d8] mb-2">No articles found</h3>
-                <p className="text-[#d4a373]">
+              <div className="bg-white border border-soft-amber/20 rounded-2xl p-12 shadow-md text-center">
+                <Search className="w-16 h-16 text-soft-amber/30 mx-auto mb-4" />
+                <h3 className="text-xl font-bold text-charcoal mb-2">No articles found</h3>
+                <p className="text-warm-gray">
                   {searchQuery
                     ? `No articles match "${searchQuery}". Try a different search term.`
                     : 'No articles available in this category yet.'
@@ -460,12 +483,12 @@ const Wiki: React.FC = () => {
         </div>
 
         {/* Coming Soon Notice */}
-        <div className="mt-12 bg-gradient-to-br from-[#ff6a00]/10 to-[#ff4500]/5 border border-[#ff6a00]/20 rounded-2xl p-8 text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#ff4500] to-[#ff6a00] rounded-2xl shadow-[0_8px_24px_rgba(255,107,53,0.4)] mb-4">
-            <BookOpen className="w-8 h-8 text-[#f4e8d8]" strokeWidth={2.5} />
+        <div className="mt-12 bg-gradient-to-br from-warm-orange/10 to-soft-amber/5 border-2 border-warm-orange/20 rounded-2xl p-8 text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-burnt-sienna to-warm-orange rounded-2xl shadow-md mb-4">
+            <BookOpen className="w-8 h-8 text-white" strokeWidth={2.5} />
           </div>
-          <h3 className="text-2xl font-bold text-[#f4e8d8] mb-3">More Articles Coming Soon</h3>
-          <p className="text-[#d4a373] max-w-2xl mx-auto">
+          <h3 className="text-2xl font-bold text-charcoal mb-3">More Articles Coming Soon</h3>
+          <p className="text-warm-gray max-w-2xl mx-auto">
             We're continuously expanding our knowledge base with expert guides tailored for northern home maintenance.
             Check back regularly for new articles on heating systems, water management, emergency preparedness, and more.
           </p>

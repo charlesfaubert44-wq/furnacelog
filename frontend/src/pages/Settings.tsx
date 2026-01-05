@@ -5,15 +5,20 @@ import {
   Flame,
   User,
   Bell,
-  Home,
+  Home as HomeIcon,
   Shield,
   ChevronDown,
   Save,
   Plus,
   Trash2,
   Edit2,
-  LogOut
+  LogOut,
+  Settings as SettingsIcon,
+  BookOpen
 } from 'lucide-react';
+import { Logo } from '@/components/furnacelog/Logo';
+import { cn } from '@/lib/utils';
+import { useScrollPosition } from '@/hooks/useScrollAnimation';
 
 /**
  * Settings Page Component
@@ -30,6 +35,7 @@ const Settings: React.FC = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const { isScrolled } = useScrollPosition();
 
   // Profile form state
   const [profileData, setProfileData] = useState({
@@ -143,7 +149,7 @@ const Settings: React.FC = () => {
   const tabs = [
     { id: 'profile' as SettingsTab, label: 'Profile', icon: User },
     { id: 'notifications' as SettingsTab, label: 'Notifications', icon: Bell },
-    { id: 'homes' as SettingsTab, label: 'My Homes', icon: Home },
+    { id: 'homes' as SettingsTab, label: 'My Homes', icon: HomeIcon },
     { id: 'security' as SettingsTab, label: 'Security', icon: Shield }
   ];
 
