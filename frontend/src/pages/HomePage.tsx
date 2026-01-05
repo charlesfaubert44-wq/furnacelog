@@ -7,7 +7,6 @@ import { AuthModal } from '@/components/auth/AuthModal';
 import { useScrollPosition } from '@/hooks/useScrollAnimation';
 import logger from '@/utils/logger';
 import { PricingPlans } from '@/components/pricing/PricingPlans';
-import { AdSense } from '@/components/ads/AdSense';
 import { HeroCarouselImmersive, type HeroSlide } from '@/components/hero/HeroCarouselImmersive';
 import { Logo } from '@/components/furnacelog/Logo';
 
@@ -372,11 +371,6 @@ function HomePage() {
             `}</style>
           </section>
 
-          {/* Ad Placement 1 */}
-          <div className="max-w-7xl mx-auto px-6 py-2">
-            <AdSense format="horizontal" className="max-w-4xl mx-auto" />
-          </div>
-
           {/* Features Grid */}
           <section id="features" className="py-24 border-b border-furnace-primary/10">
             <div className="max-w-7xl mx-auto px-6">
@@ -451,11 +445,6 @@ function HomePage() {
             </div>
           </section>
 
-          {/* Ad Placement 2 */}
-          <div className="max-w-7xl mx-auto px-6 py-2">
-            <AdSense format="horizontal" className="max-w-4xl mx-auto" />
-          </div>
-
           {/* Pricing Section */}
           <section id="pricing" className="py-24 border-b border-furnace-primary/10">
             <div className="max-w-7xl mx-auto px-6">
@@ -464,7 +453,7 @@ function HomePage() {
                   Choose Your Plan
                 </h2>
                 <p className="text-xl text-fl-text-secondary">
-                  Start free with ads, or go ad-free for just $6.99/month. All plans include core features.
+                  Start free, or unlock advanced features for just $6.99/month. All plans include core features.
                 </p>
               </div>
 
@@ -473,7 +462,7 @@ function HomePage() {
               <div className="mt-16 text-center">
                 <p className="text-sm text-fl-text-secondary/70 max-w-2xl mx-auto">
                   All plans include unlimited homes, maintenance tracking, weather alerts, and community support.
-                  Upgrade anytime to remove ads and unlock advanced features. No credit card required to start.
+                  Upgrade anytime to unlock advanced features. No credit card required to start.
                 </p>
               </div>
             </div>
@@ -502,11 +491,6 @@ function HomePage() {
               </div>
             </div>
           </section>
-
-      {/* Ad Placement 3 */}
-      <div className="max-w-7xl mx-auto px-6 py-2">
-        <AdSense format="horizontal" className="max-w-4xl mx-auto" />
-      </div>
 
       {/* Footer */}
       <footer className="py-12">
