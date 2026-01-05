@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Home, LogOut, User, Plus, AlertTriangle, CheckCircle2, Clock, Flame, Droplets, Wind, Zap, BookOpen, Settings } from 'lucide-react';
+import { Home, LogOut, User, Plus, AlertTriangle, CheckCircle2, Clock, Flame, Droplets, Wind, Zap, BookOpen, Settings, Loader2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import { useScrollPosition } from '@/hooks/useScrollAnimation';
 import { AdSense } from '@/components/ads/AdSense';
 import { LogMaintenanceModal, type MaintenanceTaskInput } from '@/components/modals/LogMaintenanceModal';
+import { getDashboardData, type DashboardData } from '@/services/dashboard.service';
 
 /**
  * Dashboard Page
@@ -30,67 +31,18 @@ interface SystemStatus {
   health: number;
 }
 
-const mockTasks: MaintenanceTask[] = [
-  {
-    id: '1',
-    title: 'Furnace Filter Replacement',
-    system: 'Propane Furnace',
-    dueDate: new Date('2026-01-05'),
-    status: 'overdue',
-    priority: 'high',
-  },
-  {
-    id: '2',
-    title: 'HRV Core Cleaning',
-    system: 'HRV System',
-    dueDate: new Date('2026-01-10'),
-    status: 'due-soon',
-    priority: 'medium',
-  },
-  {
-    id: '3',
-    title: 'Heat Trace Inspection',
-    system: 'Freeze Protection',
-    dueDate: new Date('2026-01-15'),
-    status: 'upcoming',
-    priority: 'high',
-  },
-];
-
-const systems: SystemStatus[] = [
-  {
-    id: '1',
-    name: 'Propane Furnace',
-    icon: Flame,
-    status: 'healthy',
-    lastService: '2 weeks ago',
-    health: 94,
-  },
-  {
-    id: '2',
-    name: 'Water System',
-    icon: Droplets,
-    status: 'warning',
-    lastService: '3 months ago',
-    health: 68,
-  },
-  {
-    id: '3',
-    name: 'HRV Ventilation',
-    icon: Wind,
-    status: 'healthy',
-    lastService: '1 month ago',
-    health: 88,
-  },
-  {
-    id: '4',
-    name: 'Electrical',
-    icon: Zap,
-    status: 'healthy',
-    lastService: '6 months ago',
-    health: 96,
-  },
-];
+// Helper function to get icon for system category
+const getSystemIcon = (category: string): React.ElementType => {
+  const iconMap: Record<string, React.ElementType> = {
+    heating: Flame,
+    water: Droplets,
+    ventilation: Wind,
+    electrical: Zap,
+    sewage: Wind,
+    default: Settings,
+  };
+  return iconMap[category.toLowerCase()] || iconMap.default;
+};
 
 export function Dashboard() {
   const { user, logout } = useAuth();
@@ -98,6 +50,30 @@ export function Dashboard() {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [isMaintenanceModalOpen, setIsMaintenanceModalOpen] = useState(false);
   const { isScrolled } = useScrollPosition();
+
+  // Dashboard data state
+  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch dashboard data
+  useEffect(() => {
+    const fetchDashboard = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        const data = await getDashboardData();
+        setDashboardData(data);
+      } catch (err: any) {
+        console.error('Failed to fetch dashboard data:', err);
+        setError(err.message || 'Failed to load dashboard data');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchDashboard();
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -117,9 +93,29 @@ export function Dashboard() {
     alert('Task details coming soon! This will show full task information, allow editing, and mark as complete.');
   };
 
-  const overdueCount = mockTasks.filter((t) => t.status === 'overdue').length;
-  const dueSoonCount = mockTasks.filter((t) => t.status === 'due-soon').length;
-  const upcomingCount = mockTasks.filter((t) => t.status === 'upcoming').length;
+  // Transform API tasks to component format
+  const tasks: MaintenanceTask[] = dashboardData?.maintenanceSummary.upcomingTasks.map(task => ({
+    id: task.id,
+    title: task.title,
+    system: task.system?.name || 'General',
+    dueDate: new Date(task.dueDate),
+    status: task.daysUntilDue < 0 ? 'overdue' : task.daysUntilDue <= 7 ? 'due-soon' : 'upcoming',
+    priority: task.priority === 'critical' ? 'high' : task.priority,
+  })) || [];
+
+  // Transform API systems to component format
+  const systems: SystemStatus[] = dashboardData?.systemsStatus.systems.map(system => ({
+    id: system.id,
+    name: system.name,
+    icon: getSystemIcon(system.category),
+    status: system.statusColor === 'green' ? 'healthy' : system.statusColor === 'yellow' ? 'warning' : 'critical',
+    lastService: system.lastServiceDate ? new Date(system.lastServiceDate).toLocaleDateString() : 'Never',
+    health: system.healthScore,
+  })) || [];
+
+  const overdueCount = dashboardData?.maintenanceSummary.overdue || 0;
+  const dueSoonCount = dashboardData?.maintenanceSummary.dueSoon || 0;
+  const upcomingCount = dashboardData?.maintenanceSummary.upcoming || 0;
 
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
@@ -230,6 +226,35 @@ export function Dashboard() {
         }} />
 
         <div className="relative max-w-7xl mx-auto px-6 py-12">
+          {/* Loading State */}
+          {isLoading && (
+            <div className="flex items-center justify-center min-h-[60vh]">
+              <div className="text-center">
+                <Loader2 className="w-12 h-12 text-[#ff6b35] animate-spin mx-auto mb-4" />
+                <p className="text-[#d4a373] text-lg">Loading your dashboard...</p>
+              </div>
+            </div>
+          )}
+
+          {/* Error State */}
+          {error && !isLoading && (
+            <div className="max-w-2xl mx-auto">
+              <div className="bg-gradient-to-br from-[#d45d4e]/20 to-[#d45d4e]/10 border border-[#d45d4e]/30 rounded-2xl p-8 text-center">
+                <AlertTriangle className="w-12 h-12 text-[#d45d4e] mx-auto mb-4" />
+                <h3 className="text-xl font-bold text-[#f4e8d8] mb-2">Unable to Load Dashboard</h3>
+                <p className="text-[#d4a373] mb-6">{error}</p>
+                <button
+                  onClick={() => window.location.reload()}
+                  className="px-6 py-3 bg-gradient-to-br from-[#ff6b35] to-[#f7931e] hover:from-[#f7931e] hover:to-[#ff6b35] text-[#f4e8d8] text-sm font-semibold rounded-xl transition-all duration-300"
+                >
+                  Retry
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Dashboard Content */}
+          {!isLoading && !error && dashboardData && (
           <div className="space-y-8">
             {/* Dashboard Header */}
             <div className="flex items-start justify-between gap-4">
@@ -287,7 +312,14 @@ export function Dashboard() {
 
                 {/* Task List */}
                 <div className="space-y-3">
-                  {mockTasks.map((task) => (
+                  {tasks.length === 0 ? (
+                    <div className="text-center py-8">
+                      <CheckCircle2 className="w-12 h-12 text-[#7ea88f] mx-auto mb-3" />
+                      <p className="text-[#d4a373] text-sm">No upcoming maintenance tasks</p>
+                      <p className="text-[#d4a373]/70 text-xs mt-1">You're all caught up!</p>
+                    </div>
+                  ) : (
+                    tasks.map((task) => (
                     <div
                       key={task.id}
                       onClick={() => handleTaskClick(task.id)}
@@ -313,7 +345,8 @@ export function Dashboard() {
                         </span>
                       </div>
                     </div>
-                  ))}
+                  ))
+                  )}
                 </div>
               </div>
 
@@ -321,7 +354,14 @@ export function Dashboard() {
               <div className="bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#f4e8d8]/10 rounded-2xl p-8">
                 <h3 className="text-xl font-semibold text-[#f4e8d8] mb-6">System Status</h3>
                 <div className="space-y-4">
-                  {systems.map((system) => (
+                  {systems.length === 0 ? (
+                    <div className="text-center py-8">
+                      <Settings className="w-12 h-12 text-[#d4a373] mx-auto mb-3" />
+                      <p className="text-[#d4a373] text-sm">No systems configured yet</p>
+                      <p className="text-[#d4a373]/70 text-xs mt-1">Complete onboarding to add systems</p>
+                    </div>
+                  ) : (
+                    systems.map((system) => (
                     <div key={system.id} className="group p-4 bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] hover:from-[#2a2a2a] hover:to-[#2a2a2a] border border-[#f4e8d8]/10 hover:border-[#ff6b35]/30 rounded-xl transition-all duration-300 cursor-pointer">
                       <div className="flex items-center gap-4">
                         <div className={cn(
@@ -377,7 +417,8 @@ export function Dashboard() {
                         </div>
                       </div>
                     </div>
-                  ))}
+                  ))
+                  )}
                 </div>
               </div>
             </div>
@@ -387,6 +428,7 @@ export function Dashboard() {
               <AdSense format="horizontal" />
             </div>
           </div>
+          )}
         </div>
       </div>
 
