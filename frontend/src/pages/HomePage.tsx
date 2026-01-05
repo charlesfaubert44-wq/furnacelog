@@ -178,7 +178,7 @@ function HomePage() {
             {/* Subtle warm glow background */}
             <div className="absolute inset-0 bg-gradient-warm-glow opacity-30 pointer-events-none" />
 
-            <div className="relative max-w-7xl mx-auto px-6 py-20 md:py-28">
+            <div className="relative max-w-7xl mx-auto px-6 py-12 md:py-16">
               <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                 {/* Left: Content */}
                 <div className="space-y-8">
@@ -245,7 +245,7 @@ function HomePage() {
           </section>
 
           {/* Trust Bar */}
-          <section className="py-12 bg-cream/50 border-b border-soft-beige/30">
+          <section className="py-8 bg-cream/50 border-b border-soft-beige/30">
             <div className="max-w-7xl mx-auto px-6">
               <p className="text-center text-sm text-warm-gray mb-6">Trusted by northern homeowners in:</p>
               <div className="flex flex-wrap justify-center items-center gap-8 text-charcoal/60 font-medium">
@@ -263,9 +263,9 @@ function HomePage() {
           </section>
 
           {/* Warm Features Grid */}
-          <section id="features" className="py-24 bg-cream border-b border-soft-beige/30">
+          <section id="features" className="py-16 bg-cream border-b border-soft-beige/30">
             <div className="max-w-7xl mx-auto px-6">
-              <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+              <div className="text-center max-w-3xl mx-auto mb-12 space-y-4">
                 <h2 className="text-4xl md:text-5xl font-bold text-charcoal leading-tight">Everything You Need for Peace of Mind</h2>
                 <p className="text-lg text-warm-gray leading-relaxed">
                   Built for northern homeowners who want to relax knowing their home is safe, warm, and well-maintained
@@ -343,9 +343,9 @@ function HomePage() {
           </section>
 
           {/* Warm Pricing Section */}
-          <section id="pricing" className="py-24 bg-gradient-cozy border-b border-soft-beige/30">
+          <section id="pricing" className="py-16 bg-gradient-cozy border-b border-soft-beige/30">
             <div className="max-w-7xl mx-auto px-6">
-              <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+              <div className="text-center max-w-3xl mx-auto mb-12 space-y-4">
                 <h2 className="text-4xl md:text-5xl font-bold text-charcoal leading-tight">
                   Simple, Honest Pricing
                 </h2>
@@ -366,7 +366,7 @@ function HomePage() {
           </section>
 
           {/* Product Showcase Section 1: Everything in One Place */}
-          <section className="py-24 bg-cream border-b border-soft-beige/30">
+          <section className="py-16 bg-cream border-b border-soft-beige/30">
             <div className="max-w-7xl mx-auto px-6">
               <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                 {/* Screenshot */}
@@ -414,7 +414,7 @@ function HomePage() {
           </section>
 
           {/* Product Showcase Section 2: Mobile App */}
-          <section className="py-24 bg-gradient-cozy border-b border-soft-beige/30">
+          <section className="py-16 bg-gradient-cozy border-b border-soft-beige/30">
             <div className="max-w-7xl mx-auto px-6">
               <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                 {/* Content (Left on desktop) */}
@@ -462,7 +462,7 @@ function HomePage() {
           </section>
 
           {/* Product Showcase Section 3: Analytics */}
-          <section className="py-24 bg-cream border-b border-soft-beige/30">
+          <section className="py-16 bg-cream border-b border-soft-beige/30">
             <div className="max-w-7xl mx-auto px-6">
               <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                 {/* Chart Screenshot */}
@@ -510,9 +510,9 @@ function HomePage() {
           </section>
 
           {/* Testimonials / Social Proof */}
-          <section className="py-24 bg-gradient-paper border-b border-soft-beige/30">
+          <section className="py-16 bg-gradient-paper border-b border-soft-beige/30">
             <div className="max-w-7xl mx-auto px-6">
-              <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+              <div className="text-center max-w-3xl mx-auto mb-12 space-y-4">
                 <h2 className="text-4xl md:text-5xl font-bold text-charcoal leading-tight">
                   Loved by Northern Homeowners
                 </h2>
@@ -565,7 +565,7 @@ function HomePage() {
           </section>
 
           {/* Enhanced CTA Section */}
-          <section className="py-28 bg-gradient-fireplace border-b border-soft-beige/30 relative overflow-hidden">
+          <section className="py-16 bg-gradient-fireplace border-b border-soft-beige/30 relative overflow-hidden">
             {/* Decorative elements */}
             <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20" />
 
