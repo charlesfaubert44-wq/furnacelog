@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Home, Calendar, AlertTriangle, Snowflake, Flame, ArrowRight, TrendingDown, LogOut, User, BookOpen, Settings } from 'lucide-react';
+import { Home, Calendar, AlertTriangle, Snowflake, Flame, ArrowRight, TrendingDown, LogOut, User, BookOpen, Settings, Play, Check, Shield, MapPin, Smartphone, BarChart3, Star } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import { AuthModal } from '@/components/auth/AuthModal';
 import { useScrollPosition } from '@/hooks/useScrollAnimation';
 import logger from '@/utils/logger';
 import { PricingPlans } from '@/components/pricing/PricingPlans';
-import { HeroCarouselImmersive, type HeroSlide } from '@/components/hero/HeroCarouselImmersive';
+import { DashboardMockup } from '@/components/hero/DashboardMockup';
 import { Logo } from '@/components/furnacelog/Logo';
 
 interface HealthStatus {
@@ -56,85 +56,6 @@ function HomePage() {
     setShowUserMenu(false);
   };
 
-  // Hero carousel slides
-  const heroSlides: HeroSlide[] = [
-    {
-      id: 'filter-question',
-      headline: {
-        normal: 'When Did You Last',
-        highlight: 'Change Your Filter?',
-      },
-      subtitle: '...exactly. Stop guessing. Track every maintenance task with precision. Your furnace (and your wallet) will thank you.',
-      ctaPrimary: {
-        text: 'Start Tracking Free',
-        onClick: () => {
-          setAuthModalTab('register');
-          setAuthModalOpen(true);
-        },
-      },
-      ctaSecondary: {
-        text: 'See How It Works',
-        href: '#features',
-      },
-    },
-    {
-      id: 'cost-comparison',
-      headline: {
-        normal: '$3,000 Frozen Pipe Repair',
-        highlight: 'vs. $7/Month',
-      },
-      subtitle: 'One missed heat trace check can cost thousands. FurnaceLog sends automated reminders before problems become emergencies.',
-      ctaPrimary: {
-        text: 'Protect Your Home',
-        onClick: () => {
-          setAuthModalTab('register');
-          setAuthModalOpen(true);
-        },
-      },
-      ctaSecondary: {
-        text: 'View Pricing',
-        href: '#pricing',
-      },
-    },
-    {
-      id: 'furnace-failure',
-      headline: {
-        normal: 'Your Furnace Quit at -35°C.',
-        highlight: 'Would You Even Know?',
-      },
-      subtitle: 'Real-time monitoring and instant alerts mean you catch problems before your home freezes. Sleep better knowing you\'re protected.',
-      ctaPrimary: {
-        text: 'Get Peace of Mind',
-        onClick: () => {
-          setAuthModalTab('register');
-          setAuthModalOpen(true);
-        },
-      },
-      ctaSecondary: {
-        text: 'Learn About Monitoring',
-        href: '#features',
-      },
-    },
-    {
-      id: 'cognitive-relief',
-      headline: {
-        normal: 'Track 50 Maintenance Tasks',
-        highlight: 'Or Remember... Nothing',
-      },
-      subtitle: 'Stop carrying home maintenance stress in your head. Smart seasonal checklists, automatic reminders, complete peace of mind.',
-      ctaPrimary: {
-        text: 'Try It Free',
-        onClick: () => {
-          setAuthModalTab('register');
-          setAuthModalOpen(true);
-        },
-      },
-      ctaSecondary: {
-        text: 'See All Features',
-        href: '#features',
-      },
-    },
-  ];
 
 
   return (
@@ -252,53 +173,93 @@ function HomePage() {
         </div>
       </nav>
 
-          {/* Warm, Cozy Hero Section */}
+          {/* Modern SaaS Hero Section */}
           <section className="relative overflow-hidden bg-gradient-paper border-b border-soft-beige/30">
             {/* Subtle warm glow background */}
-            <div className="absolute inset-0 bg-gradient-warm-glow opacity-50 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-warm-glow opacity-30 pointer-events-none" />
 
-            {/* Gentle floating particles (like warm dust in sunlight) */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
-              {Array.from({ length: 8 }, (_, i) => ({
-                id: i,
-                left: 10 + Math.random() * 80,
-                top: Math.random() * 100,
-                delay: Math.random() * 10,
-                duration: 15 + Math.random() * 10,
-                size: 2 + Math.random() * 3,
-              })).map((particle) => (
-                <div
-                  key={`particle-${particle.id}`}
-                  className="absolute bg-soft-amber/40 rounded-full blur-sm"
-                  style={{
-                    left: `${particle.left}%`,
-                    top: `${particle.top}%`,
-                    width: `${particle.size}px`,
-                    height: `${particle.size}px`,
-                    animation: `gentleFloat ${particle.duration}s ease-in-out infinite`,
-                    animationDelay: `${particle.delay}s`,
-                  }}
-                />
-              ))}
+            <div className="relative max-w-7xl mx-auto px-6 py-20 md:py-28">
+              <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                {/* Left: Content */}
+                <div className="space-y-8">
+                  {/* Badge */}
+                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-soft-amber/20 border border-soft-amber/30 rounded-full">
+                    <MapPin className="w-4 h-4 text-warm-orange" />
+                    <span className="text-sm font-medium text-charcoal">For Northern Homeowners</span>
+                  </div>
+
+                  {/* Headline */}
+                  <div className="space-y-4">
+                    <h1 className="text-5xl md:text-6xl lg:text-7xl font-black text-charcoal leading-tight">
+                      Never Wonder About Your Home Maintenance Again
+                    </h1>
+                    <p className="text-xl md:text-2xl text-warm-gray leading-relaxed">
+                      Track your furnace, monitor heating systems, and stay ahead of seasonal maintenance. Built specifically for northern homes where reliability isn't optional—it's survival.
+                    </p>
+                  </div>
+
+                  {/* CTAs */}
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <button
+                      onClick={() => {
+                        setAuthModalTab('register');
+                        setAuthModalOpen(true);
+                      }}
+                      className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-gradient-fireplace hover:shadow-warm-glow text-white text-lg font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-warm-md"
+                    >
+                      Start Free Trial
+                      <ArrowRight className="w-5 h-5" />
+                    </button>
+                    <a
+                      href="#features"
+                      className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-white/60 hover:bg-white border-2 border-soft-beige hover:border-soft-amber/50 text-charcoal text-lg font-bold rounded-xl transition-all duration-300 shadow-warm-sm"
+                    >
+                      <Play className="w-5 h-5" />
+                      Watch Demo
+                    </a>
+                  </div>
+
+                  {/* Trust Indicators */}
+                  <div className="flex flex-wrap items-center gap-6 pt-4 text-sm text-warm-gray">
+                    <div className="flex items-center gap-2">
+                      <Check className="w-5 h-5 text-soft-amber" />
+                      <span>No credit card required</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Check className="w-5 h-5 text-soft-amber" />
+                      <span>14-day free trial</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Check className="w-5 h-5 text-soft-amber" />
+                      <span>Cancel anytime</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right: Dashboard Mockup */}
+                <div className="relative lg:scale-110">
+                  <DashboardMockup />
+                </div>
+              </div>
             </div>
+          </section>
 
-            <div className="relative max-w-7xl mx-auto px-6 py-8 md:py-10">
-              <HeroCarouselImmersive
-                slides={heroSlides}
-                autoAdvance={true}
-                autoAdvanceInterval={10000}
-              />
+          {/* Trust Bar */}
+          <section className="py-12 bg-cream/50 border-b border-soft-beige/30">
+            <div className="max-w-7xl mx-auto px-6">
+              <p className="text-center text-sm text-warm-gray mb-6">Trusted by northern homeowners in:</p>
+              <div className="flex flex-wrap justify-center items-center gap-8 text-charcoal/60 font-medium">
+                <span>Yellowknife</span>
+                <span className="w-1 h-1 rounded-full bg-warm-gray/30" />
+                <span>Whitehorse</span>
+                <span className="w-1 h-1 rounded-full bg-warm-gray/30" />
+                <span>Inuvik</span>
+                <span className="w-1 h-1 rounded-full bg-warm-gray/30" />
+                <span>Iqaluit</span>
+                <span className="w-1 h-1 rounded-full bg-warm-gray/30" />
+                <span>Fort Smith</span>
+              </div>
             </div>
-
-            {/* Gentle animation styles */}
-            <style>{`
-              @keyframes gentleFloat {
-                0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
-                25% { transform: translateY(-20px) translateX(10px); opacity: 0.6; }
-                50% { transform: translateY(-10px) translateX(-10px); opacity: 0.4; }
-                75% { transform: translateY(-30px) translateX(5px); opacity: 0.5; }
-              }
-            `}</style>
           </section>
 
           {/* Warm Features Grid */}
@@ -404,45 +365,376 @@ function HomePage() {
             </div>
           </section>
 
-          {/* Warm CTA Section */}
+          {/* Product Showcase Section 1: Everything in One Place */}
+          <section className="py-24 bg-cream border-b border-soft-beige/30">
+            <div className="max-w-7xl mx-auto px-6">
+              <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                {/* Screenshot */}
+                <div className="relative">
+                  <div className="bg-white rounded-2xl p-8 shadow-warm-lg border border-soft-beige/60">
+                    <div className="aspect-video bg-gradient-to-br from-cream via-soft-beige/30 to-warm-white rounded-xl flex items-center justify-center">
+                      <div className="text-center space-y-2">
+                        <Calendar className="w-16 h-16 text-soft-amber mx-auto" />
+                        <p className="text-warm-gray font-medium">Dashboard Preview</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-gradient-fireplace/20 rounded-full blur-3xl" />
+                </div>
+
+                {/* Content */}
+                <div className="space-y-6">
+                  <div className="inline-block px-4 py-2 bg-soft-amber/10 border border-soft-amber/20 rounded-full">
+                    <span className="text-sm font-semibold text-warm-orange">Dashboard</span>
+                  </div>
+                  <h2 className="text-4xl md:text-5xl font-black text-charcoal leading-tight">
+                    Everything in One Place
+                  </h2>
+                  <p className="text-xl text-warm-gray leading-relaxed">
+                    Your entire home maintenance history, upcoming tasks, and system health at a glance. Never dig through old receipts or wonder when you last serviced something.
+                  </p>
+                  <ul className="space-y-4">
+                    {[
+                      'Complete maintenance history and logs',
+                      'Upcoming task reminders and notifications',
+                      'System health monitoring and alerts',
+                      'Weather-based recommendations'
+                    ].map((feature, idx) => (
+                      <li key={idx} className="flex items-start gap-3">
+                        <div className="w-6 h-6 bg-gradient-fireplace rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <Check className="w-4 h-4 text-white" />
+                        </div>
+                        <span className="text-lg text-charcoal">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Product Showcase Section 2: Mobile App */}
+          <section className="py-24 bg-gradient-cozy border-b border-soft-beige/30">
+            <div className="max-w-7xl mx-auto px-6">
+              <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                {/* Content (Left on desktop) */}
+                <div className="space-y-6 lg:order-1">
+                  <div className="inline-block px-4 py-2 bg-soft-amber/10 border border-soft-amber/20 rounded-full">
+                    <span className="text-sm font-semibold text-warm-orange">Mobile App</span>
+                  </div>
+                  <h2 className="text-4xl md:text-5xl font-black text-charcoal leading-tight">
+                    Take Your Home Management Anywhere
+                  </h2>
+                  <p className="text-xl text-warm-gray leading-relaxed">
+                    Get instant alerts on your phone, mark tasks complete on the go, and access your maintenance data even without internet connection.
+                  </p>
+                  <ul className="space-y-4">
+                    {[
+                      'Push notifications for critical alerts',
+                      'Offline-first functionality',
+                      'Quick task completion on the go',
+                      'Photo uploads for maintenance records'
+                    ].map((feature, idx) => (
+                      <li key={idx} className="flex items-start gap-3">
+                        <div className="w-6 h-6 bg-gradient-fireplace rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <Check className="w-4 h-4 text-white" />
+                        </div>
+                        <span className="text-lg text-charcoal">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Phone Mockup (Right on desktop) */}
+                <div className="relative lg:order-2">
+                  <div className="bg-white rounded-2xl p-8 shadow-warm-lg border border-soft-beige/60">
+                    <div className="aspect-[9/16] max-w-xs mx-auto bg-gradient-to-b from-cream to-soft-beige/50 rounded-2xl flex items-center justify-center">
+                      <div className="text-center space-y-2">
+                        <Smartphone className="w-16 h-16 text-soft-amber mx-auto" />
+                        <p className="text-warm-gray font-medium text-sm">Mobile View</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="absolute -top-4 -left-4 w-32 h-32 bg-soft-amber/20 rounded-full blur-3xl" />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Product Showcase Section 3: Analytics */}
+          <section className="py-24 bg-cream border-b border-soft-beige/30">
+            <div className="max-w-7xl mx-auto px-6">
+              <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                {/* Chart Screenshot */}
+                <div className="relative">
+                  <div className="bg-white rounded-2xl p-8 shadow-warm-lg border border-soft-beige/60">
+                    <div className="aspect-video bg-gradient-to-br from-cream via-soft-beige/30 to-warm-white rounded-xl flex items-center justify-center">
+                      <div className="text-center space-y-2">
+                        <BarChart3 className="w-16 h-16 text-soft-amber mx-auto" />
+                        <p className="text-warm-gray font-medium">Analytics Dashboard</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-gradient-fireplace/20 rounded-full blur-3xl" />
+                </div>
+
+                {/* Content */}
+                <div className="space-y-6">
+                  <div className="inline-block px-4 py-2 bg-soft-amber/10 border border-soft-amber/20 rounded-full">
+                    <span className="text-sm font-semibold text-warm-orange">Reports & Analytics</span>
+                  </div>
+                  <h2 className="text-4xl md:text-5xl font-black text-charcoal leading-tight">
+                    Track Costs & Optimize Spending
+                  </h2>
+                  <p className="text-xl text-warm-gray leading-relaxed">
+                    See exactly where your home maintenance budget goes. Identify trends, plan for major expenses, and make data-driven decisions about your home.
+                  </p>
+                  <ul className="space-y-4">
+                    {[
+                      'Expense tracking and categorization',
+                      'Fuel and propane usage analytics',
+                      'Maintenance cost forecasting',
+                      'Seasonal trend analysis'
+                    ].map((feature, idx) => (
+                      <li key={idx} className="flex items-start gap-3">
+                        <div className="w-6 h-6 bg-gradient-fireplace rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <Check className="w-4 h-4 text-white" />
+                        </div>
+                        <span className="text-lg text-charcoal">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Testimonials / Social Proof */}
           <section className="py-24 bg-gradient-paper border-b border-soft-beige/30">
-            <div className="max-w-4xl mx-auto px-6 text-center space-y-8">
-              <h2 className="text-4xl md:text-5xl font-bold text-charcoal leading-tight">
+            <div className="max-w-7xl mx-auto px-6">
+              <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                <h2 className="text-4xl md:text-5xl font-bold text-charcoal leading-tight">
+                  Loved by Northern Homeowners
+                </h2>
+                <p className="text-lg text-warm-gray leading-relaxed">
+                  Join thousands of homeowners who've found peace of mind with FurnaceLog
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-8">
+                {[
+                  {
+                    quote: "After forgetting to change my furnace filter and paying for an expensive repair, FurnaceLog has been a lifesaver. The reminders are perfectly timed.",
+                    name: "Sarah M.",
+                    location: "Yellowknife, NT",
+                    rating: 5
+                  },
+                  {
+                    quote: "Living in a modular home means constant maintenance. FurnaceLog helps me track everything from heat trace cables to skirting checks. Game changer.",
+                    name: "James K.",
+                    location: "Whitehorse, YT",
+                    rating: 5
+                  },
+                  {
+                    quote: "The weather alerts integration is brilliant. When it hits -40, I get reminders about specific tasks I need to check. That's northern-specific design done right.",
+                    name: "Michelle D.",
+                    location: "Inuvik, NT",
+                    rating: 5
+                  }
+                ].map((testimonial, idx) => (
+                  <div key={idx} className="bg-white rounded-2xl p-8 border border-soft-beige/60 shadow-warm-md space-y-4">
+                    {/* Stars */}
+                    <div className="flex gap-1">
+                      {[...Array(testimonial.rating)].map((_, i) => (
+                        <Star key={i} className="w-5 h-5 fill-soft-amber text-soft-amber" />
+                      ))}
+                    </div>
+                    {/* Quote */}
+                    <p className="text-lg text-charcoal leading-relaxed italic">
+                      "{testimonial.quote}"
+                    </p>
+                    {/* Attribution */}
+                    <div className="pt-4 border-t border-soft-beige/30">
+                      <p className="font-bold text-charcoal">{testimonial.name}</p>
+                      <p className="text-sm text-warm-gray">{testimonial.location}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Enhanced CTA Section */}
+          <section className="py-28 bg-gradient-fireplace border-b border-soft-beige/30 relative overflow-hidden">
+            {/* Decorative elements */}
+            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20" />
+
+            <div className="relative max-w-4xl mx-auto px-6 text-center space-y-8">
+              <div className="inline-block px-4 py-2 bg-white/20 border border-white/30 rounded-full mb-4">
+                <span className="text-sm font-semibold text-white">Start Your Free Trial Today</span>
+              </div>
+
+              <h2 className="text-4xl md:text-6xl font-black text-white leading-tight">
                 Welcome Home to Peace of Mind
               </h2>
-              <p className="text-lg text-warm-gray max-w-2xl mx-auto leading-relaxed">
+
+              <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto leading-relaxed">
                 Join northern homeowners who sleep soundly knowing their homes are safe, warm, and well-maintained—even in the coldest winters.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
                 <button
                   onClick={() => {
                     setAuthModalTab('register');
                     setAuthModalOpen(true);
                   }}
-                  className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-gradient-fireplace hover:shadow-warm-glow text-white font-semibold rounded-xl transition-all duration-300 shadow-warm-sm"
+                  className="inline-flex items-center justify-center gap-2.5 px-10 py-5 bg-white hover:bg-cream text-charcoal text-lg font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-2xl"
                 >
-                  Start Your Free Journey
+                  Start Your Free Trial
                   <ArrowRight className="w-5 h-5" />
                 </button>
+                <a
+                  href="#pricing"
+                  className="inline-flex items-center justify-center gap-2.5 px-10 py-5 bg-white/10 hover:bg-white/20 border-2 border-white/30 text-white text-lg font-bold rounded-xl transition-all duration-300 backdrop-blur-sm"
+                >
+                  View Pricing
+                </a>
+              </div>
+
+              {/* Trust badges */}
+              <div className="flex flex-wrap items-center justify-center gap-8 pt-8 text-white/80 text-sm">
+                <div className="flex items-center gap-2">
+                  <Shield className="w-5 h-5" />
+                  <span>Secure & Private</span>
+                </div>
+                <div className="w-1 h-1 rounded-full bg-white/40" />
+                <div className="flex items-center gap-2">
+                  <Check className="w-5 h-5" />
+                  <span>No Credit Card Required</span>
+                </div>
+                <div className="w-1 h-1 rounded-full bg-white/40" />
+                <div className="flex items-center gap-2">
+                  <Star className="w-5 h-5 fill-white/80" />
+                  <span>5-Star Rated</span>
+                </div>
               </div>
             </div>
           </section>
 
-      {/* Warm Footer */}
-      <footer className="py-12 bg-wood-dark">
+      {/* Enhanced Footer */}
+      <footer className="py-16 bg-wood-dark">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6 pb-8 border-b border-wood-light/20">
-            <Logo size="sm" className="[&_path]:fill-cream [&_path]:stroke-cream [&_span]:!text-cream" />
-            {!loading && health?.status === 'healthy' && (
-              <div className="flex items-center gap-2 text-sm text-soft-beige/80">
-                <div className="w-2 h-2 bg-soft-amber rounded-full animate-pulse" />
-                <span>All Systems Running</span>
-              </div>
-            )}
-            <p className="text-sm text-soft-beige/70">Built with Care for Northern Homes</p>
+          {/* Main Footer Content */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pb-12 border-b border-wood-light/20">
+            {/* Logo & Description */}
+            <div className="col-span-2 md:col-span-1 space-y-4">
+              <Logo size="sm" className="[&_path]:fill-cream [&_path]:stroke-cream [&_span]:!text-cream" />
+              <p className="text-sm text-soft-beige/70 leading-relaxed">
+                Built with care for northern homeowners who deserve peace of mind.
+              </p>
+              {!loading && health?.status === 'healthy' && (
+                <div className="flex items-center gap-2 text-sm text-soft-beige/80">
+                  <div className="w-2 h-2 bg-soft-amber rounded-full animate-pulse" />
+                  <span>All Systems Running</span>
+                </div>
+              )}
+            </div>
+
+            {/* Product */}
+            <div className="space-y-4">
+              <h3 className="text-sm font-bold text-cream uppercase tracking-wider">Product</h3>
+              <ul className="space-y-3 text-sm">
+                <li>
+                  <a href="#features" className="text-soft-beige/70 hover:text-cream transition-colors">
+                    Features
+                  </a>
+                </li>
+                <li>
+                  <a href="#pricing" className="text-soft-beige/70 hover:text-cream transition-colors">
+                    Pricing
+                  </a>
+                </li>
+                <li>
+                  <a href="/dashboard" className="text-soft-beige/70 hover:text-cream transition-colors">
+                    Dashboard
+                  </a>
+                </li>
+                <li>
+                  <a href="/wiki" className="text-soft-beige/70 hover:text-cream transition-colors">
+                    Wiki
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Company */}
+            <div className="space-y-4">
+              <h3 className="text-sm font-bold text-cream uppercase tracking-wider">Company</h3>
+              <ul className="space-y-3 text-sm">
+                <li>
+                  <a href="#" className="text-soft-beige/70 hover:text-cream transition-colors">
+                    About Us
+                  </a>
+                </li>
+                <li>
+                  <a href="https://github.com/charlesfaubert44-wq/furnacelog" target="_blank" rel="noopener noreferrer" className="text-soft-beige/70 hover:text-cream transition-colors">
+                    GitHub
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-soft-beige/70 hover:text-cream transition-colors">
+                    Contact
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-soft-beige/70 hover:text-cream transition-colors">
+                    Blog
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Legal */}
+            <div className="space-y-4">
+              <h3 className="text-sm font-bold text-cream uppercase tracking-wider">Legal</h3>
+              <ul className="space-y-3 text-sm">
+                <li>
+                  <a href="#" className="text-soft-beige/70 hover:text-cream transition-colors">
+                    Privacy Policy
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-soft-beige/70 hover:text-cream transition-colors">
+                    Terms of Service
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-soft-beige/70 hover:text-cream transition-colors">
+                    License
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-soft-beige/70 hover:text-cream transition-colors">
+                    Cookies
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
-          <div className="pt-8 text-center text-sm text-soft-beige/70">
-            © 2026 FurnaceLog. Open source home maintenance tracking for everyone.
+
+          {/* Bottom Bar */}
+          <div className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-sm text-soft-beige/70">
+              © 2026 FurnaceLog. Open source home maintenance tracking for everyone.
+            </p>
+            <div className="flex items-center gap-6">
+              <a href="https://github.com/charlesfaubert44-wq/furnacelog" target="_blank" rel="noopener noreferrer" className="text-soft-beige/70 hover:text-cream transition-colors">
+                <span className="sr-only">GitHub</span>
+                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
+                </svg>
+              </a>
+            </div>
           </div>
         </div>
       </footer>
