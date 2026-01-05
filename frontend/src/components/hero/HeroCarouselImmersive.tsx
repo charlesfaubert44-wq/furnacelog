@@ -255,7 +255,7 @@ export function HeroCarouselImmersive({
         >
           {/* Headline */}
           <div className="text-center max-w-[900px] mx-auto mb-4 animate-fade-slide-up">
-            <h2 className="text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.1] tracking-tight mb-3">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-[1.1] tracking-tight mb-3">
               {currentSlide.headline.normal}
               <span className="block bg-gradient-to-r from-furnace-primary to-furnace-light bg-clip-text text-transparent mt-2">
                 {currentSlide.headline.highlight}
@@ -264,7 +264,7 @@ export function HeroCarouselImmersive({
           </div>
 
           {/* Subtitle */}
-          <p className="text-center text-lg md:text-xl lg:text-2xl text-fl-text-secondary leading-relaxed max-w-[700px] mx-auto mb-6 animate-fade-slide-up animate-delay-100">
+          <p className="text-center text-base md:text-lg lg:text-xl text-fl-text-secondary leading-relaxed max-w-[650px] mx-auto mb-6 animate-fade-slide-up animate-delay-100">
             {currentSlide.subtitle}
           </p>
 
