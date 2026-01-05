@@ -8,7 +8,7 @@ import { useScrollPosition } from '@/hooks/useScrollAnimation';
 import logger from '@/utils/logger';
 import { PricingPlans } from '@/components/pricing/PricingPlans';
 import { AdSense } from '@/components/ads/AdSense';
-import { HeroCarousel, type HeroSlide } from '@/components/hero/HeroCarousel';
+import { HeroCarouselImmersive, type HeroSlide } from '@/components/hero/HeroCarouselImmersive';
 import { Logo } from '@/components/furnacelog/Logo';
 
 interface HealthStatus {
@@ -340,7 +340,7 @@ function HomePage() {
             </div>
 
             <div className="relative max-w-7xl mx-auto px-6 py-8 md:py-10">
-              <HeroCarousel
+              <HeroCarouselImmersive
                 slides={heroSlides}
                 autoAdvance={true}
                 autoAdvanceInterval={10000}
