@@ -241,7 +241,7 @@ export function HeroCarouselImmersive({
       </div>
 
       {/* Centered Content Container */}
-      <div className="relative min-h-[400px] md:min-h-[450px] flex flex-col items-center justify-center">
+      <div className="relative min-h-[400px] md:min-h-[450px] flex flex-col items-center justify-center px-4 sm:px-6">
         {/* Content Wrapper with Slide Transition */}
         <div
           className={cn(
@@ -254,7 +254,7 @@ export function HeroCarouselImmersive({
           )}
         >
           {/* Headline */}
-          <div className="text-center max-w-[900px] mx-auto mb-4 animate-fade-slide-up">
+          <div className="text-center max-w-[900px] mx-auto mb-4 px-2 animate-fade-slide-up">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-[1.25] tracking-tight mb-3 pb-2">
               {currentSlide.headline.normal}
               <span className="block bg-gradient-to-r from-furnace-primary to-furnace-light bg-clip-text text-transparent mt-2 pb-1">
@@ -264,7 +264,7 @@ export function HeroCarouselImmersive({
           </div>
 
           {/* Subtitle */}
-          <p className="text-center text-base md:text-lg lg:text-xl text-fl-text-secondary leading-relaxed max-w-[650px] mx-auto mb-6 animate-fade-slide-up animate-delay-100">
+          <p className="text-center text-base md:text-lg lg:text-xl text-fl-text-secondary leading-relaxed max-w-[650px] mx-auto mb-6 px-2 animate-fade-slide-up animate-delay-100">
             {currentSlide.subtitle}
           </p>
 
