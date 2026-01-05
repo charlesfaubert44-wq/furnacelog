@@ -38,8 +38,8 @@ export const Logo: React.FC<LogoProps> = ({ size = 'md', showSlogan = false, cla
           letterSpacing: '-0.03em',
         }}
       >
-        {/* "Furnace" with wood gradient */}
-        <span className="bg-gradient-to-br from-wood-dark via-walnut to-wood-dark bg-clip-text text-transparent">
+        {/* "Furnace" with charcoal color to match headlines */}
+        <span className="text-charcoal">
           Furnace
         </span>
         {/* "Log" with warm gradient */}
