@@ -42,12 +42,12 @@ export const Logo: React.FC<LogoProps> = ({ size = 'md', showSlogan = false, cla
           <div
             className="absolute pointer-events-none"
             style={{
-              top: size === 'sm' ? '-4px' : size === 'md' ? '-6px' : size === 'lg' ? '-8px' : '0px',
-              left: '0px',
+              top: size === 'sm' ? '-2px' : size === 'md' ? '-3px' : size === 'lg' ? '-4px' : '-2px',
+              left: size === 'sm' ? '3px' : size === 'md' ? '4px' : size === 'lg' ? '5px' : '6px',
             }}
           >
             {/* Steam wisps - scaled based on size */}
-            <div className="absolute steam-1" style={{ left: size === 'sm' ? '1px' : '2px', top: size === 'sm' ? '-6px' : size === 'md' ? '-8px' : size === 'lg' ? '-10px' : '-12px' }}>
+            <div className="absolute steam-1" style={{ left: size === 'sm' ? '0px' : size === 'md' ? '0px' : '1px', top: size === 'sm' ? '-4px' : size === 'md' ? '-5px' : size === 'lg' ? '-6px' : '-8px' }}>
               <svg width={size === 'sm' ? '8' : size === 'md' ? '10' : '12'} height={size === 'sm' ? '14' : size === 'md' ? '16' : '20'} viewBox="0 0 12 20" fill="none" style={{ transform: 'translateY(-100%)' }}>
                 <path
                   d="M6 20 Q3 16 6 12 Q2 8 6 4 Q4 0 6 -4"
@@ -59,7 +59,7 @@ export const Logo: React.FC<LogoProps> = ({ size = 'md', showSlogan = false, cla
                 />
               </svg>
             </div>
-            <div className="absolute steam-2" style={{ left: size === 'sm' ? '2px' : size === 'md' ? '3px' : '4px', top: size === 'sm' ? '-5px' : size === 'md' ? '-7px' : size === 'lg' ? '-8px' : '-10px' }}>
+            <div className="absolute steam-2" style={{ left: size === 'sm' ? '1px' : size === 'md' ? '1px' : '2px', top: size === 'sm' ? '-3px' : size === 'md' ? '-4px' : size === 'lg' ? '-5px' : '-6px' }}>
               <svg width={size === 'sm' ? '7' : size === 'md' ? '8' : '10'} height={size === 'sm' ? '12' : size === 'md' ? '14' : '18'} viewBox="0 0 10 18" fill="none" style={{ transform: 'translateY(-100%)' }}>
                 <path
                   d="M5 18 Q8 14 5 10 Q9 6 5 2 Q7 -2 5 -5"
@@ -71,7 +71,7 @@ export const Logo: React.FC<LogoProps> = ({ size = 'md', showSlogan = false, cla
                 />
               </svg>
             </div>
-            <div className="absolute steam-3" style={{ left: size === 'sm' ? '1.5px' : size === 'md' ? '2px' : '3px', top: size === 'sm' ? '-4px' : size === 'md' ? '-5px' : size === 'lg' ? '-6px' : '-8px' }}>
+            <div className="absolute steam-3" style={{ left: size === 'sm' ? '0.5px' : size === 'md' ? '0.5px' : '1px', top: size === 'sm' ? '-2px' : size === 'md' ? '-3px' : size === 'lg' ? '-4px' : '-5px' }}>
               <svg width={size === 'sm' ? '7' : size === 'md' ? '8' : '10'} height={size === 'sm' ? '10' : size === 'md' ? '12' : '16'} viewBox="0 0 10 16" fill="none" style={{ transform: 'translateY(-100%)' }}>
                 <path
                   d="M5 16 Q2 12 5 8 Q1 4 5 0 Q3 -3 5 -6"

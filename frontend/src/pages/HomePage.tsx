@@ -236,10 +236,69 @@ function HomePage() {
 
           {/* Hero Section */}
           <section className="relative overflow-hidden border-b border-furnace-primary/10">
-            <div className="absolute inset-0 overflow-hidden">
-              <div className="absolute top-0 left-1/4 w-96 h-96 bg-furnace-primary/10 rounded-full blur-3xl" />
-              <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-furnace-light/12 rounded-full blur-3xl" />
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-orange-600/8 rounded-full blur-3xl" />
+            {/* Animated Flames Background */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              {/* Flame particles */}
+              {Array.from({ length: 25 }, (_, i) => ({
+                id: i,
+                left: Math.random() * 100,
+                delay: Math.random() * 5,
+                duration: 6 + Math.random() * 4,
+                size: 15 + Math.random() * 35,
+                opacity: 0.08 + Math.random() * 0.1,
+                hue: Math.random() > 0.5 ? 'orange' : 'amber',
+              })).map((flame) => (
+                <div
+                  key={flame.id}
+                  className="absolute bottom-0"
+                  style={{
+                    left: `${flame.left}%`,
+                    animation: `flameRise ${flame.duration}s ease-out infinite`,
+                    animationDelay: `${flame.delay}s`,
+                  }}
+                >
+                  <div
+                    className={`rounded-full blur-xl ${flame.hue === 'orange' ? 'bg-orange-600' : 'bg-amber-500'}`}
+                    style={{
+                      width: `${flame.size}px`,
+                      height: `${flame.size * 1.5}px`,
+                      opacity: flame.opacity * 0.6,
+                      animation: `flameFlicker ${1 + Math.random() * 0.5}s ease-in-out infinite alternate`,
+                    }}
+                  />
+                </div>
+              ))}
+
+              {/* Embers */}
+              {Array.from({ length: 12 }, (_, i) => ({
+                id: i,
+                left: 10 + Math.random() * 80,
+                delay: Math.random() * 8,
+                duration: 7 + Math.random() * 5,
+                size: 1 + Math.random() * 2.5,
+              })).map((ember) => (
+                <div
+                  key={`ember-${ember.id}`}
+                  className="absolute bottom-0 bg-orange-500 rounded-full"
+                  style={{
+                    left: `${ember.left}%`,
+                    width: `${ember.size}px`,
+                    height: `${ember.size}px`,
+                    animation: `emberFloat ${ember.duration}s ease-out infinite`,
+                    animationDelay: `${ember.delay}s`,
+                    boxShadow: '0 0 3px 1px rgba(251, 146, 60, 0.25)',
+                  }}
+                />
+              ))}
+
+              {/* Heat wave at bottom */}
+              <div
+                className="absolute bottom-0 left-0 right-0 h-28 opacity-10"
+                style={{
+                  background: 'linear-gradient(to top, rgba(234, 88, 12, 0.15), transparent)',
+                  animation: 'heatWave 5s ease-in-out infinite',
+                }}
+              />
             </div>
 
             <div className="relative max-w-7xl mx-auto px-6 py-8 md:py-10">
@@ -249,6 +308,30 @@ function HomePage() {
                 autoAdvanceInterval={10000}
               />
             </div>
+
+            {/* Flame Animation Styles */}
+            <style>{`
+              @keyframes flameRise {
+                0% { transform: translateY(0) scale(1); opacity: 0; }
+                10% { opacity: 1; }
+                90% { opacity: 0.4; }
+                100% { transform: translateY(-35vh) scale(0.2); opacity: 0; }
+              }
+              @keyframes flameFlicker {
+                0% { transform: scaleX(1) scaleY(1); }
+                100% { transform: scaleX(0.9) scaleY(1.05); }
+              }
+              @keyframes emberFloat {
+                0% { transform: translateY(0) translateX(0); opacity: 0; }
+                15% { opacity: 0.6; }
+                85% { opacity: 0.25; }
+                100% { transform: translateY(-50vh) translateX(20px); opacity: 0; }
+              }
+              @keyframes heatWave {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-5px); }
+              }
+            `}</style>
           </section>
 
           {/* Ad Placement 1 */}
