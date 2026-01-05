@@ -4,7 +4,7 @@
  * Part of IoT Integration - Phase 1
  */
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Activity, Plus, AlertCircle } from 'lucide-react';
 import { SensorCard } from './SensorCard';
 import { useWebSocket } from '../../hooks/useWebSocket';

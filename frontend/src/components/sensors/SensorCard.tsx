@@ -122,7 +122,7 @@ export function SensorCard({ sensor, onClick }: SensorCardProps) {
         {/* Status indicator */}
         <div className="flex items-center space-x-2">
           {!sensor.isOnline && (
-            <WifiOff className="h-4 w-4 text-stone-500" title="Offline" />
+            <WifiOff className="h-4 w-4 text-stone-500" aria-label="Offline" />
           )}
           <div className={`w-2 h-2 rounded-full ${getStatusColor()}`} />
         </div>

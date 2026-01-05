@@ -35,7 +35,7 @@ interface WebSocketMessage {
 }
 
 export function useWebSocket() {
-  const { user } = useAuth();
+  const { user, tokens } = useAuth();
   const wsRef = useRef<WebSocket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [lastReading, setLastReading] = useState<SensorReading | null>(null);
@@ -46,7 +46,7 @@ export function useWebSocket() {
   const alertCallbacksRef = useRef<Set<(alert: Alert) => void>>(new Set());
 
   const connect = useCallback(() => {
-    if (!user?.token) {
+    if (!tokens?.accessToken) {
       console.warn('Cannot connect WebSocket: No auth token');
       return;
     }
@@ -58,7 +58,7 @@ export function useWebSocket() {
 
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
     const wsUrl = apiUrl.replace('http', 'ws');
-    const url = `${wsUrl}/ws/sensors?token=${encodeURIComponent(user.token)}`;
+    const url = `${wsUrl}/ws/sensors?token=${encodeURIComponent(tokens.accessToken)}`;
 
     console.log('Connecting to WebSocket...', wsUrl);
 
@@ -134,12 +134,12 @@ export function useWebSocket() {
 
       // Attempt to reconnect after 5 seconds
       setTimeout(() => {
-        if (user?.token) {
+        if (tokens?.accessToken) {
           connect();
         }
       }, 5000);
     };
-  }, [user?.token]);
+  }, [tokens?.accessToken]);
 
   const disconnect = useCallback(() => {
     if (wsRef.current) {
