@@ -343,7 +343,7 @@ export default {
         // Cozy Home - Warm Gradients
         'gradient-cozy': 'linear-gradient(135deg, #F5F1E8 0%, #E8DCC4 100%)',
         'gradient-warm-card': 'linear-gradient(145deg, #FAF8F3 0%, #F0EBE0 100%)',
-        'gradient-fireplace': 'linear-gradient(135deg, #E88D5A 0%, #D4A574 100%)',
+        'gradient-fireplace': 'linear-gradient(135deg, #D67844 0%, #C19560 100%)',
         'gradient-sunset': 'linear-gradient(180deg, #F4A582 0%, #C47A53 100%)',
         'gradient-warm-glow': 'radial-gradient(ellipse at top, rgba(232, 141, 90, 0.15) 0%, transparent 60%)',
         'gradient-paper': 'linear-gradient(to bottom, #FAF8F3, #F5F1E8)',
