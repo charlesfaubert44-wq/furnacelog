@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import {
-  Flame,
   User,
   Bell,
   Home as HomeIcon,
@@ -154,89 +153,114 @@ const Settings: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] relative overflow-hidden">
-      {/* Warm Background Gradient */}
+    <div className="min-h-screen bg-warm-white relative overflow-hidden">
+      {/* Subtle warm background texture */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#ff4500]/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#ff6a00]/12 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#ff8c00]/8 rounded-full blur-3xl" />
+        <div className="absolute inset-0 bg-gradient-to-br from-warm-white via-cream to-warm-white opacity-60" />
+        <div className="absolute inset-0 opacity-[0.03]" style={{
+          backgroundImage: `radial-gradient(circle at 50% 50%, rgba(212, 165, 116, 0.15) 0%, transparent 50%)`
+        }} />
       </div>
 
       {/* Navigation */}
-      <nav className="relative border-b border-[#d4a373]/10 bg-[#0a0a0a]/80 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-6 py-5">
+      <nav className={cn(
+        "sticky top-0 z-50 border-b transition-all duration-300",
+        isScrolled
+          ? "border-soft-amber/20 bg-warm-white/95 backdrop-blur-md shadow-sm"
+          : "border-soft-amber/10 bg-warm-white/80 backdrop-blur-sm"
+      )}>
+        <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <button onClick={() => navigate('/')} className="flex items-center gap-3 group">
-              <div className="w-10 h-10 bg-gradient-to-br from-[#ff4500] to-[#ff6a00] rounded-xl flex items-center justify-center shadow-[0_4px_16px_rgba(255,107,53,0.3)]">
-                <Flame className="w-6 h-6 text-[#f4e8d8]" strokeWidth={2.5} />
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-[#f4e8d8] tracking-tight">
-                  FurnaceLog
-                </h1>
-                <p className="text-xs text-[#d4a373] font-medium">Northern Home Tracker</p>
-              </div>
-            </button>
+            <div className="flex items-center gap-4">
+              <button onClick={() => navigate('/')} className="transition-opacity hover:opacity-80">
+                <Logo size="sm" />
+              </button>
 
-            {/* Navigation Links */}
-            <nav className="hidden md:flex items-center gap-1 ml-8">
-              <button
-                onClick={() => navigate('/')}
-                className="px-4 py-2 text-[#d4a373] hover:text-[#ff6a00] transition-colors duration-200"
-              >
-                Home
-              </button>
-              <button
-                onClick={() => navigate('/dashboard')}
-                className="px-4 py-2 text-[#d4a373] hover:text-[#ff6a00] transition-colors duration-200"
-              >
-                Dashboard
-              </button>
-              <button
-                onClick={() => navigate('/wiki')}
-                className="px-4 py-2 text-[#d4a373] hover:text-[#ff6a00] transition-colors duration-200"
-              >
-                Wiki
-              </button>
-              <button
-                onClick={() => navigate('/settings')}
-                className="px-4 py-2 text-[#ff6a00] font-semibold transition-colors duration-200"
-              >
-                Settings
-              </button>
-            </nav>
+              {/* Main Navigation Menu */}
+              <nav className="hidden md:flex items-center gap-1 ml-8">
+                <button
+                  onClick={() => navigate('/')}
+                  className="px-4 py-2 text-sm text-warm-gray hover:text-charcoal font-medium transition-colors rounded-lg hover:bg-cream"
+                >
+                  Homepage
+                </button>
+                <button
+                  onClick={() => navigate('/dashboard')}
+                  className="px-4 py-2 text-sm text-warm-gray hover:text-charcoal font-medium transition-colors rounded-lg hover:bg-cream"
+                >
+                  Dashboard
+                </button>
+                <button
+                  onClick={() => navigate('/wiki')}
+                  className="px-4 py-2 text-sm text-warm-gray hover:text-charcoal font-medium transition-colors rounded-lg hover:bg-cream"
+                >
+                  Knowledge Base
+                </button>
+                <button
+                  onClick={() => navigate('/about')}
+                  className="px-4 py-2 text-sm text-warm-gray hover:text-charcoal font-medium transition-colors rounded-lg hover:bg-cream"
+                >
+                  About
+                </button>
+                <button
+                  onClick={() => navigate('/contact')}
+                  className="px-4 py-2 text-sm text-warm-gray hover:text-charcoal font-medium transition-colors rounded-lg hover:bg-cream"
+                >
+                  Contact Us
+                </button>
+              </nav>
+            </div>
 
             {/* User Menu */}
             <div className="relative">
               <button
                 onClick={() => setShowUserMenu(!showUserMenu)}
-                className="flex items-center gap-3 px-4 py-2 bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#d4a373]/20 rounded-xl hover:border-[#ff6a00]/40 transition-all duration-300"
+                className="flex items-center gap-2 px-4 py-2 text-sm text-warm-gray hover:text-charcoal font-medium transition-colors rounded-lg hover:bg-cream"
               >
-                <div className="w-8 h-8 bg-gradient-to-br from-[#ff4500] to-[#ff6a00] rounded-lg flex items-center justify-center">
-                  <User className="w-4 h-4 text-[#f4e8d8]" />
-                </div>
-                <span className="text-[#f4e8d8] font-medium">{user?.profile?.firstName || 'User'}</span>
-                <ChevronDown className={`w-4 h-4 text-[#d4a373] transition-transform ${showUserMenu ? 'rotate-180' : ''}`} />
+                <User className="w-4 h-4" />
+                <span>{user?.profile?.firstName || user?.email || 'User'}</span>
+                <ChevronDown className={`w-3 h-3 transition-transform ${showUserMenu ? 'rotate-180' : ''}`} />
               </button>
 
               {showUserMenu && (
-                <div className="absolute right-0 mt-2 w-48 bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#d4a373]/20 rounded-xl shadow-2xl overflow-hidden z-50">
+                <div className="absolute right-0 mt-2 w-48 bg-white border border-soft-amber/20 rounded-xl shadow-lg py-2">
+                  <button
+                    onClick={() => {
+                      setShowUserMenu(false);
+                      navigate('/dashboard');
+                    }}
+                    className="w-full flex items-center gap-2 px-4 py-2 text-sm text-warm-gray hover:bg-cream hover:text-charcoal transition-colors"
+                  >
+                    <HomeIcon className="w-4 h-4" />
+                    Dashboard
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowUserMenu(false);
+                      navigate('/wiki');
+                    }}
+                    className="w-full flex items-center gap-2 px-4 py-2 text-sm text-warm-gray hover:bg-cream hover:text-charcoal transition-colors"
+                  >
+                    <BookOpen className="w-4 h-4" />
+                    Knowledge Base
+                  </button>
                   <button
                     onClick={() => {
                       setShowUserMenu(false);
                       navigate('/settings');
                     }}
-                    className="w-full px-4 py-3 text-left text-[#d4a373] hover:bg-[#ff6a00]/10 hover:text-[#ff6a00] transition-colors flex items-center gap-2"
+                    className="w-full flex items-center gap-2 px-4 py-2 text-sm text-warm-gray hover:bg-cream hover:text-charcoal transition-colors"
                   >
-                    <User className="w-4 h-4" />
+                    <SettingsIcon className="w-4 h-4" />
                     Settings
                   </button>
+                  <div className="border-t border-soft-amber/10 my-1"></div>
                   <button
                     onClick={handleLogout}
-                    className="w-full px-4 py-3 text-left text-[#d45d4e] hover:bg-[#d45d4e]/10 transition-colors flex items-center gap-2"
+                    className="w-full flex items-center gap-2 px-4 py-2 text-sm text-warm-gray hover:bg-cream hover:text-charcoal transition-colors"
                   >
                     <LogOut className="w-4 h-4" />
-                    Logout
+                    Sign Out
                   </button>
                 </div>
               )}
@@ -249,20 +273,20 @@ const Settings: React.FC = () => {
       <div className="relative max-w-7xl mx-auto px-6 py-12">
         {/* Page Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-[#f4e8d8] mb-2">Settings</h1>
-          <p className="text-[#d4a373] text-lg">Manage your account and preferences</p>
+          <h1 className="text-4xl font-bold text-charcoal mb-2">Settings</h1>
+          <p className="text-warm-gray text-lg">Manage your account and preferences</p>
         </div>
 
         {/* Success/Error Messages */}
         {successMessage && (
-          <div className="mb-6 bg-gradient-to-br from-[#6a994e]/20 to-[#6a994e]/10 border-2 border-[#6a994e]/40 rounded-xl p-4 animate-slide-down">
-            <p className="text-sm text-[#6a994e]">{successMessage}</p>
+          <div className="mb-6 bg-sage/10 border-2 border-sage/40 rounded-xl p-4 animate-slide-down">
+            <p className="text-sm text-sage font-semibold">{successMessage}</p>
           </div>
         )}
 
         {errorMessage && (
-          <div className="mb-6 bg-gradient-to-br from-[#d45d4e]/20 to-[#d45d4e]/10 border-2 border-[#d45d4e]/40 rounded-xl p-4 animate-slide-down">
-            <p className="text-sm text-[#d45d4e]">{errorMessage}</p>
+          <div className="mb-6 bg-warm-coral/10 border-2 border-warm-coral/40 rounded-xl p-4 animate-slide-down">
+            <p className="text-sm text-warm-coral font-semibold">{errorMessage}</p>
           </div>
         )}
 
@@ -270,18 +294,19 @@ const Settings: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Sidebar Tabs */}
           <div className="lg:col-span-1">
-            <div className="bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#d4a373]/10 rounded-2xl p-4 shadow-2xl">
+            <div className="bg-white border border-soft-amber/20 rounded-2xl p-4 shadow-md sticky top-24">
               {tabs.map((tab) => {
                 const Icon = tab.icon;
                 return (
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl mb-2 transition-all duration-300 ${
+                    className={cn(
+                      "w-full flex items-center gap-3 px-4 py-3 rounded-xl mb-2 transition-all duration-300",
                       activeTab === tab.id
-                        ? 'bg-gradient-to-r from-[#ff4500] to-[#ff6a00] text-[#f4e8d8] font-semibold shadow-[0_4px_16px_rgba(255,107,53,0.3)]'
-                        : 'text-[#d4a373] hover:bg-[#2a2a2a]/60 hover:text-[#ff6a00]'
-                    }`}
+                        ? 'bg-gradient-to-r from-burnt-sienna to-warm-orange text-white font-semibold shadow-md'
+                        : 'text-warm-gray hover:bg-cream hover:text-charcoal'
+                    )}
                   >
                     <Icon className="w-5 h-5" />
                     {tab.label}
@@ -293,52 +318,52 @@ const Settings: React.FC = () => {
 
           {/* Content Area */}
           <div className="lg:col-span-3">
-            <div className="bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#d4a373]/10 rounded-2xl p-8 shadow-2xl">
+            <div className="bg-white border border-soft-amber/20 rounded-2xl p-8 shadow-md">
               {/* Profile Tab */}
               {activeTab === 'profile' && (
                 <div>
-                  <h2 className="text-2xl font-bold text-[#f4e8d8] mb-6">Profile Information</h2>
+                  <h2 className="text-2xl font-bold text-charcoal mb-6">Profile Information</h2>
                   <div className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label className="block text-sm font-medium text-[#f4e8d8] mb-2">
+                        <label className="block text-sm font-medium text-charcoal mb-2">
                           First Name
                         </label>
                         <input
                           type="text"
                           value={profileData.firstName}
                           onChange={(e) => setProfileData({ ...profileData, firstName: e.target.value })}
-                          className="w-full px-4 py-3 bg-[#2a2a2a]/60 border-b-2 border-[#d4a373]/30 text-[#f4e8d8] placeholder-[#d4a373]/50 rounded-t-xl focus:outline-none focus:border-[#ff4500] focus:shadow-[0_4px_12px_rgba(255,107,53,0.15)] transition-all duration-300"
+                          className="w-full px-4 py-3 bg-cream/50 border-2 border-soft-amber/20 text-charcoal placeholder-warm-gray/50 rounded-xl focus:outline-none focus:border-warm-orange/40 focus:shadow-md transition-all duration-300"
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-[#f4e8d8] mb-2">
+                        <label className="block text-sm font-medium text-charcoal mb-2">
                           Last Name
                         </label>
                         <input
                           type="text"
                           value={profileData.lastName}
                           onChange={(e) => setProfileData({ ...profileData, lastName: e.target.value })}
-                          className="w-full px-4 py-3 bg-[#2a2a2a]/60 border-b-2 border-[#d4a373]/30 text-[#f4e8d8] placeholder-[#d4a373]/50 rounded-t-xl focus:outline-none focus:border-[#ff4500] focus:shadow-[0_4px_12px_rgba(255,107,53,0.15)] transition-all duration-300"
+                          className="w-full px-4 py-3 bg-cream/50 border-2 border-soft-amber/20 text-charcoal placeholder-warm-gray/50 rounded-xl focus:outline-none focus:border-warm-orange/40 focus:shadow-md transition-all duration-300"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-[#f4e8d8] mb-2">
+                      <label className="block text-sm font-medium text-charcoal mb-2">
                         Email Address
                       </label>
                       <input
                         type="email"
                         value={profileData.email}
                         disabled
-                        className="w-full px-4 py-3 bg-[#2a2a2a]/40 border-b-2 border-[#d4a373]/20 text-[#d4a373]/60 rounded-t-xl cursor-not-allowed"
+                        className="w-full px-4 py-3 bg-soft-beige/50 border-2 border-soft-amber/10 text-warm-gray/60 rounded-xl cursor-not-allowed"
                       />
-                      <p className="mt-2 text-xs text-[#d4a373]/70">Email cannot be changed</p>
+                      <p className="mt-2 text-xs text-warm-gray/70">Email cannot be changed</p>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-[#f4e8d8] mb-2">
+                      <label className="block text-sm font-medium text-charcoal mb-2">
                         Phone Number (Optional)
                       </label>
                       <input
@@ -346,14 +371,14 @@ const Settings: React.FC = () => {
                         value={profileData.phone}
                         onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })}
                         placeholder="+1 (867) 555-0100"
-                        className="w-full px-4 py-3 bg-[#2a2a2a]/60 border-b-2 border-[#d4a373]/30 text-[#f4e8d8] placeholder-[#d4a373]/50 rounded-t-xl focus:outline-none focus:border-[#ff4500] focus:shadow-[0_4px_12px_rgba(255,107,53,0.15)] transition-all duration-300"
+                        className="w-full px-4 py-3 bg-cream/50 border-2 border-soft-amber/20 text-charcoal placeholder-warm-gray/50 rounded-xl focus:outline-none focus:border-warm-orange/40 focus:shadow-md transition-all duration-300"
                       />
                     </div>
 
                     <button
                       onClick={handleProfileSave}
                       disabled={isSaving}
-                      className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#ff4500] to-[#ff6a00] hover:shadow-[0_8px_32px_rgba(255,107,53,0.5)] disabled:opacity-50 disabled:cursor-not-allowed text-[#f4e8d8] font-bold rounded-xl transition-all duration-300 shadow-[0_4px_16px_rgba(255,107,53,0.35)]"
+                      className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-burnt-sienna to-warm-orange hover:from-warm-orange hover:to-burnt-sienna disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-all duration-300 shadow-md hover:shadow-lg"
                     >
                       <Save className="w-4 h-4" />
                       {isSaving ? 'Saving...' : 'Save Changes'}
@@ -365,13 +390,13 @@ const Settings: React.FC = () => {
               {/* Notifications Tab */}
               {activeTab === 'notifications' && (
                 <div>
-                  <h2 className="text-2xl font-bold text-[#f4e8d8] mb-6">Notification Preferences</h2>
+                  <h2 className="text-2xl font-bold text-charcoal mb-6">Notification Preferences</h2>
                   <div className="space-y-6">
                     <div className="space-y-4">
-                      <div className="flex items-center justify-between p-4 bg-[#2a2a2a]/40 rounded-xl border border-[#d4a373]/10">
+                      <div className="flex items-center justify-between p-4 bg-cream/40 rounded-xl border border-soft-amber/10">
                         <div>
-                          <h3 className="text-[#f4e8d8] font-semibold">Maintenance Reminders</h3>
-                          <p className="text-sm text-[#d4a373]/70">Get notified about upcoming maintenance tasks</p>
+                          <h3 className="text-charcoal font-semibold">Maintenance Reminders</h3>
+                          <p className="text-sm text-warm-gray/70">Get notified about upcoming maintenance tasks</p>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">
                           <input
@@ -380,14 +405,14 @@ const Settings: React.FC = () => {
                             onChange={(e) => setNotifications({ ...notifications, maintenanceReminders: e.target.checked })}
                             className="sr-only peer"
                           />
-                          <div className="w-11 h-6 bg-[#2a2a2a] peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-[#ff4500] rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-[#ff4500] peer-checked:to-[#ff6a00]"></div>
+                          <div className="w-11 h-6 bg-cream peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-warm-orange rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-burnt-sienna peer-checked:to-warm-orange"></div>
                         </label>
                       </div>
 
-                      <div className="flex items-center justify-between p-4 bg-[#2a2a2a]/40 rounded-xl border border-[#d4a373]/10">
+                      <div className="flex items-center justify-between p-4 bg-cream/40 rounded-xl border border-soft-amber/10">
                         <div>
-                          <h3 className="text-[#f4e8d8] font-semibold">System Alerts</h3>
-                          <p className="text-sm text-[#d4a373]/70">Critical alerts about your home systems</p>
+                          <h3 className="text-charcoal font-semibold">System Alerts</h3>
+                          <p className="text-sm text-warm-gray/70">Critical alerts about your home systems</p>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">
                           <input
@@ -396,14 +421,14 @@ const Settings: React.FC = () => {
                             onChange={(e) => setNotifications({ ...notifications, systemAlerts: e.target.checked })}
                             className="sr-only peer"
                           />
-                          <div className="w-11 h-6 bg-[#2a2a2a] peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-[#ff4500] rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-[#ff4500] peer-checked:to-[#ff6a00]"></div>
+                          <div className="w-11 h-6 bg-cream peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-warm-orange rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-burnt-sienna peer-checked:to-warm-orange"></div>
                         </label>
                       </div>
 
-                      <div className="flex items-center justify-between p-4 bg-[#2a2a2a]/40 rounded-xl border border-[#d4a373]/10">
+                      <div className="flex items-center justify-between p-4 bg-cream/40 rounded-xl border border-soft-amber/10">
                         <div>
-                          <h3 className="text-[#f4e8d8] font-semibold">Weekly Reports</h3>
-                          <p className="text-sm text-[#d4a373]/70">Weekly summary of your home maintenance</p>
+                          <h3 className="text-charcoal font-semibold">Weekly Reports</h3>
+                          <p className="text-sm text-warm-gray/70">Weekly summary of your home maintenance</p>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">
                           <input
@@ -412,14 +437,14 @@ const Settings: React.FC = () => {
                             onChange={(e) => setNotifications({ ...notifications, weeklyReports: e.target.checked })}
                             className="sr-only peer"
                           />
-                          <div className="w-11 h-6 bg-[#2a2a2a] peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-[#ff4500] rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-[#ff4500] peer-checked:to-[#ff6a00]"></div>
+                          <div className="w-11 h-6 bg-cream peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-warm-orange rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-burnt-sienna peer-checked:to-warm-orange"></div>
                         </label>
                       </div>
 
-                      <div className="flex items-center justify-between p-4 bg-[#2a2a2a]/40 rounded-xl border border-[#d4a373]/10">
+                      <div className="flex items-center justify-between p-4 bg-cream/40 rounded-xl border border-soft-amber/10">
                         <div>
-                          <h3 className="text-[#f4e8d8] font-semibold">Email Notifications</h3>
-                          <p className="text-sm text-[#d4a373]/70">Receive notifications via email</p>
+                          <h3 className="text-charcoal font-semibold">Email Notifications</h3>
+                          <p className="text-sm text-warm-gray/70">Receive notifications via email</p>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">
                           <input
@@ -428,14 +453,14 @@ const Settings: React.FC = () => {
                             onChange={(e) => setNotifications({ ...notifications, emailNotifications: e.target.checked })}
                             className="sr-only peer"
                           />
-                          <div className="w-11 h-6 bg-[#2a2a2a] peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-[#ff4500] rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-[#ff4500] peer-checked:to-[#ff6a00]"></div>
+                          <div className="w-11 h-6 bg-cream peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-warm-orange rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-burnt-sienna peer-checked:to-warm-orange"></div>
                         </label>
                       </div>
 
-                      <div className="flex items-center justify-between p-4 bg-[#2a2a2a]/40 rounded-xl border border-[#d4a373]/10">
+                      <div className="flex items-center justify-between p-4 bg-cream/40 rounded-xl border border-soft-amber/10">
                         <div>
-                          <h3 className="text-[#f4e8d8] font-semibold">Push Notifications</h3>
-                          <p className="text-sm text-[#d4a373]/70">Browser push notifications</p>
+                          <h3 className="text-charcoal font-semibold">Push Notifications</h3>
+                          <p className="text-sm text-warm-gray/70">Browser push notifications</p>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">
                           <input
@@ -444,7 +469,7 @@ const Settings: React.FC = () => {
                             onChange={(e) => setNotifications({ ...notifications, pushNotifications: e.target.checked })}
                             className="sr-only peer"
                           />
-                          <div className="w-11 h-6 bg-[#2a2a2a] peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-[#ff4500] rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-[#ff4500] peer-checked:to-[#ff6a00]"></div>
+                          <div className="w-11 h-6 bg-cream peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-warm-orange rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-burnt-sienna peer-checked:to-warm-orange"></div>
                         </label>
                       </div>
                     </div>
@@ -452,7 +477,7 @@ const Settings: React.FC = () => {
                     <button
                       onClick={handleNotificationsSave}
                       disabled={isSaving}
-                      className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#ff4500] to-[#ff6a00] hover:shadow-[0_8px_32px_rgba(255,107,53,0.5)] disabled:opacity-50 disabled:cursor-not-allowed text-[#f4e8d8] font-bold rounded-xl transition-all duration-300 shadow-[0_4px_16px_rgba(255,107,53,0.35)]"
+                      className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-burnt-sienna to-warm-orange hover:shadow-[0_8px_32px_rgba(255,107,53,0.5)] disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-all duration-300 shadow-[0_4px_16px_rgba(255,107,53,0.35)]"
                     >
                       <Save className="w-4 h-4" />
                       {isSaving ? 'Saving...' : 'Save Preferences'}
@@ -466,12 +491,12 @@ const Settings: React.FC = () => {
                 <div>
                   <div className="flex items-center justify-between mb-6">
                     <div>
-                      <h2 className="text-2xl font-bold text-[#f4e8d8]">My Homes</h2>
-                      <p className="text-[#d4a373] mt-1">Manage your registered properties</p>
+                      <h2 className="text-2xl font-bold text-charcoal">My Homes</h2>
+                      <p className="text-warm-gray mt-1">Manage your registered properties</p>
                     </div>
                     <button
                       onClick={() => navigate('/onboarding')}
-                      className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#ff4500] to-[#ff6a00] hover:shadow-[0_6px_24px_rgba(255,107,53,0.45)] text-[#f4e8d8] font-semibold rounded-xl transition-all duration-300 shadow-[0_4px_16px_rgba(255,107,53,0.3)]"
+                      className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-burnt-sienna to-warm-orange hover:shadow-[0_6px_24px_rgba(255,107,53,0.45)] text-white font-semibold rounded-xl transition-all duration-300 shadow-[0_4px_16px_rgba(255,107,53,0.3)]"
                     >
                       <Plus className="w-4 h-4" />
                       Add Home
@@ -482,14 +507,14 @@ const Settings: React.FC = () => {
                     {homes.map((home) => (
                       <div
                         key={home.id}
-                        className="p-6 bg-[#2a2a2a]/40 rounded-xl border border-[#d4a373]/10 hover:border-[#ff6a00]/30 transition-all duration-300"
+                        className="p-6 bg-cream/40 rounded-xl border border-soft-amber/10 hover:border-[#ff6a00]/30 transition-all duration-300"
                       >
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
-                            <h3 className="text-xl font-bold text-[#f4e8d8] mb-2">{home.name}</h3>
-                            <p className="text-[#d4a373] mb-3">{home.location}</p>
+                            <h3 className="text-xl font-bold text-charcoal mb-2">{home.name}</h3>
+                            <p className="text-warm-gray mb-3">{home.location}</p>
                             <div className="flex items-center gap-4">
-                              <span className="text-sm text-[#d4a373]/70">
+                              <span className="text-sm text-warm-gray/70">
                                 {home.systems} systems tracked
                               </span>
                             </div>
@@ -497,13 +522,13 @@ const Settings: React.FC = () => {
                           <div className="flex items-center gap-2">
                             <button
                               onClick={() => navigate(`/onboarding?homeId=${home.id}`)}
-                              className="p-2 text-[#d4a373] hover:text-[#ff6a00] hover:bg-[#2a2a2a] rounded-lg transition-all"
+                              className="p-2 text-warm-gray hover:text-warm-orange hover:bg-cream rounded-lg transition-all"
                             >
                               <Edit2 className="w-4 h-4" />
                             </button>
                             <button
                               onClick={() => handleDeleteHome(home.id)}
-                              className="p-2 text-[#d45d4e] hover:text-[#f4e8d8] hover:bg-[#d45d4e]/20 rounded-lg transition-all"
+                              className="p-2 text-warm-coral hover:text-charcoal hover:bg-warm-coral/20 rounded-lg transition-all"
                             >
                               <Trash2 className="w-4 h-4" />
                             </button>
@@ -514,11 +539,11 @@ const Settings: React.FC = () => {
 
                     {homes.length === 0 && (
                       <div className="text-center py-12">
-                        <Home className="w-16 h-16 text-[#d4a373]/30 mx-auto mb-4" />
-                        <p className="text-[#d4a373] mb-4">No homes registered yet</p>
+                        <HomeIcon className="w-16 h-16 text-soft-amber/30 mx-auto mb-4" />
+                        <p className="text-warm-gray mb-4">No homes registered yet</p>
                         <button
                           onClick={() => navigate('/onboarding')}
-                          className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#ff4500] to-[#ff6a00] hover:shadow-[0_6px_24px_rgba(255,107,53,0.45)] text-[#f4e8d8] font-semibold rounded-xl transition-all duration-300 shadow-[0_4px_16px_rgba(255,107,53,0.3)]"
+                          className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-burnt-sienna to-warm-orange hover:from-warm-orange hover:to-burnt-sienna text-white font-semibold rounded-xl transition-all duration-300 shadow-md hover:shadow-lg"
                         >
                           <Plus className="w-4 h-4" />
                           Add Your First Home
@@ -532,49 +557,49 @@ const Settings: React.FC = () => {
               {/* Security Tab */}
               {activeTab === 'security' && (
                 <div>
-                  <h2 className="text-2xl font-bold text-[#f4e8d8] mb-6">Security Settings</h2>
+                  <h2 className="text-2xl font-bold text-charcoal mb-6">Security Settings</h2>
                   <div className="space-y-8">
                     {/* Change Password */}
                     <div>
-                      <h3 className="text-lg font-semibold text-[#f4e8d8] mb-4">Change Password</h3>
+                      <h3 className="text-lg font-semibold text-charcoal mb-4">Change Password</h3>
                       <div className="space-y-4">
                         <div>
-                          <label className="block text-sm font-medium text-[#f4e8d8] mb-2">
+                          <label className="block text-sm font-medium text-charcoal mb-2">
                             Current Password
                           </label>
                           <input
                             type="password"
                             value={passwordData.currentPassword}
                             onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
-                            className="w-full px-4 py-3 bg-[#2a2a2a]/60 border-b-2 border-[#d4a373]/30 text-[#f4e8d8] placeholder-[#d4a373]/50 rounded-t-xl focus:outline-none focus:border-[#ff4500] focus:shadow-[0_4px_12px_rgba(255,107,53,0.15)] transition-all duration-300"
+                            className="w-full px-4 py-3 bg-cream/60 border-b-2 border-soft-amber/30 text-charcoal placeholder-warm-gray/50 rounded-t-xl focus:outline-none focus:border-warm-orange/40 focus:shadow-[0_4px_12px_rgba(255,107,53,0.15)] transition-all duration-300"
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-[#f4e8d8] mb-2">
+                          <label className="block text-sm font-medium text-charcoal mb-2">
                             New Password
                           </label>
                           <input
                             type="password"
                             value={passwordData.newPassword}
                             onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
-                            className="w-full px-4 py-3 bg-[#2a2a2a]/60 border-b-2 border-[#d4a373]/30 text-[#f4e8d8] placeholder-[#d4a373]/50 rounded-t-xl focus:outline-none focus:border-[#ff4500] focus:shadow-[0_4px_12px_rgba(255,107,53,0.15)] transition-all duration-300"
+                            className="w-full px-4 py-3 bg-cream/60 border-b-2 border-soft-amber/30 text-charcoal placeholder-warm-gray/50 rounded-t-xl focus:outline-none focus:border-warm-orange/40 focus:shadow-[0_4px_12px_rgba(255,107,53,0.15)] transition-all duration-300"
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-[#f4e8d8] mb-2">
+                          <label className="block text-sm font-medium text-charcoal mb-2">
                             Confirm New Password
                           </label>
                           <input
                             type="password"
                             value={passwordData.confirmPassword}
                             onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
-                            className="w-full px-4 py-3 bg-[#2a2a2a]/60 border-b-2 border-[#d4a373]/30 text-[#f4e8d8] placeholder-[#d4a373]/50 rounded-t-xl focus:outline-none focus:border-[#ff4500] focus:shadow-[0_4px_12px_rgba(255,107,53,0.15)] transition-all duration-300"
+                            className="w-full px-4 py-3 bg-cream/60 border-b-2 border-soft-amber/30 text-charcoal placeholder-warm-gray/50 rounded-t-xl focus:outline-none focus:border-warm-orange/40 focus:shadow-[0_4px_12px_rgba(255,107,53,0.15)] transition-all duration-300"
                           />
                         </div>
                         <button
                           onClick={handlePasswordChange}
                           disabled={isSaving}
-                          className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#ff4500] to-[#ff6a00] hover:shadow-[0_8px_32px_rgba(255,107,53,0.5)] disabled:opacity-50 disabled:cursor-not-allowed text-[#f4e8d8] font-bold rounded-xl transition-all duration-300 shadow-[0_4px_16px_rgba(255,107,53,0.35)]"
+                          className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-burnt-sienna to-warm-orange hover:shadow-[0_8px_32px_rgba(255,107,53,0.5)] disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-all duration-300 shadow-[0_4px_16px_rgba(255,107,53,0.35)]"
                         >
                           <Shield className="w-4 h-4" />
                           {isSaving ? 'Updating...' : 'Update Password'}
@@ -583,11 +608,11 @@ const Settings: React.FC = () => {
                     </div>
 
                     {/* Danger Zone */}
-                    <div className="pt-8 border-t border-[#d45d4e]/20">
-                      <h3 className="text-lg font-semibold text-[#d45d4e] mb-4">Danger Zone</h3>
-                      <div className="p-6 bg-[#d45d4e]/10 border-2 border-[#d45d4e]/30 rounded-xl">
-                        <h4 className="text-[#f4e8d8] font-semibold mb-2">Delete Account</h4>
-                        <p className="text-sm text-[#d4a373]/70 mb-4">
+                    <div className="pt-8 border-t border-warm-coral/20">
+                      <h3 className="text-lg font-semibold text-warm-coral mb-4">Danger Zone</h3>
+                      <div className="p-6 bg-warm-coral/10 border-2 border-warm-coral/30 rounded-xl">
+                        <h4 className="text-charcoal font-semibold mb-2">Delete Account</h4>
+                        <p className="text-sm text-warm-gray/70 mb-4">
                           Once you delete your account, there is no going back. All your data will be permanently removed.
                         </p>
                         <button
@@ -597,7 +622,7 @@ const Settings: React.FC = () => {
                               alert('Account deletion would be processed here');
                             }
                           }}
-                          className="px-6 py-3 bg-[#d45d4e] hover:bg-[#d45d4e]/90 text-[#f4e8d8] font-bold rounded-xl transition-all duration-300"
+                          className="px-6 py-3 bg-warm-coral hover:bg-warm-coral/90 text-white font-bold rounded-xl transition-all duration-300"
                         >
                           Delete Account
                         </button>
