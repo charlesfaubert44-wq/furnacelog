@@ -15,13 +15,23 @@ import {
   Wrench,
   AlertTriangle,
   Calendar,
-  Clock
+  Clock,
+  Plus,
+  ExternalLink,
+  Youtube,
+  Link as LinkIcon
 } from 'lucide-react';
+import { AddArticleModal, type ArticleInput } from '@/components/modals/AddArticleModal';
 
 /**
  * Wiki Page Component
  * Knowledge Base for Northern Home Maintenance
  */
+
+interface ExternalLink {
+  title: string;
+  url: string;
+}
 
 interface Article {
   id: string;
@@ -31,6 +41,10 @@ interface Article {
   readTime: string;
   lastUpdated: string;
   icon: React.ElementType;
+  videoUrl?: string; // YouTube video URL
+  externalLinks?: ExternalLink[]; // External reference links
+  author?: string;
+  authorType?: 'admin' | 'user';
 }
 
 type CategoryFilter = 'all' | 'heating' | 'water' | 'ventilation' | 'electrical' | 'maintenance';
@@ -41,6 +55,7 @@ const Wiki: React.FC = () => {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>('all');
+  const [isAddArticleModalOpen, setIsAddArticleModalOpen] = useState(false);
 
   // Mock articles data (will be replaced with API call)
   const articles: Article[] = [
@@ -51,7 +66,14 @@ const Wiki: React.FC = () => {
       excerpt: 'Essential maintenance tasks to keep your propane furnace running efficiently through the harsh northern winter.',
       readTime: '8 min read',
       lastUpdated: '2025-12-15',
-      icon: Thermometer
+      icon: Thermometer,
+      videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+      externalLinks: [
+        { title: 'Propane Safety Guidelines', url: 'https://example.com/propane-safety' },
+        { title: 'Furnace Manufacturer Manual', url: 'https://example.com/manual' }
+      ],
+      author: 'FurnaceLog Team',
+      authorType: 'admin'
     },
     {
       id: '2',
@@ -129,6 +151,12 @@ const Wiki: React.FC = () => {
 
   const handleLogout = async () => {
     await logout();
+  };
+
+  const handleSaveArticle = (article: ArticleInput) => {
+    // TODO: Connect to backend API to save the article
+    console.log('Saving article:', article);
+    // For now, we'll just log it - the modal already shows a success message
   };
 
   // Filter articles based on search and category
@@ -242,14 +270,25 @@ const Wiki: React.FC = () => {
       <div className="relative max-w-7xl mx-auto px-6 py-12">
         {/* Page Header */}
         <div className="mb-8">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="w-16 h-16 bg-gradient-to-br from-[#ff4500] to-[#ff6a00] rounded-2xl flex items-center justify-center shadow-[0_8px_24px_rgba(255,107,53,0.4)]">
-              <BookOpen className="w-8 h-8 text-[#f4e8d8]" strokeWidth={2.5} />
+          <div className="flex items-center justify-between gap-4 mb-4">
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-[#ff4500] to-[#ff6a00] rounded-2xl flex items-center justify-center shadow-[0_8px_24px_rgba(255,107,53,0.4)]">
+                <BookOpen className="w-8 h-8 text-[#f4e8d8]" strokeWidth={2.5} />
+              </div>
+              <div>
+                <h1 className="text-4xl font-bold text-[#f4e8d8]">Knowledge Base</h1>
+                <p className="text-[#d4a373] text-lg">Expert guides for northern home maintenance</p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-4xl font-bold text-[#f4e8d8]">Knowledge Base</h1>
-              <p className="text-[#d4a373] text-lg">Expert guides for northern home maintenance</p>
-            </div>
+            {user && (
+              <button
+                onClick={() => setIsAddArticleModalOpen(true)}
+                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#ff4500] to-[#ff6a00] hover:shadow-[0_8px_32px_rgba(255,107,53,0.5)] text-[#f4e8d8] font-bold rounded-xl transition-all duration-300 shadow-[0_4px_16px_rgba(255,107,53,0.35)]"
+              >
+                <Plus className="w-5 h-5" />
+                Add Article
+              </button>
+            )}
           </div>
         </div>
 
@@ -313,13 +352,9 @@ const Wiki: React.FC = () => {
                   return (
                     <div
                       key={article.id}
-                      className="bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#d4a373]/10 rounded-2xl p-6 shadow-2xl hover:border-[#ff6a00]/30 hover:shadow-[0_8px_32px_rgba(255,107,53,0.15)] transition-all duration-300 cursor-pointer group"
-                      onClick={() => {
-                        // TODO: Navigate to article detail page
-                        alert(`Article "${article.title}" would open here. Article detail pages coming soon!`);
-                      }}
+                      className="bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#d4a373]/10 rounded-2xl p-6 shadow-2xl hover:border-[#ff6a00]/30 hover:shadow-[0_8px_32px_rgba(255,107,53,0.15)] transition-all duration-300 group"
                     >
-                      <div className="flex items-start gap-4">
+                      <div className="flex items-start gap-4 mb-4">
                         <div className="w-12 h-12 bg-gradient-to-br from-[#ff4500] to-[#ff6a00] rounded-xl flex items-center justify-center flex-shrink-0 shadow-[0_4px_16px_rgba(255,107,53,0.3)]">
                           <Icon className="w-6 h-6 text-[#f4e8d8]" />
                         </div>
@@ -330,6 +365,54 @@ const Wiki: React.FC = () => {
                           <p className="text-[#d4a373] mb-4 leading-relaxed">
                             {article.excerpt}
                           </p>
+
+                          {/* YouTube Video */}
+                          {article.videoUrl && (
+                            <div className="mb-4">
+                              <div className="aspect-video rounded-xl overflow-hidden border border-[#d4a373]/20">
+                                <iframe
+                                  width="100%"
+                                  height="100%"
+                                  src={article.videoUrl.replace('watch?v=', 'embed/')}
+                                  title={article.title}
+                                  frameBorder="0"
+                                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                  allowFullScreen
+                                  className="w-full h-full"
+                                />
+                              </div>
+                              <div className="flex items-center gap-2 mt-2 text-sm text-[#d4a373]/70">
+                                <Youtube className="w-4 h-4" />
+                                <span>Video guide included</span>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* External Links */}
+                          {article.externalLinks && article.externalLinks.length > 0 && (
+                            <div className="mb-4 bg-[#2a2a2a]/40 rounded-xl p-4 border border-[#d4a373]/10">
+                              <div className="flex items-center gap-2 text-sm font-semibold text-[#f4e8d8] mb-3">
+                                <LinkIcon className="w-4 h-4" />
+                                External References
+                              </div>
+                              <div className="space-y-2">
+                                {article.externalLinks.map((link, index) => (
+                                  <a
+                                    key={index}
+                                    href={link.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={(e) => e.stopPropagation()}
+                                    className="flex items-center gap-2 text-sm text-[#d4a373] hover:text-[#ff6a00] transition-colors group/link"
+                                  >
+                                    <ExternalLink className="w-3 h-3 flex-shrink-0" />
+                                    <span className="group-hover/link:underline">{link.title}</span>
+                                  </a>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
                           <div className="flex items-center gap-6 text-sm text-[#d4a373]/70">
                             <div className="flex items-center gap-2">
                               <Clock className="w-4 h-4" />
@@ -343,6 +426,17 @@ const Wiki: React.FC = () => {
                                 day: 'numeric'
                               })}
                             </div>
+                            {article.author && (
+                              <div className="flex items-center gap-2">
+                                <User className="w-4 h-4" />
+                                {article.author}
+                                {article.authorType === 'admin' && (
+                                  <span className="px-2 py-0.5 bg-[#ff6a00]/20 text-[#ff6a00] text-xs rounded-full border border-[#ff6a00]/30">
+                                    Admin
+                                  </span>
+                                )}
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -377,6 +471,13 @@ const Wiki: React.FC = () => {
           </p>
         </div>
       </div>
+
+      {/* Add Article Modal */}
+      <AddArticleModal
+        isOpen={isAddArticleModalOpen}
+        onClose={() => setIsAddArticleModalOpen(false)}
+        onSave={handleSaveArticle}
+      />
     </div>
   );
 };
