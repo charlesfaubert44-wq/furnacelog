@@ -60,33 +60,33 @@ function HomePage() {
   // Hero carousel slides
   const heroSlides: HeroSlide[] = [
     {
-      id: 'extreme-cold',
+      id: 'filter-question',
       headline: {
-        normal: 'Protect Your',
-        highlight: 'Northern Home',
+        normal: 'When Did You Last',
+        highlight: 'Change Your Filter?',
       },
-      subtitle: 'Track heating systems, prevent freeze damage, and manage maintenance for homes built to survive -40°C winters.',
+      subtitle: '...exactly. Stop guessing. Track every maintenance task with precision. Your furnace (and your wallet) will thank you.',
       ctaPrimary: {
-        text: 'Start Free Today',
+        text: 'Start Tracking Free',
         onClick: () => {
           setAuthModalTab('register');
           setAuthModalOpen(true);
         },
       },
       ctaSecondary: {
-        text: 'See Features',
+        text: 'See How It Works',
         href: '#features',
       },
     },
     {
-      id: 'maintenance',
+      id: 'cost-comparison',
       headline: {
-        normal: 'Never Miss',
-        highlight: 'Maintenance Again',
+        normal: '$3,000 Frozen Pipe Repair',
+        highlight: 'vs. $7/Month',
       },
-      subtitle: 'Smart scheduling for seasonal tasks, furnace maintenance, and critical system checks. Stay ahead of problems before they start.',
+      subtitle: 'One missed heat trace check can cost thousands. FurnaceLog sends automated reminders before problems become emergencies.',
       ctaPrimary: {
-        text: 'Get Started',
+        text: 'Protect Your Home',
         onClick: () => {
           setAuthModalTab('register');
           setAuthModalOpen(true);
@@ -98,21 +98,59 @@ function HomePage() {
       },
     },
     {
-      id: 'monitoring',
+      id: 'furnace-failure',
       headline: {
-        normal: 'Monitor Everything',
-        highlight: 'Stay Warm',
+        normal: 'Your Furnace Quit at -35°C.',
+        highlight: 'Would You Even Know?',
       },
-      subtitle: 'Real-time system health tracking, automated alerts, and peace of mind knowing your home is protected 24/7.',
+      subtitle: 'Real-time monitoring and instant alerts mean you catch problems before your home freezes. Sleep better knowing you\'re protected.',
       ctaPrimary: {
-        text: 'Create Account',
+        text: 'Get Peace of Mind',
         onClick: () => {
           setAuthModalTab('register');
           setAuthModalOpen(true);
         },
       },
       ctaSecondary: {
-        text: 'Learn More',
+        text: 'Learn About Monitoring',
+        href: '#features',
+      },
+    },
+    {
+      id: 'cognitive-relief',
+      headline: {
+        normal: 'Track 50 Maintenance Tasks',
+        highlight: 'Or Remember... Nothing',
+      },
+      subtitle: 'Stop carrying home maintenance stress in your head. Smart seasonal checklists, automatic reminders, complete peace of mind.',
+      ctaPrimary: {
+        text: 'Try It Free',
+        onClick: () => {
+          setAuthModalTab('register');
+          setAuthModalOpen(true);
+        },
+      },
+      ctaSecondary: {
+        text: 'See All Features',
+        href: '#features',
+      },
+    },
+    {
+      id: 'northern-built',
+      headline: {
+        normal: 'Built for Yellowknife.',
+        highlight: 'Works in Whitehorse.',
+      },
+      subtitle: 'Purpose-built for extreme northern climates. From -40°C freeze protection to modular home maintenance, we speak your language.',
+      ctaPrimary: {
+        text: 'Start Free Today',
+        onClick: () => {
+          setAuthModalTab('register');
+          setAuthModalOpen(true);
+        },
+      },
+      ctaSecondary: {
+        text: 'Why Northern-Specific?',
         href: '#features',
       },
     },
