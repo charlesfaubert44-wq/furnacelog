@@ -35,7 +35,7 @@ interface WebSocketMessage {
 }
 
 export function useWebSocket() {
-  const { user, tokens } = useAuth();
+  const { tokens } = useAuth();
   const wsRef = useRef<WebSocket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [lastReading, setLastReading] = useState<SensorReading | null>(null);
