@@ -261,12 +261,8 @@ export default {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
-      fontFamily: {
-        sans: ['DM Sans', 'Inter', 'system-ui', 'sans-serif'],
-        heading: ['Fraunces', 'Space Grotesk', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'monospace'],
-        display: ['Fraunces', 'Instrument Sans', 'system-ui', 'sans-serif'],
-      },
+      // Using Tailwind's default sans-serif font stack
+      // fontFamily configuration removed to use defaults
       fontSize: {
         // Desktop scale
         'display': ['48px', { lineHeight: '52px', letterSpacing: '-0.02em', fontWeight: '700' }],

@@ -4,9 +4,7 @@ import { cn } from '@/lib/utils';
 /**
  * Territorial Homestead Typography System
  *
- * Uses Fraunces for headings (warm, distinctive display font)
- * Uses DM Sans for body text (clean, readable)
- * Uses JetBrains Mono for data/code
+ * Uses Tailwind's default sans-serif font stack
  */
 
 // Heading Components
@@ -17,7 +15,7 @@ export const H1 = React.forwardRef<
   <h1
     ref={ref}
     className={cn(
-      'font-heading text-h1 text-wool-cream tracking-tight',
+      'text-h1 text-wool-cream tracking-tight',
       className
     )}
     {...props}
@@ -32,7 +30,7 @@ export const H2 = React.forwardRef<
   <h2
     ref={ref}
     className={cn(
-      'font-heading text-h2 text-wool-cream tracking-tight',
+      'text-h2 text-wool-cream tracking-tight',
       className
     )}
     {...props}
@@ -47,7 +45,7 @@ export const H3 = React.forwardRef<
   <h3
     ref={ref}
     className={cn(
-      'font-heading text-h3 text-wool-cream tracking-tight',
+      'text-h3 text-wool-cream tracking-tight',
       className
     )}
     {...props}
@@ -62,7 +60,7 @@ export const H4 = React.forwardRef<
   <h4
     ref={ref}
     className={cn(
-      'font-heading text-h4 text-wool-cream',
+      'text-h4 text-wool-cream',
       className
     )}
     {...props}
@@ -124,7 +122,7 @@ export const Display = React.forwardRef<
   <h1
     ref={ref}
     className={cn(
-      'font-display text-display text-wool-cream tracking-tight',
+      'text-display text-wool-cream tracking-tight',
       className
     )}
     {...props}
@@ -140,7 +138,7 @@ export const Mono = React.forwardRef<
   <span
     ref={ref}
     className={cn(
-      'font-mono text-sm text-honey tabular-nums',
+      'font-sans text-sm text-honey tabular-nums',
       className
     )}
     {...props}
@@ -156,7 +154,7 @@ export const HearthText = React.forwardRef<
   <span
     ref={ref}
     className={cn(
-      'text-hearth-gradient font-heading font-semibold',
+      'text-hearth-gradient font-semibold',
       className
     )}
     {...props}

@@ -31,7 +31,7 @@ export const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
               placeholder="Search homes, systems, tasks..."
               className="flex-1 bg-transparent text-sm outline-none placeholder:text-[#d4a373]/60 text-[#f4e8d8]"
             />
-            <kbd className="hidden lg:inline-flex h-5 select-none items-center gap-1 rounded border border-[#f4e8d8]/20 bg-[#2a2a2a] px-1.5 font-mono text-[10px] font-medium text-[#d4a373]">
+            <kbd className="hidden lg:inline-flex h-5 select-none items-center gap-1 rounded border border-[#f4e8d8]/20 bg-[#2a2a2a] px-1.5 text-[10px] font-medium text-[#d4a373]">
               ⌘K
             </kbd>
           </div>

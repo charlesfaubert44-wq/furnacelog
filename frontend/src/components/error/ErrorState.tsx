@@ -22,7 +22,7 @@ export const ErrorState: React.FC<ErrorStateProps> = ({
         <AlertTriangle className="h-8 w-8 text-flame-red-600" />
       </div>
       <div className="text-center">
-        <h3 className="text-h3 font-heading mb-2">{title}</h3>
+        <h3 className="text-h3 mb-2">{title}</h3>
         <p className="text-aluminum-600 max-w-md">{message}</p>
       </div>
       {retry && (

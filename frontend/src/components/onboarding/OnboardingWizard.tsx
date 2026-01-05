@@ -96,7 +96,7 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-hearth shadow-glow-md mb-4">
               <Flame className="w-8 h-8 text-wool-cream" />
             </div>
-            <h1 className="font-heading text-4xl sm:text-5xl font-bold text-wool-cream mb-2">
+            <h1 className="text-4xl sm:text-5xl font-bold text-wool-cream mb-2">
               {title}
             </h1>
             <p className="text-lg text-honey">
@@ -194,7 +194,7 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({
                         </div>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h2 className="font-heading text-2xl sm:text-3xl font-bold text-wool-cream mb-1">
+                        <h2 className="text-2xl sm:text-3xl font-bold text-wool-cream mb-1">
                           {currentStepData.title}
                         </h2>
                         {currentStepData.subtitle && (

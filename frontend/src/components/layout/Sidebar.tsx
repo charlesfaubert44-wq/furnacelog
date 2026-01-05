@@ -42,7 +42,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle, isMobile }) 
           </div>
           {isOpen && (
             <div>
-              <h1 className="font-heading text-lg font-bold text-[#f4e8d8]">FurnaceLog</h1>
+              <h1 className="text-lg font-bold text-[#f4e8d8]">FurnaceLog</h1>
               <p className="text-xs text-[#d4a373]">Northern Tracker</p>
             </div>
           )}

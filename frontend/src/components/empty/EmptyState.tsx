@@ -34,7 +34,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
       <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-tech-blue-100">
         <Icon className="h-8 w-8 text-tech-blue-600" />
       </div>
-      <h3 className="text-h3 font-heading mb-2">{title}</h3>
+      <h3 className="text-h3 mb-2">{title}</h3>
       <p className="text-aluminum-600 mb-6 max-w-md">{description}</p>
       {(actionLabel || secondaryActionLabel) && (
         <div className="flex gap-3">
