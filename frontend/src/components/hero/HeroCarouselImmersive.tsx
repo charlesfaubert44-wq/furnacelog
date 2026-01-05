@@ -216,16 +216,16 @@ export function HeroCarouselImmersive({
         >
           {/* Headline */}
           <div className="text-center max-w-[900px] mx-auto mb-4 px-2 animate-fade-slide-up">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-[1.25] tracking-tight mb-3 pb-2">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-charcoal leading-[1.25] tracking-tight mb-3 pb-2">
               {currentSlide.headline.normal}
-              <span className="block bg-gradient-to-r from-furnace-primary to-furnace-light bg-clip-text text-transparent mt-2 pb-1">
+              <span className="block bg-gradient-to-r from-warm-orange to-soft-amber bg-clip-text text-transparent mt-2 pb-1">
                 {currentSlide.headline.highlight}
               </span>
             </h2>
           </div>
 
           {/* Subtitle */}
-          <p className="text-center text-base md:text-lg lg:text-xl text-fl-text-secondary leading-relaxed max-w-[650px] mx-auto mb-6 px-2 animate-fade-slide-up animate-delay-100">
+          <p className="text-center text-base md:text-lg lg:text-xl text-warm-gray leading-relaxed max-w-[650px] mx-auto mb-6 px-2 animate-fade-slide-up animate-delay-100">
             {currentSlide.subtitle}
           </p>
 
@@ -233,7 +233,7 @@ export function HeroCarouselImmersive({
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-4 animate-fade-slide-up animate-delay-200">
             <button
               onClick={currentSlide.ctaPrimary.onClick}
-              className="group inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-furnace-primary hover:bg-furnace-light text-white text-lg font-semibold rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg shadow-orange-900/20 hover:shadow-orange-900/40"
+              className="group inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-gradient-fireplace hover:shadow-warm-glow text-white text-lg font-semibold rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 shadow-warm-sm"
             >
               {currentSlide.ctaPrimary.text}
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -241,7 +241,7 @@ export function HeroCarouselImmersive({
             {currentSlide.ctaSecondary && (
               <a
                 href={currentSlide.ctaSecondary.href}
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-fl-card-bg hover:bg-fl-card-border border border-fl-card-border hover:border-furnace-primary/30 text-white text-lg font-semibold rounded-xl transition-all duration-300 hover:scale-105 active:scale-95"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/60 hover:bg-white border border-soft-beige hover:border-soft-amber/50 text-charcoal text-lg font-semibold rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 shadow-warm-sm"
               >
                 {currentSlide.ctaSecondary.text}
               </a>
@@ -259,8 +259,8 @@ export function HeroCarouselImmersive({
                   className={cn(
                     'h-2 rounded-full transition-all duration-300',
                     idx === currentIndex
-                      ? 'w-8 bg-gradient-to-r from-furnace-primary to-furnace-light'
-                      : 'w-2 bg-white/30 hover:bg-white/50',
+                      ? 'w-8 bg-gradient-to-r from-warm-orange to-soft-amber shadow-warm-sm'
+                      : 'w-2 bg-soft-beige/40 hover:bg-soft-beige/70',
                     'disabled:cursor-not-allowed'
                   )}
                   aria-label={`Go to slide ${idx + 1}`}
@@ -281,8 +281,8 @@ export function HeroCarouselImmersive({
             className={cn(
               'hidden lg:flex absolute left-10 top-1/2 -translate-y-1/2',
               'w-12 h-12 rounded-full items-center justify-center',
-              'bg-fl-card-bg/80 backdrop-blur-sm border border-fl-card-border',
-              'text-white hover:border-furnace-primary/50 hover:bg-fl-card-border',
+              'bg-white/70 backdrop-blur-sm border border-soft-beige/60',
+              'text-charcoal hover:border-soft-amber/50 hover:bg-white shadow-warm-sm',
               'transition-all duration-300 hover:scale-110',
               'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100',
               'z-10'
@@ -297,8 +297,8 @@ export function HeroCarouselImmersive({
             className={cn(
               'hidden lg:flex absolute right-10 top-1/2 -translate-y-1/2',
               'w-12 h-12 rounded-full items-center justify-center',
-              'bg-fl-card-bg/80 backdrop-blur-sm border border-fl-card-border',
-              'text-white hover:border-furnace-primary/50 hover:bg-fl-card-border',
+              'bg-white/70 backdrop-blur-sm border border-soft-beige/60',
+              'text-charcoal hover:border-soft-amber/50 hover:bg-white shadow-warm-sm',
               'transition-all duration-300 hover:scale-110',
               'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100',
               'z-10'

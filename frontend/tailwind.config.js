@@ -35,29 +35,49 @@ export default {
         'fl-text-muted': '#6b7280',
         'fl-text-secondary': '#9ca3af',
 
-        // Territorial Homestead - Hearth & Home Palette
-        // Foundation (Backgrounds)
+        // Cozy Home - Warm Palette
+        // Backgrounds (Warm, inviting base)
+        'cream': '#F5F1E8',
+        'soft-beige': '#E8DCC4',
+        'warm-white': '#FAF8F3',
+        'paper': '#F0EBE0',
+
+        // Primary Actions (Fireplace warmth)
+        'soft-amber': '#D4A574',
+        'burnt-sienna': '#C47A53',
+        'warm-orange': '#E88D5A',
+        'warm-coral': '#F4A582',
+
+        // Wood & Earth Tones
+        'wood-light': '#8B6F47',
+        'wood-dark': '#5C4A3A',
+        'walnut': '#4A3628',
+        'clay': '#B8956A',
+
+        // Text (Warm, readable)
+        'charcoal': '#3A3A3A',
+        'warm-gray': '#6B5D50',
+        'soft-black': '#2C2420',
+
+        // Accents
+        'sage': '#8BA888',
+        'winter-blue': '#9CB4C4',
+        'soft-sage': '#A8C5A0',
+
+        // Legacy: Territorial Homestead - Hearth & Home Palette
         'deep-charcoal': '#1a1412',
         'rich-umber': '#2d1f1a',
         'warm-stone': '#3d3127',
-
-        // Primary (Warmth & Action)
         'ember-glow': '#ff6b35',
         'hearth-fire': '#f7931e',
         'copper-warm': '#c87941',
-
-        // Secondary (Comfort & Trust)
         'wool-cream': '#f4e8d8',
         'honey': '#d4a373',
         'terracotta': '#d4734e',
-
-        // Functional
         'forest-green': '#6a994e',
         'sunset-amber': '#f2a541',
         'brick-red': '#d45d4e',
         'slate-blue': '#5b8fa3',
-
-        // Accent (Seasonal)
         'winter-sky': '#c4d7e0',
         'northern-lights': '#7ea88f',
         'birch-white': '#ede4d3',
@@ -304,6 +324,12 @@ export default {
         'glow-aurora': '0 0 20px rgba(6, 182, 212, 0.3)',
         'glow-warning': '0 0 20px rgba(234, 88, 12, 0.3)',
         'glow-critical': '0 0 20px rgba(239, 68, 68, 0.3)',
+        // Cozy Home - Warm Shadows
+        'warm-sm': '0 2px 8px rgba(92, 74, 58, 0.12)',
+        'warm-md': '0 4px 16px rgba(92, 74, 58, 0.18)',
+        'warm-lg': '0 8px 24px rgba(92, 74, 58, 0.25)',
+        'warm-glow': '0 4px 20px rgba(212, 122, 83, 0.3)',
+        'card-cozy': '0 4px 12px rgba(92, 74, 58, 0.15)',
         // Territorial Homestead - Warm Glows
         'glow-sm': '0 4px 16px rgba(255, 107, 53, 0.3)',
         'glow-md': '0 6px 24px rgba(255, 107, 53, 0.45)',
@@ -314,6 +340,13 @@ export default {
         'gradient-night': 'linear-gradient(180deg, #0F172A 0%, #1E293B 100%)',
         'gradient-frost': 'linear-gradient(135deg, #F1F5F9 0%, #E2E8F0 100%)',
         'gradient-glow': 'radial-gradient(circle at center, rgba(6, 182, 212, 0.15) 0%, transparent 70%)',
+        // Cozy Home - Warm Gradients
+        'gradient-cozy': 'linear-gradient(135deg, #F5F1E8 0%, #E8DCC4 100%)',
+        'gradient-warm-card': 'linear-gradient(145deg, #FAF8F3 0%, #F0EBE0 100%)',
+        'gradient-fireplace': 'linear-gradient(135deg, #E88D5A 0%, #D4A574 100%)',
+        'gradient-sunset': 'linear-gradient(180deg, #F4A582 0%, #C47A53 100%)',
+        'gradient-warm-glow': 'radial-gradient(ellipse at top, rgba(232, 141, 90, 0.15) 0%, transparent 60%)',
+        'gradient-paper': 'linear-gradient(to bottom, #FAF8F3, #F5F1E8)',
         // Territorial Homestead - Warm Gradients
         'gradient-hearth': 'linear-gradient(135deg, #ff6b35 0%, #f7931e 100%)',
         'gradient-warm-bg': 'linear-gradient(180deg, #2d1f1a 0%, #1a1412 100%)',
