@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Home, Calendar, AlertTriangle, Snowflake, Flame, ArrowRight, TrendingDown, LogOut, User, BookOpen, Settings, Play, Check, Shield, MapPin, Smartphone, BarChart3, Star } from 'lucide-react';
+import { Home, Calendar, AlertTriangle, Snowflake, Flame, ArrowRight, TrendingDown, LogOut, User, BookOpen, Settings, Check, Shield, MapPin, Smartphone, BarChart3, Star } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import { AuthModal } from '@/components/auth/AuthModal';
 import { useScrollPosition } from '@/hooks/useScrollAnimation';
 import logger from '@/utils/logger';
-import { PricingPlans } from '@/components/pricing/PricingPlans';
 import { DashboardMockup } from '@/components/hero/DashboardMockup';
 import { Logo } from '@/components/furnacelog/Logo';
 
@@ -207,31 +206,31 @@ function HomePage() {
                       }}
                       className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-gradient-fireplace hover:shadow-warm-glow text-white text-lg font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-warm-md"
                     >
-                      Start Free Trial
+                      Get Started Free
                       <ArrowRight className="w-5 h-5" />
                     </button>
                     <a
                       href="#features"
                       className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-white/60 hover:bg-white border-2 border-soft-beige hover:border-soft-amber/50 text-charcoal text-lg font-bold rounded-xl transition-all duration-300 shadow-warm-sm"
                     >
-                      <Play className="w-5 h-5" />
-                      Watch Demo
+                      Learn More
+                      <ArrowRight className="w-5 h-5" />
                     </a>
                   </div>
 
-                  {/* Trust Indicators */}
+                  {/* Cost Warnings */}
                   <div className="flex flex-wrap items-center gap-6 pt-4 text-sm text-warm-gray">
                     <div className="flex items-center gap-2">
-                      <Check className="w-5 h-5 text-soft-amber" />
-                      <span>No credit card required</span>
+                      <AlertTriangle className="w-5 h-5 text-warm-orange" />
+                      <span>$3,000+ for frozen pipe repairs</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <AlertTriangle className="w-5 h-5 text-warm-orange" />
+                      <span>$5,000+ for furnace failures</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Check className="w-5 h-5 text-soft-amber" />
-                      <span>14-day free trial</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Check className="w-5 h-5 text-soft-amber" />
-                      <span>Cancel anytime</span>
+                      <span>100% Free. Forever.</span>
                     </div>
                   </div>
                 </div>
@@ -342,28 +341,6 @@ function HomePage() {
             </div>
           </section>
 
-          {/* Warm Pricing Section */}
-          <section id="pricing" className="py-16 bg-gradient-cozy border-b border-soft-beige/30">
-            <div className="max-w-7xl mx-auto px-6">
-              <div className="text-center max-w-3xl mx-auto mb-12 space-y-4">
-                <h2 className="text-4xl md:text-5xl font-bold text-charcoal leading-tight">
-                  Simple, Honest Pricing
-                </h2>
-                <p className="text-lg text-warm-gray leading-relaxed">
-                  Start free and upgrade when you're ready. No surprises, no pressure—just peace of mind.
-                </p>
-              </div>
-
-              <PricingPlans />
-
-              <div className="mt-16 text-center">
-                <p className="text-sm text-warm-gray/80 max-w-2xl mx-auto leading-relaxed">
-                  All plans include unlimited homes, maintenance tracking, weather alerts, and community support.
-                  Upgrade anytime to unlock advanced features. No credit card required to start.
-                </p>
-              </div>
-            </div>
-          </section>
 
           {/* Product Showcase Section 1: Everything in One Place */}
           <section className="py-16 bg-cream border-b border-soft-beige/30">
@@ -571,15 +548,15 @@ function HomePage() {
 
             <div className="relative max-w-4xl mx-auto px-6 text-center space-y-8">
               <div className="inline-block px-4 py-2 bg-white/20 border border-white/30 rounded-full mb-4">
-                <span className="text-sm font-semibold text-white">Start Your Free Trial Today</span>
+                <span className="text-sm font-semibold text-white">100% Free. No Catch.</span>
               </div>
 
               <h2 className="text-4xl md:text-6xl font-black text-white leading-tight">
-                Welcome Home to Peace of Mind
+                Don't Let Poor Maintenance Cost You Thousands
               </h2>
 
               <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto leading-relaxed">
-                Join northern homeowners who sleep soundly knowing their homes are safe, warm, and well-maintained—even in the coldest winters.
+                One forgotten furnace filter or missed heat trace check can cost $3,000-$5,000+ in emergency repairs. FurnaceLog helps northern homeowners prevent costly failures—completely free.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
@@ -590,32 +567,32 @@ function HomePage() {
                   }}
                   className="inline-flex items-center justify-center gap-2.5 px-10 py-5 bg-white hover:bg-cream text-charcoal text-lg font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-2xl"
                 >
-                  Start Your Free Trial
+                  Start Protecting Your Home
                   <ArrowRight className="w-5 h-5" />
                 </button>
                 <a
-                  href="#pricing"
+                  href="#features"
                   className="inline-flex items-center justify-center gap-2.5 px-10 py-5 bg-white/10 hover:bg-white/20 border-2 border-white/30 text-white text-lg font-bold rounded-xl transition-all duration-300 backdrop-blur-sm"
                 >
-                  View Pricing
+                  See How It Works
                 </a>
               </div>
 
-              {/* Trust badges */}
-              <div className="flex flex-wrap items-center justify-center gap-8 pt-8 text-white/80 text-sm">
+              {/* Cost Warnings */}
+              <div className="flex flex-wrap items-center justify-center gap-8 pt-8 text-white/90 text-sm font-medium">
                 <div className="flex items-center gap-2">
                   <Shield className="w-5 h-5" />
-                  <span>Secure & Private</span>
+                  <span>Open Source & Free Forever</span>
                 </div>
                 <div className="w-1 h-1 rounded-full bg-white/40" />
                 <div className="flex items-center gap-2">
                   <Check className="w-5 h-5" />
-                  <span>No Credit Card Required</span>
+                  <span>No Payments Required</span>
                 </div>
                 <div className="w-1 h-1 rounded-full bg-white/40" />
                 <div className="flex items-center gap-2">
-                  <Star className="w-5 h-5 fill-white/80" />
-                  <span>5-Star Rated</span>
+                  <Home className="w-5 h-5" />
+                  <span>Built for Northern Homes</span>
                 </div>
               </div>
             </div>
