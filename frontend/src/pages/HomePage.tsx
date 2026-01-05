@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Thermometer, Home, Calendar, AlertTriangle, Snowflake, Flame, CheckCircle2, ArrowRight, Clock, TrendingDown, LogOut, User, BookOpen, Settings } from 'lucide-react';
+import { Thermometer, Home, Calendar, AlertTriangle, Snowflake, Flame, ArrowRight, Clock, TrendingDown, LogOut, User, BookOpen, Settings } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import { AuthModal } from '@/components/auth/AuthModal';
 import { useScrollPosition } from '@/hooks/useScrollAnimation';
 import logger from '@/utils/logger';
 import { fetchNorthernWeather, type CityWeather } from '@/services/weather.service';
-import { getTemperatureQuote } from '@/utils/weatherQuotes';
 import { PricingPlans } from '@/components/pricing/PricingPlans';
 import { AdSense } from '@/components/ads/AdSense';
+import { WeatherCarousel } from '@/components/hero/WeatherCarousel';
+import { AlertDisplay, type AlertItem } from '@/components/hero/AlertDisplay';
 
 interface HealthStatus {
   status: string;
@@ -74,6 +75,39 @@ function HomePage() {
     navigate('/');
     setShowUserMenu(false);
   };
+
+  // Example alerts for the hero section
+  const heroAlerts: AlertItem[] = [
+    {
+      id: 'extreme-cold',
+      priority: 'urgent',
+      icon: 'alert',
+      title: 'Extreme Cold Alert',
+      description: 'Temperature dropping to -42°C tonight. Inspect heat trace cables and ensure backup heating is ready.',
+      badge: 'URGENT',
+      timeInfo: 'Due in 6 hours',
+      timeIcon: <Clock className="w-3.5 h-3.5" />,
+    },
+    {
+      id: 'furnace-filter',
+      priority: 'warning',
+      icon: 'calendar',
+      title: 'Furnace Filter Due',
+      description: 'Replace forced-air furnace filter for optimal heating efficiency.',
+      badge: 'TOMORROW',
+      timeInfo: 'Propane Furnace',
+      timeIcon: <Thermometer className="w-3.5 h-3.5" />,
+    },
+    {
+      id: 'all-systems',
+      priority: 'healthy',
+      icon: 'home',
+      title: 'All Systems Running',
+      description: 'All critical home systems are operating normally.',
+      badge: 'HEALTHY',
+      systems: ['Propane Furnace', 'HRV System', 'Heat Trace Cables'],
+    },
+  ];
 
 
   return (
@@ -210,7 +244,8 @@ function HomePage() {
             </div>
 
             <div className="relative max-w-7xl mx-auto px-6 py-20 md:py-28">
-              <div className="grid lg:grid-cols-2 gap-16 items-center">
+              <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+                {/* Left Column - Headline & Weather */}
                 <div className="space-y-8">
                   <div className="space-y-6">
                     <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-[#f4e8d8] leading-[1.05] tracking-tight animate-fade-slide-up animate-delay-100">
@@ -229,7 +264,7 @@ function HomePage() {
                         setAuthModalTab('register');
                         setAuthModalOpen(true);
                       }}
-                      className="group inline-flex items-center justify-center gap-2.5 px-7 py-4 bg-gradient-to-r from-[#ff4500] to-[#ff6a00] text-[#f4e8d8] font-semibold rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                      className="group inline-flex items-center justify-center gap-2.5 px-7 py-4 bg-gradient-to-r from-[#ff4500] to-[#ff6a00] text-[#f4e8d8] font-semibold rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:shadow-lg hover:shadow-[#ff4500]/20"
                     >
                       Start Free Today
                       <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -239,128 +274,24 @@ function HomePage() {
                     </a>
                   </div>
 
-                  {/* Live Northern Weather */}
-                  <div className="grid grid-cols-3 gap-6 pt-8 border-t border-[#f4e8d8]/10">
-                    {weather.length > 0 ? (
-                      weather.map((cityWeather) => (
-                        <div key={cityWeather.city} className="space-y-1">
-                          <div className="flex items-center gap-2 text-[#5b8fa3]">
-                            <Thermometer className="w-4 h-4" />
-                            <span className="text-xs font-medium">{cityWeather.city}</span>
-                          </div>
-                          <div className="flex items-baseline gap-1">
-                            <span className={cn(
-                              "text-2xl font-bold",
-                              cityWeather.temp < -35 && "text-[#c4d7e0]",
-                              cityWeather.temp >= -35 && cityWeather.temp < -20 && "text-[#5b8fa3]",
-                              cityWeather.temp >= -20 && "text-[#7ea88f]"
-                            )}>
-                              {cityWeather.temp}°
-                            </span>
-                            <span className="text-xs text-[#d4a373]/70">
-                              feels {cityWeather.feelsLike}°
-                            </span>
-                          </div>
-                          <p className="text-xs text-[#d4a373]/80 italic leading-tight">
-                            {getTemperatureQuote(cityWeather.temp)}
-                          </p>
-                        </div>
-                      ))
-                    ) : (
-                      // Loading placeholders
-                      <>
-                        <div className="space-y-1 animate-pulse">
-                          <div className="h-4 bg-[#2a2a2a]/50 rounded w-20"></div>
-                          <div className="h-8 bg-[#2a2a2a]/50 rounded w-16"></div>
-                          <div className="h-3 bg-[#2a2a2a]/50 rounded w-32"></div>
-                        </div>
-                        <div className="space-y-1 animate-pulse">
-                          <div className="h-4 bg-[#2a2a2a]/50 rounded w-20"></div>
-                          <div className="h-8 bg-[#2a2a2a]/50 rounded w-16"></div>
-                          <div className="h-3 bg-[#2a2a2a]/50 rounded w-32"></div>
-                        </div>
-                        <div className="space-y-1 animate-pulse">
-                          <div className="h-4 bg-[#2a2a2a]/50 rounded w-20"></div>
-                          <div className="h-8 bg-[#2a2a2a]/50 rounded w-16"></div>
-                          <div className="h-3 bg-[#2a2a2a]/50 rounded w-32"></div>
-                        </div>
-                      </>
-                    )}
+                  {/* Live Northern Weather - New Carousel */}
+                  <div className="pt-8 border-t border-[#f4e8d8]/10 animate-fade-slide-up animate-delay-400">
+                    <WeatherCarousel
+                      weather={weather}
+                      autoAdvance={true}
+                      autoAdvanceInterval={8000}
+                      className="group"
+                    />
                   </div>
                 </div>
 
-                <div className="relative">
-                  <div className="space-y-4">
-                    <div className="bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border-2 border-[#d45d4e]/40 rounded-2xl p-6">
-                      <div className="flex items-start gap-4">
-                        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-[#d45d4e] to-[#d4734e] rounded-xl flex items-center justify-center">
-                          <AlertTriangle className="w-6 h-6 text-[#f4e8d8]" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-start justify-between gap-3 mb-2">
-                            <h3 className="font-semibold text-[#f4e8d8]">Extreme Cold Alert</h3>
-                            <span className="flex-shrink-0 text-xs text-[#d45d4e] font-medium bg-[#d45d4e]/20 px-2 py-1 rounded">URGENT</span>
-                          </div>
-                          <p className="text-sm text-[#d4a373] mb-3">
-                            Temperature dropping to -42°C tonight. Inspect heat trace cables and ensure backup heating is ready.
-                          </p>
-                          <div className="flex items-center gap-2 text-xs text-[#d4a373]/70">
-                            <Clock className="w-3.5 h-3.5" />
-                            <span>Due in 6 hours</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#ff9500]/30 rounded-2xl p-6">
-                      <div className="flex items-start gap-4">
-                        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-[#ff9500] to-[#ff6a00] rounded-xl flex items-center justify-center">
-                          <Calendar className="w-6 h-6 text-[#f4e8d8]" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-start justify-between gap-3 mb-2">
-                            <h3 className="font-semibold text-[#f4e8d8]">Furnace Filter Due</h3>
-                            <span className="flex-shrink-0 text-xs text-[#ff9500] font-medium bg-[#ff9500]/20 px-2 py-1 rounded">TOMORROW</span>
-                          </div>
-                          <p className="text-sm text-[#d4a373] mb-3">
-                            Replace forced-air furnace filter for optimal heating efficiency.
-                          </p>
-                          <div className="flex items-center gap-2 text-xs text-[#d4a373]/70">
-                            <Thermometer className="w-3.5 h-3.5" />
-                            <span>Propane Furnace</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#6a994e]/30 rounded-2xl p-6">
-                      <div className="flex items-start gap-4">
-                        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-[#6a994e] to-[#7ea88f] rounded-xl flex items-center justify-center">
-                          <Home className="w-6 h-6 text-[#f4e8d8]" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-start justify-between gap-3 mb-3">
-                            <h3 className="font-semibold text-[#f4e8d8]">All Systems Running</h3>
-                            <span className="flex-shrink-0 text-xs text-[#6a994e] font-medium bg-[#6a994e]/20 px-2 py-1 rounded">HEALTHY</span>
-                          </div>
-                          <div className="space-y-2">
-                            <div className="flex items-center gap-2.5 text-sm text-[#d4a373]">
-                              <CheckCircle2 className="w-4 h-4 text-[#6a994e] flex-shrink-0" />
-                              <span>Propane Furnace</span>
-                            </div>
-                            <div className="flex items-center gap-2.5 text-sm text-[#d4a373]">
-                              <CheckCircle2 className="w-4 h-4 text-[#6a994e] flex-shrink-0" />
-                              <span>HRV System</span>
-                            </div>
-                            <div className="flex items-center gap-2.5 text-sm text-[#d4a373]">
-                              <CheckCircle2 className="w-4 h-4 text-[#6a994e] flex-shrink-0" />
-                              <span>Heat Trace Cables</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                {/* Right Column - Priority Alerts */}
+                <div className="relative lg:pt-12 animate-fade-slide-up animate-delay-500">
+                  <AlertDisplay
+                    alerts={heroAlerts}
+                    autoAdvance={true}
+                    autoAdvanceInterval={6000}
+                  />
                   <div className="absolute -top-8 -right-8 w-32 h-32 bg-gradient-to-br from-[#ff4500]/10 to-transparent rounded-full blur-3xl pointer-events-none" />
                   <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-gradient-to-tr from-[#6a994e]/10 to-transparent rounded-full blur-3xl pointer-events-none" />
                 </div>
