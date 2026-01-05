@@ -6,10 +6,8 @@ import { cn } from '@/lib/utils';
 import { AuthModal } from '@/components/auth/AuthModal';
 import { useScrollPosition } from '@/hooks/useScrollAnimation';
 import logger from '@/utils/logger';
-import { fetchNorthernWeather, type CityWeather } from '@/services/weather.service';
 import { PricingPlans } from '@/components/pricing/PricingPlans';
 import { AdSense } from '@/components/ads/AdSense';
-import { WeatherCarousel } from '@/components/hero/WeatherCarousel';
 import { AlertDisplay, type AlertItem } from '@/components/hero/AlertDisplay';
 
 interface HealthStatus {
@@ -28,7 +26,6 @@ interface HealthStatus {
 function HomePage() {
   const [health, setHealth] = useState<HealthStatus | null>(null);
   const [loading, setLoading] = useState(true);
-  const [weather, setWeather] = useState<CityWeather[]>([]);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [showUserMenu, setShowUserMenu] = useState(false);
@@ -51,23 +48,6 @@ function HomePage() {
     };
 
     checkHealth();
-  }, []);
-
-  // Fetch northern weather on mount
-  useEffect(() => {
-    const loadWeather = async () => {
-      try {
-        const weatherData = await fetchNorthernWeather();
-        setWeather(weatherData);
-      } catch (err) {
-        logger.warn('Weather fetch failed', err as Record<string, any>);
-      }
-    };
-
-    loadWeather();
-    // Refresh weather every 10 minutes
-    const interval = setInterval(loadWeather, 10 * 60 * 1000);
-    return () => clearInterval(interval);
   }, []);
 
   const handleLogout = () => {
@@ -272,16 +252,6 @@ function HomePage() {
                     <a href="#features" className="inline-flex items-center justify-center gap-2 px-7 py-4 bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] hover:from-[#2a2a2a] hover:to-[#2a2a2a] border border-[#f4e8d8]/20 text-[#f4e8d8] font-semibold rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
                       See Features
                     </a>
-                  </div>
-
-                  {/* Live Northern Weather - New Carousel */}
-                  <div className="pt-8 border-t border-[#f4e8d8]/10 animate-fade-slide-up animate-delay-400">
-                    <WeatherCarousel
-                      weather={weather}
-                      autoAdvance={true}
-                      autoAdvanceInterval={8000}
-                      className="group"
-                    />
                   </div>
                 </div>
 
