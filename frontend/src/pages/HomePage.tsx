@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Thermometer, Home, Calendar, AlertTriangle, Snowflake, Flame, ArrowRight, Clock, TrendingDown, LogOut, User, BookOpen, Settings } from 'lucide-react';
+import { Home, Calendar, AlertTriangle, Snowflake, Flame, ArrowRight, TrendingDown, LogOut, User, BookOpen, Settings } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import { AuthModal } from '@/components/auth/AuthModal';
@@ -76,18 +76,6 @@ function HomePage() {
         text: 'See Features',
         href: '#features',
       },
-      alerts: [
-        {
-          id: 'extreme-cold-alert',
-          priority: 'urgent',
-          icon: 'alert',
-          title: 'Extreme Cold Alert',
-          description: 'Temperature dropping to -42°C tonight. Inspect heat trace cables and ensure backup heating is ready.',
-          badge: 'URGENT',
-          timeInfo: 'Due in 6 hours',
-          timeIcon: <Clock className="w-3.5 h-3.5" />,
-        },
-      ],
     },
     {
       id: 'maintenance',
@@ -107,18 +95,6 @@ function HomePage() {
         text: 'View Pricing',
         href: '#pricing',
       },
-      alerts: [
-        {
-          id: 'furnace-filter-due',
-          priority: 'warning',
-          icon: 'calendar',
-          title: 'Furnace Filter Due',
-          description: 'Replace forced-air furnace filter for optimal heating efficiency.',
-          badge: 'TOMORROW',
-          timeInfo: 'Propane Furnace',
-          timeIcon: <Thermometer className="w-3.5 h-3.5" />,
-        },
-      ],
     },
     {
       id: 'monitoring',
@@ -138,17 +114,6 @@ function HomePage() {
         text: 'Learn More',
         href: '#features',
       },
-      alerts: [
-        {
-          id: 'all-systems-healthy',
-          priority: 'healthy',
-          icon: 'home',
-          title: 'All Systems Running',
-          description: 'All critical home systems are operating normally.',
-          badge: 'HEALTHY',
-          systems: ['Propane Furnace', 'HRV System', 'Heat Trace Cables'],
-        },
-      ],
     },
   ];
 

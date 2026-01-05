@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { AlertDisplay, type AlertItem } from './AlertDisplay';
 
 export interface HeroSlide {
   id: string;
@@ -18,7 +17,6 @@ export interface HeroSlide {
     text: string;
     href: string;
   };
-  alerts: AlertItem[];
 }
 
 interface HeroCarouselProps {
@@ -141,14 +139,6 @@ export function HeroCarousel({
               ))}
             </div>
           )}
-
-          {/* Featured Alert Card */}
-          <div className="max-w-[600px] mx-auto animate-fade-slide-up animate-delay-400">
-            <AlertDisplay
-              alerts={currentSlide.alerts}
-              autoAdvance={false}
-            />
-          </div>
         </div>
       </div>
 
