@@ -34,7 +34,7 @@ export const Logo: React.FC<LogoProps> = ({ size = 'md', showSlogan = false, cla
 
   return (
     <div className={`flex items-center gap-3 ${className}`}>
-      {/* House Icon with Fireplace */}
+      {/* Shield Badge with Furnace */}
       <div className="relative group" style={{ width: iconSize, height: iconSize }}>
         <svg
           width={iconSize}
@@ -42,118 +42,132 @@ export const Logo: React.FC<LogoProps> = ({ size = 'md', showSlogan = false, cla
           viewBox="0 0 48 48"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="drop-shadow-warm-sm"
+          className="drop-shadow-warm-md"
         >
-          {/* House Shape */}
+          {/* Protective Shield Background */}
           <path
-            d="M4 20L24 4L44 20V42C44 43.1046 43.1046 44 42 44H6C4.89543 44 4 43.1046 4 42V20Z"
-            fill="url(#houseGradient)"
-            stroke="#8B6F47"
+            d="M24 4L6 10V20C6 30 10 38 24 44C38 38 42 30 42 20V10L24 4Z"
+            fill="url(#shieldGradient)"
+            stroke="#5C4A3A"
             strokeWidth="2"
             strokeLinejoin="round"
           />
 
-          {/* Roof */}
-          <path
-            d="M2 22L24 2L46 22"
-            stroke="#5C4A3A"
-            strokeWidth="3"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+          {/* Inner Glow - represents warmth radiating */}
+          <circle
+            cx="24"
+            cy="24"
+            r="14"
+            fill="url(#warmGlow)"
+            opacity="0.3"
+            className="pulse-glow"
           />
 
-          {/* Window Left */}
-          <rect
-            x="10"
-            y="16"
-            width="10"
-            height="10"
-            rx="2"
-            fill="#F5F1E8"
-            opacity="0.6"
-          />
-
-          {/* Window Right */}
-          <rect
-            x="28"
-            y="16"
-            width="10"
-            height="10"
-            rx="2"
-            fill="#F5F1E8"
-            opacity="0.6"
-          />
-
-          {/* Door */}
-          <rect
-            x="18"
-            y="30"
-            width="12"
-            height="14"
-            rx="1"
-            fill="#8B6F47"
-          />
-
-          {/* Fireplace Flame */}
-          <g className="flame-glow">
-            <path
-              d="M24 26C24 26 20 24 20 20C20 16 22 14 24 14C26 14 28 16 28 20C28 24 24 26 24 26Z"
-              fill="url(#flameGradient)"
-              className="animate-pulse"
-              style={{ transformOrigin: '24px 20px' }}
-            />
-            {/* Flame Core */}
-            <ellipse
-              cx="24"
-              cy="20"
+          {/* Furnace/Heat System Icon */}
+          <g className="furnace-unit">
+            {/* Furnace Body */}
+            <rect
+              x="16"
+              y="18"
+              width="16"
+              height="18"
               rx="2"
-              ry="3"
-              fill="#FAF8F3"
-              opacity="0.9"
+              fill="url(#furnaceGradient)"
+              stroke="#5C4A3A"
+              strokeWidth="1.5"
+            />
+
+            {/* Furnace Vent Lines */}
+            <line x1="18" y1="22" x2="30" y2="22" stroke="#8B6F47" strokeWidth="1" opacity="0.6" />
+            <line x1="18" y1="25" x2="30" y2="25" stroke="#8B6F47" strokeWidth="1" opacity="0.6" />
+            <line x1="18" y1="28" x2="30" y2="28" stroke="#8B6F47" strokeWidth="1" opacity="0.6" />
+
+            {/* Flame inside furnace */}
+            <g className="flame-glow">
+              <path
+                d="M24 32C24 32 21 30.5 21 27.5C21 24.5 22.5 23 24 23C25.5 23 27 24.5 27 27.5C27 30.5 24 32 24 32Z"
+                fill="url(#flameGradient)"
+              />
+              {/* Bright core */}
+              <ellipse
+                cx="24"
+                cy="27"
+                rx="1.5"
+                ry="2"
+                fill="#FAF8F3"
+                opacity="0.9"
+              />
+            </g>
+
+            {/* Control dial/indicator */}
+            <circle
+              cx="24"
+              cy="14"
+              r="3"
+              fill="#E8DCC4"
+              stroke="#5C4A3A"
+              strokeWidth="1"
+            />
+            <circle
+              cx="24"
+              cy="14"
+              r="1"
+              fill="#C94A06"
+              className="indicator-pulse"
             />
           </g>
 
-          {/* Chimney */}
-          <rect
-            x="30"
-            y="6"
-            width="6"
-            height="10"
-            fill="#5C4A3A"
-            stroke="#4A3628"
-            strokeWidth="1"
-          />
-
-          {/* Smoke wisps */}
-          <g className="smoke" opacity="0.4">
-            <path
-              d="M33 6Q31 4 33 2"
-              stroke="#6B5D50"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              fill="none"
-              className="wisp-1"
+          {/* Checkmark - represents monitoring/tracking */}
+          <g className="checkmark" opacity="0.8">
+            <circle
+              cx="36"
+              cy="12"
+              r="5"
+              fill="url(#checkGradient)"
+              stroke="#5C4A3A"
+              strokeWidth="1"
             />
             <path
-              d="M35 5Q37 3 35 1"
-              stroke="#6B5D50"
-              strokeWidth="1.5"
+              d="M34 12L35.5 13.5L38 11"
+              stroke="white"
+              strokeWidth="2"
               strokeLinecap="round"
-              fill="none"
-              className="wisp-2"
+              strokeLinejoin="round"
             />
           </g>
 
           {/* Gradients */}
           <defs>
-            <linearGradient id="houseGradient" x1="24" y1="4" x2="24" y2="44" gradientUnits="userSpaceOnUse">
+            {/* Shield gradient - protective warmth */}
+            <linearGradient id="shieldGradient" x1="24" y1="4" x2="24" y2="44" gradientUnits="userSpaceOnUse">
               <stop offset="0%" stopColor="#E8DCC4" />
-              <stop offset="100%" stopColor="#D4A574" />
+              <stop offset="50%" stopColor="#D4A574" />
+              <stop offset="100%" stopColor="#C47A53" />
             </linearGradient>
-            <linearGradient id="flameGradient" x1="24" y1="14" x2="24" y2="26" gradientUnits="userSpaceOnUse">
+
+            {/* Warm glow radiating from center */}
+            <radialGradient id="warmGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#F4A582" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#E88D5A" stopOpacity="0" />
+            </radialGradient>
+
+            {/* Furnace body gradient */}
+            <linearGradient id="furnaceGradient" x1="24" y1="18" x2="24" y2="36" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="#F5F1E8" />
+              <stop offset="100%" stopColor="#E8DCC4" />
+            </linearGradient>
+
+            {/* Flame gradient - warm fire colors */}
+            <linearGradient id="flameGradient" x1="24" y1="23" x2="24" y2="32" gradientUnits="userSpaceOnUse">
               <stop offset="0%" stopColor="#F4A582" />
               <stop offset="50%" stopColor="#E88D5A" />
               <stop offset="100%" stopColor="#D4A574" />
+            </linearGradient>
+
+            {/* Checkmark badge gradient */}
+            <linearGradient id="checkGradient" x1="36" y1="7" x2="36" y2="17" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="#C94A06" />
+              <stop offset="100%" stopColor="#E88D5A" />
             </linearGradient>
           </defs>
         </svg>
@@ -178,7 +192,7 @@ export const Logo: React.FC<LogoProps> = ({ size = 'md', showSlogan = false, cla
         </h1>
         {showSlogan && (
           <p className={`${sizes[size].slogan} text-warm-gray font-medium mt-0.5`}>
-            Your Home, Always Protected
+            Track. Monitor. Protect.
           </p>
         )}
       </div>
@@ -189,31 +203,26 @@ export const Logo: React.FC<LogoProps> = ({ size = 'md', showSlogan = false, cla
           50% { opacity: 1; }
         }
 
-        @keyframes smokeRise {
-          0% {
-            opacity: 0;
-            transform: translateY(0);
-          }
-          50% {
-            opacity: 0.6;
-          }
-          100% {
-            opacity: 0;
-            transform: translateY(-8px);
-          }
+        @keyframes pulseGlow {
+          0%, 100% { opacity: 0.2; transform: scale(1); }
+          50% { opacity: 0.4; transform: scale(1.05); }
+        }
+
+        @keyframes indicatorPulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.6; }
         }
 
         .flame-glow {
           animation: gentleGlow 2s ease-in-out infinite;
         }
 
-        .wisp-1 {
-          animation: smokeRise 3s ease-out infinite;
+        .pulse-glow {
+          animation: pulseGlow 3s ease-in-out infinite;
         }
 
-        .wisp-2 {
-          animation: smokeRise 3.5s ease-out infinite;
-          animation-delay: 0.5s;
+        .indicator-pulse {
+          animation: indicatorPulse 2s ease-in-out infinite;
         }
       `}</style>
     </div>
