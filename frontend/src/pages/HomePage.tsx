@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Home, Calendar, AlertTriangle, Snowflake, Flame, ArrowRight, TrendingDown, LogOut, User, BookOpen, Settings, Check, Shield, MapPin, Smartphone, BarChart3, Star } from 'lucide-react';
+import { Home, Calendar, AlertTriangle, Snowflake, Flame, ArrowRight, TrendingDown, LogOut, User, BookOpen, Settings, Check, Shield, Smartphone, BarChart3, Star } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import { AuthModal } from '@/components/auth/AuthModal';
 import { useScrollPosition } from '@/hooks/useScrollAnimation';
 import logger from '@/utils/logger';
-import { DashboardMockup } from '@/components/hero/DashboardMockup';
 import { Logo } from '@/components/furnacelog/Logo';
 
 interface HealthStatus {
@@ -172,70 +171,58 @@ function HomePage() {
         </div>
       </nav>
 
-          {/* Modern SaaS Hero Section */}
-          <section className="relative overflow-hidden bg-gradient-paper border-b border-soft-beige/30">
+          {/* Hero Section - Don't Let Poor Maintenance Cost You Thousands */}
+          <section className="py-16 md:py-24 bg-gradient-fireplace border-b border-soft-beige/30 relative overflow-hidden">
+            {/* Decorative elements */}
+            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20" />
 
-            <div className="relative max-w-7xl mx-auto px-6 py-12 md:py-16">
-              <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-                {/* Left: Content */}
-                <div className="space-y-8">
-                  {/* Badge */}
-                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-soft-amber/20 border border-soft-amber/30 rounded-full">
-                    <MapPin className="w-4 h-4 text-warm-orange" />
-                    <span className="text-sm font-medium text-charcoal">For Northern Homeowners</span>
-                  </div>
+            <div className="relative max-w-4xl mx-auto px-6 text-center space-y-8">
+              <div className="inline-block px-4 py-2 bg-white/20 border border-white/30 rounded-full mb-4">
+                <span className="text-sm font-semibold text-white">100% Free. No Catch.</span>
+              </div>
 
-                  {/* Headline */}
-                  <div className="space-y-4">
-                    <h1 className="text-5xl md:text-6xl lg:text-7xl font-black text-charcoal leading-tight">
-                      Never Wonder About Your Home Maintenance Again
-                    </h1>
-                    <p className="text-xl md:text-2xl text-warm-gray leading-relaxed">
-                      Track your furnace, monitor heating systems, and stay ahead of seasonal maintenance. Built specifically for northern homes where reliability isn't optional—it's survival.
-                    </p>
-                  </div>
+              <h1 className="text-4xl md:text-6xl font-black text-white leading-tight">
+                Don't Let Poor Maintenance Cost You Thousands
+              </h1>
 
-                  {/* CTAs */}
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    <button
-                      onClick={() => {
-                        setAuthModalTab('register');
-                        setAuthModalOpen(true);
-                      }}
-                      className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-gradient-fireplace text-white text-lg font-bold rounded-xl transition-all duration-300 hover:scale-105"
-                    >
-                      Get Started Free
-                      <ArrowRight className="w-5 h-5" />
-                    </button>
-                    <a
-                      href="#features"
-                      className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-white/60 hover:bg-white border-2 border-soft-beige hover:border-soft-amber/50 text-charcoal text-lg font-bold rounded-xl transition-all duration-300 shadow-warm-sm"
-                    >
-                      Learn More
-                      <ArrowRight className="w-5 h-5" />
-                    </a>
-                  </div>
+              <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto leading-relaxed">
+                One forgotten furnace filter or missed heat trace check can cost $3,000-$5,000+ in emergency repairs. FurnaceLog helps northern homeowners prevent costly failures—completely free.
+              </p>
 
-                  {/* Cost Warnings */}
-                  <div className="flex flex-wrap items-center gap-6 pt-4 text-sm text-warm-gray">
-                    <div className="flex items-center gap-2">
-                      <AlertTriangle className="w-5 h-5 text-warm-orange" />
-                      <span>$3,000+ for frozen pipe repairs</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <AlertTriangle className="w-5 h-5 text-warm-orange" />
-                      <span>$5,000+ for furnace failures</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Check className="w-5 h-5 text-soft-amber" />
-                      <span>100% Free. Forever.</span>
-                    </div>
-                  </div>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+                <button
+                  onClick={() => {
+                    setAuthModalTab('register');
+                    setAuthModalOpen(true);
+                  }}
+                  className="inline-flex items-center justify-center gap-2.5 px-10 py-5 bg-white hover:bg-cream text-charcoal text-lg font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-2xl"
+                >
+                  Start Protecting Your Home
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+                <a
+                  href="#features"
+                  className="inline-flex items-center justify-center gap-2.5 px-10 py-5 bg-white/10 hover:bg-white/20 border-2 border-white/30 text-white text-lg font-bold rounded-xl transition-all duration-300 backdrop-blur-sm"
+                >
+                  See How It Works
+                </a>
+              </div>
+
+              {/* Cost Warnings */}
+              <div className="flex flex-wrap items-center justify-center gap-8 pt-8 text-white/90 text-sm font-medium">
+                <div className="flex items-center gap-2">
+                  <Shield className="w-5 h-5" />
+                  <span>Open Source & Free Forever</span>
                 </div>
-
-                {/* Right: Dashboard Mockup */}
-                <div className="relative lg:scale-110">
-                  <DashboardMockup />
+                <div className="w-1 h-1 rounded-full bg-white/40" />
+                <div className="flex items-center gap-2">
+                  <Check className="w-5 h-5" />
+                  <span>No Payments Required</span>
+                </div>
+                <div className="w-1 h-1 rounded-full bg-white/40" />
+                <div className="flex items-center gap-2">
+                  <Home className="w-5 h-5" />
+                  <span>Built for Northern Homes</span>
                 </div>
               </div>
             </div>
@@ -535,63 +522,6 @@ function HomePage() {
                     </div>
                   </div>
                 ))}
-              </div>
-            </div>
-          </section>
-
-          {/* Enhanced CTA Section */}
-          <section className="py-16 bg-gradient-fireplace border-b border-soft-beige/30 relative overflow-hidden">
-            {/* Decorative elements */}
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20" />
-
-            <div className="relative max-w-4xl mx-auto px-6 text-center space-y-8">
-              <div className="inline-block px-4 py-2 bg-white/20 border border-white/30 rounded-full mb-4">
-                <span className="text-sm font-semibold text-white">100% Free. No Catch.</span>
-              </div>
-
-              <h2 className="text-4xl md:text-6xl font-black text-white leading-tight">
-                Don't Let Poor Maintenance Cost You Thousands
-              </h2>
-
-              <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto leading-relaxed">
-                One forgotten furnace filter or missed heat trace check can cost $3,000-$5,000+ in emergency repairs. FurnaceLog helps northern homeowners prevent costly failures—completely free.
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-                <button
-                  onClick={() => {
-                    setAuthModalTab('register');
-                    setAuthModalOpen(true);
-                  }}
-                  className="inline-flex items-center justify-center gap-2.5 px-10 py-5 bg-white hover:bg-cream text-charcoal text-lg font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-2xl"
-                >
-                  Start Protecting Your Home
-                  <ArrowRight className="w-5 h-5" />
-                </button>
-                <a
-                  href="#features"
-                  className="inline-flex items-center justify-center gap-2.5 px-10 py-5 bg-white/10 hover:bg-white/20 border-2 border-white/30 text-white text-lg font-bold rounded-xl transition-all duration-300 backdrop-blur-sm"
-                >
-                  See How It Works
-                </a>
-              </div>
-
-              {/* Cost Warnings */}
-              <div className="flex flex-wrap items-center justify-center gap-8 pt-8 text-white/90 text-sm font-medium">
-                <div className="flex items-center gap-2">
-                  <Shield className="w-5 h-5" />
-                  <span>Open Source & Free Forever</span>
-                </div>
-                <div className="w-1 h-1 rounded-full bg-white/40" />
-                <div className="flex items-center gap-2">
-                  <Check className="w-5 h-5" />
-                  <span>No Payments Required</span>
-                </div>
-                <div className="w-1 h-1 rounded-full bg-white/40" />
-                <div className="flex items-center gap-2">
-                  <Home className="w-5 h-5" />
-                  <span>Built for Northern Homes</span>
-                </div>
               </div>
             </div>
           </section>
