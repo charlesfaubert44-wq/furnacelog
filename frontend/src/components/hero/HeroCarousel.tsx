@@ -190,30 +190,6 @@ export function HeroCarousel({
         </>
       )}
 
-      {/* Progress Bar - Bottom of section */}
-      {autoAdvance && !isPaused && slides.length > 1 && (
-        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#2a2a2a]/50 rounded-full overflow-hidden">
-          <div
-            key={currentIndex}
-            className="h-full bg-gradient-to-r from-[#ff4500] to-[#ff6a00]"
-            style={{
-              animation: `progressBar ${autoAdvanceInterval}ms linear`,
-            }}
-          />
-        </div>
-      )}
-
-      {/* CSS Animation for Progress Bar */}
-      <style>{`
-        @keyframes progressBar {
-          from {
-            width: 0%;
-          }
-          to {
-            width: 100%;
-          }
-        }
-      `}</style>
     </div>
   );
 }
