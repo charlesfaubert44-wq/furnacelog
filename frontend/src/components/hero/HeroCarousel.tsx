@@ -94,16 +94,16 @@ export function HeroCarousel({
         >
           {/* Headline */}
           <div className="text-center max-w-[900px] mx-auto mb-4 animate-fade-slide-up">
-            <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-[#f4e8d8] leading-[1.1] tracking-tight mb-3">
+            <h2 className="text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.1] tracking-tight mb-3">
               {currentSlide.headline.normal}
-              <span className="block bg-gradient-to-r from-[#ff4500] to-[#ff6a00] bg-clip-text text-transparent mt-2">
+              <span className="block bg-gradient-to-r from-furnace-primary to-furnace-light bg-clip-text text-transparent mt-2">
                 {currentSlide.headline.highlight}
               </span>
             </h2>
           </div>
 
           {/* Subtitle */}
-          <p className="text-center text-lg md:text-xl lg:text-2xl text-[#d4a373] leading-relaxed max-w-[700px] mx-auto mb-6 animate-fade-slide-up animate-delay-100">
+          <p className="text-center text-lg md:text-xl lg:text-2xl text-fl-text-secondary leading-relaxed max-w-[700px] mx-auto mb-6 animate-fade-slide-up animate-delay-100">
             {currentSlide.subtitle}
           </p>
 
@@ -111,7 +111,7 @@ export function HeroCarousel({
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-4 animate-fade-slide-up animate-delay-200">
             <button
               onClick={currentSlide.ctaPrimary.onClick}
-              className="group inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-gradient-to-r from-[#ff4500] to-[#ff6a00] text-[#f4e8d8] text-lg font-semibold rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-[#ff4500]/30"
+              className="group inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-furnace-primary hover:bg-furnace-light text-white text-lg font-semibold rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg shadow-orange-900/20 hover:shadow-orange-900/40"
             >
               {currentSlide.ctaPrimary.text}
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -119,7 +119,7 @@ export function HeroCarousel({
             {currentSlide.ctaSecondary && (
               <a
                 href={currentSlide.ctaSecondary.href}
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] hover:from-[#2a2a2a] hover:to-[#2a2a2a] border border-[#f4e8d8]/20 text-[#f4e8d8] text-lg font-semibold rounded-xl transition-all duration-300 hover:scale-105 active:scale-95"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-fl-card-bg hover:bg-fl-card-border border border-fl-card-border hover:border-furnace-primary/30 text-white text-lg font-semibold rounded-xl transition-all duration-300 hover:scale-105 active:scale-95"
               >
                 {currentSlide.ctaSecondary.text}
               </a>
@@ -137,8 +137,8 @@ export function HeroCarousel({
                   className={cn(
                     'h-2 rounded-full transition-all duration-300',
                     idx === currentIndex
-                      ? 'w-8 bg-gradient-to-r from-[#ff4500] to-[#ff6a00]'
-                      : 'w-2 bg-[#f4e8d8]/30 hover:bg-[#f4e8d8]/50',
+                      ? 'w-8 bg-gradient-to-r from-furnace-primary to-furnace-light'
+                      : 'w-2 bg-white/30 hover:bg-white/50',
                     'disabled:cursor-not-allowed'
                   )}
                   aria-label={`Go to slide ${idx + 1}`}
@@ -159,8 +159,8 @@ export function HeroCarousel({
             className={cn(
               'hidden lg:flex absolute left-10 top-1/2 -translate-y-1/2',
               'w-12 h-12 rounded-full items-center justify-center',
-              'bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#f4e8d8]/20',
-              'text-[#f4e8d8] hover:border-[#ff4500]/50 hover:bg-[#2a2a2a]/90',
+              'bg-fl-card-bg/80 backdrop-blur-sm border border-fl-card-border',
+              'text-white hover:border-furnace-primary/50 hover:bg-fl-card-border',
               'transition-all duration-300 hover:scale-110',
               'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100',
               'z-10'
@@ -175,8 +175,8 @@ export function HeroCarousel({
             className={cn(
               'hidden lg:flex absolute right-10 top-1/2 -translate-y-1/2',
               'w-12 h-12 rounded-full items-center justify-center',
-              'bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#f4e8d8]/20',
-              'text-[#f4e8d8] hover:border-[#ff4500]/50 hover:bg-[#2a2a2a]/90',
+              'bg-fl-card-bg/80 backdrop-blur-sm border border-fl-card-border',
+              'text-white hover:border-furnace-primary/50 hover:bg-fl-card-border',
               'transition-all duration-300 hover:scale-110',
               'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100',
               'z-10'
