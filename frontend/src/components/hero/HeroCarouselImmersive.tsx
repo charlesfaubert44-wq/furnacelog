@@ -94,22 +94,22 @@ export function HeroCarouselImmersive({
           )}
         >
           {/* Headline */}
-          <div className="text-center max-w-[900px] mx-auto mb-4 px-2 animate-fade-slide-up">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-charcoal leading-[1.25] tracking-tight mb-3 pb-2">
+          <div className="text-center max-w-[1000px] mx-auto mb-6 px-4 animate-fade-slide-up">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-charcoal leading-[1.2] tracking-tight">
               {currentSlide.headline.normal}
-              <span className="block bg-gradient-to-r from-warm-orange to-soft-amber bg-clip-text text-transparent mt-2 pb-1">
+              <span className="block bg-gradient-to-r from-warm-orange to-soft-amber bg-clip-text text-transparent mt-1">
                 {currentSlide.headline.highlight}
               </span>
             </h2>
           </div>
 
           {/* Subtitle */}
-          <p className="text-center text-base md:text-lg lg:text-xl text-warm-gray leading-relaxed max-w-[650px] mx-auto mb-6 px-2 animate-fade-slide-up animate-delay-100">
+          <p className="text-center text-lg md:text-xl lg:text-2xl text-warm-gray leading-relaxed max-w-[800px] mx-auto mb-8 px-4 animate-fade-slide-up animate-delay-100">
             {currentSlide.subtitle}
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-4 animate-fade-slide-up animate-delay-200">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6 animate-fade-slide-up animate-delay-200">
             <button
               onClick={currentSlide.ctaPrimary.onClick}
               className="group inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-gradient-fireplace hover:shadow-warm-glow text-white text-lg font-semibold rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 shadow-warm-sm"
