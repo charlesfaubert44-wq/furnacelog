@@ -69,7 +69,7 @@ export interface DashboardData {
     name: string;
     community: string;
     territory: string;
-  };
+  } | null;
   maintenanceSummary: {
     overdue: number;
     dueSoon: number;
@@ -85,6 +85,7 @@ export interface DashboardData {
   };
   weather: WeatherData | null;
   seasonalChecklist: SeasonalChecklist;
+  needsOnboarding?: boolean;
 }
 
 /**

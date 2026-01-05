@@ -22,12 +22,35 @@ export async function getDashboardData(req, res) {
     // Get user's primary (most recent) home
     const home = await Home.findOne({ userId, archived: false }).sort({ createdAt: -1 });
 
+    // If no home exists, return generic/empty dashboard (onboarding not completed)
     if (!home) {
-      return res.status(404).json({
-        success: false,
-        error: {
-          code: 'NO_HOME_FOUND',
-          message: 'No home found for user. Please complete onboarding first.'
+      return res.json({
+        success: true,
+        data: {
+          home: null,
+          maintenanceSummary: {
+            overdue: 0,
+            dueSoon: 0,
+            upcoming: 0,
+            total: 0,
+            upcomingTasks: []
+          },
+          systemsStatus: {
+            systems: [],
+            total: 0,
+            byCategory: {},
+            overallHealth: 100
+          },
+          weather: null,
+          seasonalChecklist: {
+            season: getCurrentSeason(),
+            year: new Date().getFullYear(),
+            items: [],
+            totalItems: 0,
+            completedItems: 0,
+            progressPercent: 0
+          },
+          needsOnboarding: true
         }
       });
     }
@@ -52,7 +75,8 @@ export async function getDashboardData(req, res) {
         maintenanceSummary,
         systemsStatus,
         weather: weatherData,
-        seasonalChecklist
+        seasonalChecklist,
+        needsOnboarding: false
       }
     });
   } catch (error) {

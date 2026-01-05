@@ -259,8 +259,65 @@ export function Dashboard() {
             </div>
           )}
 
+          {/* Onboarding Needed State */}
+          {!isLoading && !error && dashboardData?.needsOnboarding && (
+            <div className="max-w-3xl mx-auto">
+              <div className="bg-gradient-to-br from-white to-cream border-2 border-warm-orange/30 rounded-2xl p-10 shadow-xl">
+                <div className="text-center mb-8">
+                  <Home className="w-16 h-16 text-warm-orange mx-auto mb-4" />
+                  <h3 className="text-3xl font-bold text-charcoal mb-3">Welcome to FurnaceLog!</h3>
+                  <p className="text-warm-gray text-lg">
+                    Let's get started by adding your home information
+                  </p>
+                </div>
+
+                <div className="bg-white rounded-xl p-6 mb-6 border border-soft-amber/20">
+                  <h4 className="font-semibold text-charcoal mb-3 flex items-center gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-warm-orange" />
+                    What we'll set up:
+                  </h4>
+                  <ul className="space-y-2 text-warm-gray">
+                    <li className="flex items-start gap-2">
+                      <span className="text-warm-orange mt-1">•</span>
+                      <span>Your home location and details</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-warm-orange mt-1">•</span>
+                      <span>Heating systems (furnace, boiler, etc.)</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-warm-orange mt-1">•</span>
+                      <span>Water and sewage systems</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-warm-orange mt-1">•</span>
+                      <span>Maintenance schedules and reminders</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <button
+                    onClick={() => navigate('/onboarding')}
+                    className="px-8 py-4 bg-gradient-to-r from-burnt-sienna to-warm-orange hover:from-warm-orange hover:to-burnt-sienna text-white text-base font-semibold rounded-xl transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+                  >
+                    <Plus className="w-5 h-5" />
+                    Start Onboarding
+                  </button>
+                  <button
+                    onClick={() => navigate('/wiki')}
+                    className="px-8 py-4 bg-white hover:bg-cream text-charcoal text-base font-semibold rounded-xl transition-all duration-300 border-2 border-soft-amber/30 flex items-center justify-center gap-2"
+                  >
+                    <BookOpen className="w-5 h-5" />
+                    Learn More First
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Dashboard Content */}
-          {!isLoading && !error && dashboardData && (
+          {!isLoading && !error && dashboardData && !dashboardData.needsOnboarding && (
           <div className="space-y-8">
             {/* Dashboard Header */}
             <div className="flex items-start justify-between gap-4">
