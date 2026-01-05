@@ -8,7 +8,7 @@ import { useScrollPosition } from '@/hooks/useScrollAnimation';
 import logger from '@/utils/logger';
 import { PricingPlans } from '@/components/pricing/PricingPlans';
 import { AdSense } from '@/components/ads/AdSense';
-import { AlertDisplay, type AlertItem } from '@/components/hero/AlertDisplay';
+import { HeroCarousel, type HeroSlide } from '@/components/hero/HeroCarousel';
 
 interface HealthStatus {
   status: string;
@@ -56,36 +56,99 @@ function HomePage() {
     setShowUserMenu(false);
   };
 
-  // Example alerts for the hero section
-  const heroAlerts: AlertItem[] = [
+  // Hero carousel slides
+  const heroSlides: HeroSlide[] = [
     {
       id: 'extreme-cold',
-      priority: 'urgent',
-      icon: 'alert',
-      title: 'Extreme Cold Alert',
-      description: 'Temperature dropping to -42°C tonight. Inspect heat trace cables and ensure backup heating is ready.',
-      badge: 'URGENT',
-      timeInfo: 'Due in 6 hours',
-      timeIcon: <Clock className="w-3.5 h-3.5" />,
+      headline: {
+        normal: 'Protect Your',
+        highlight: 'Northern Home',
+      },
+      subtitle: 'Track heating systems, prevent freeze damage, and manage maintenance for homes built to survive -40°C winters.',
+      ctaPrimary: {
+        text: 'Start Free Today',
+        onClick: () => {
+          setAuthModalTab('register');
+          setAuthModalOpen(true);
+        },
+      },
+      ctaSecondary: {
+        text: 'See Features',
+        href: '#features',
+      },
+      alerts: [
+        {
+          id: 'extreme-cold-alert',
+          priority: 'urgent',
+          icon: 'alert',
+          title: 'Extreme Cold Alert',
+          description: 'Temperature dropping to -42°C tonight. Inspect heat trace cables and ensure backup heating is ready.',
+          badge: 'URGENT',
+          timeInfo: 'Due in 6 hours',
+          timeIcon: <Clock className="w-3.5 h-3.5" />,
+        },
+      ],
     },
     {
-      id: 'furnace-filter',
-      priority: 'warning',
-      icon: 'calendar',
-      title: 'Furnace Filter Due',
-      description: 'Replace forced-air furnace filter for optimal heating efficiency.',
-      badge: 'TOMORROW',
-      timeInfo: 'Propane Furnace',
-      timeIcon: <Thermometer className="w-3.5 h-3.5" />,
+      id: 'maintenance',
+      headline: {
+        normal: 'Never Miss',
+        highlight: 'Maintenance Again',
+      },
+      subtitle: 'Smart scheduling for seasonal tasks, furnace maintenance, and critical system checks. Stay ahead of problems before they start.',
+      ctaPrimary: {
+        text: 'Get Started',
+        onClick: () => {
+          setAuthModalTab('register');
+          setAuthModalOpen(true);
+        },
+      },
+      ctaSecondary: {
+        text: 'View Pricing',
+        href: '#pricing',
+      },
+      alerts: [
+        {
+          id: 'furnace-filter-due',
+          priority: 'warning',
+          icon: 'calendar',
+          title: 'Furnace Filter Due',
+          description: 'Replace forced-air furnace filter for optimal heating efficiency.',
+          badge: 'TOMORROW',
+          timeInfo: 'Propane Furnace',
+          timeIcon: <Thermometer className="w-3.5 h-3.5" />,
+        },
+      ],
     },
     {
-      id: 'all-systems',
-      priority: 'healthy',
-      icon: 'home',
-      title: 'All Systems Running',
-      description: 'All critical home systems are operating normally.',
-      badge: 'HEALTHY',
-      systems: ['Propane Furnace', 'HRV System', 'Heat Trace Cables'],
+      id: 'monitoring',
+      headline: {
+        normal: 'Monitor Everything',
+        highlight: 'Stay Warm',
+      },
+      subtitle: 'Real-time system health tracking, automated alerts, and peace of mind knowing your home is protected 24/7.',
+      ctaPrimary: {
+        text: 'Create Account',
+        onClick: () => {
+          setAuthModalTab('register');
+          setAuthModalOpen(true);
+        },
+      },
+      ctaSecondary: {
+        text: 'Learn More',
+        href: '#features',
+      },
+      alerts: [
+        {
+          id: 'all-systems-healthy',
+          priority: 'healthy',
+          icon: 'home',
+          title: 'All Systems Running',
+          description: 'All critical home systems are operating normally.',
+          badge: 'HEALTHY',
+          systems: ['Propane Furnace', 'HRV System', 'Heat Trace Cables'],
+        },
+      ],
     },
   ];
 
@@ -224,48 +287,11 @@ function HomePage() {
             </div>
 
             <div className="relative max-w-7xl mx-auto px-6 py-20 md:py-28">
-              <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-                {/* Left Column - Headline & Weather */}
-                <div className="space-y-8">
-                  <div className="space-y-6">
-                    <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-[#f4e8d8] leading-[1.05] tracking-tight animate-fade-slide-up animate-delay-100">
-                      Protect Your
-                      <span className="block bg-gradient-to-r from-[#ff4500] to-[#ff6a00] bg-clip-text text-transparent mt-2">Northern Home</span>
-                    </h2>
-                    <p className="text-xl text-[#d4a373] leading-relaxed max-w-xl animate-fade-slide-up animate-delay-200">
-                      Track heating systems, prevent freeze damage, and manage maintenance for homes
-                      built to survive <span className="text-[#f4e8d8] font-semibold">-40°C winters</span>.
-                    </p>
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row gap-4 pt-4 animate-fade-slide-up animate-delay-300">
-                    <button
-                      onClick={() => {
-                        setAuthModalTab('register');
-                        setAuthModalOpen(true);
-                      }}
-                      className="group inline-flex items-center justify-center gap-2.5 px-7 py-4 bg-gradient-to-r from-[#ff4500] to-[#ff6a00] text-[#f4e8d8] font-semibold rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:shadow-lg hover:shadow-[#ff4500]/20"
-                    >
-                      Start Free Today
-                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                    </button>
-                    <a href="#features" className="inline-flex items-center justify-center gap-2 px-7 py-4 bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] hover:from-[#2a2a2a] hover:to-[#2a2a2a] border border-[#f4e8d8]/20 text-[#f4e8d8] font-semibold rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
-                      See Features
-                    </a>
-                  </div>
-                </div>
-
-                {/* Right Column - Priority Alerts */}
-                <div className="relative lg:pt-12 animate-fade-slide-up animate-delay-500">
-                  <AlertDisplay
-                    alerts={heroAlerts}
-                    autoAdvance={true}
-                    autoAdvanceInterval={6000}
-                  />
-                  <div className="absolute -top-8 -right-8 w-32 h-32 bg-gradient-to-br from-[#ff4500]/10 to-transparent rounded-full blur-3xl pointer-events-none" />
-                  <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-gradient-to-tr from-[#6a994e]/10 to-transparent rounded-full blur-3xl pointer-events-none" />
-                </div>
-              </div>
+              <HeroCarousel
+                slides={heroSlides}
+                autoAdvance={true}
+                autoAdvanceInterval={10000}
+              />
             </div>
           </section>
 
