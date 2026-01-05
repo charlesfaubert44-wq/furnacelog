@@ -65,12 +65,14 @@ function HomePage() {
           ? "border-soft-beige/50 bg-warm-white/95 backdrop-blur-sm shadow-warm-sm"
           : "border-soft-beige/30 bg-warm-white/90"
       )}>
-        <div className="max-w-7xl mx-auto px-6 py-4">
+        <div className="max-w-7xl mx-auto px-6 py-3">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Logo size="sm" className="cursor-pointer" />
+            <div className="flex items-center gap-8">
+              <div className="flex items-center">
+                <Logo size="sm" className="cursor-pointer" />
+              </div>
               {/* Main Navigation Menu */}
-              <nav className="hidden md:flex items-center gap-1 ml-8">
+              <nav className="hidden md:flex items-center gap-1">
                 <button
                   onClick={() => navigate('/')}
                   className="px-4 py-2 text-sm text-warm-gray hover:text-charcoal font-medium transition-colors rounded-xl hover:bg-soft-beige/30"
