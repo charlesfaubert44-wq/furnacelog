@@ -52,6 +52,8 @@ export async function completeOnboarding(req, res) {
         sewageSystem: systemsData.sewage?.sewageSystem,
         electricalService: systemsData.electrical?.powerSource,
         primaryHeatFuel: systemsData.heating?.primaryHeating
+          ? mapHeatingSystemToFuelType(systemsData.heating.primaryHeating)
+          : null
       }
     });
 
@@ -423,6 +425,23 @@ function getCurrentSeason() {
   if (month >= 5 && month <= 7) return 'summer';
   if (month >= 8 && month <= 10) return 'fall';
   return 'winter';
+}
+
+/**
+ * Helper: Map heating system type to fuel type for Home utilities
+ */
+function mapHeatingSystemToFuelType(heatingType) {
+  const fuelMap = {
+    'oil-furnace': 'oil',
+    'propane-furnace': 'propane',
+    'natural-gas': 'natural-gas',
+    'electric-furnace': 'electric',
+    'wood-stove': 'wood',
+    'pellet-stove': 'wood',
+    'heat-pump': 'electric',
+    'boiler': 'oil' // Default boiler to oil, can be overridden later
+  };
+  return fuelMap[heatingType] || null;
 }
 
 export default {
