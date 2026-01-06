@@ -160,8 +160,49 @@ export const OnboardingPage: React.FC = () => {
     }
   };
 
-  const handleSkip = () => {
-    navigate('/dashboard');
+  const handleSkip = async () => {
+    try {
+      setIsSubmitting(true);
+      console.log('Skipping onboarding - marking as complete with minimal data');
+
+      // Submit minimal data to mark onboarding as complete
+      const minimalData = {
+        home: {
+          name: 'My Home',
+          homeType: 'other',
+          community: 'Unknown',
+          territory: 'Other',
+        },
+        systems: {
+          heating: {
+            primaryHeating: 'oil-furnace',
+          },
+          water: {
+            waterSource: 'municipal',
+          },
+          sewage: {
+            sewageSystem: 'municipal',
+          },
+        },
+        preferences: {
+          autoGenerateChecklists: true,
+        }
+      };
+
+      try {
+        await completeOnboarding(minimalData);
+        console.log('Onboarding marked as complete (skipped)');
+      } catch (apiError: any) {
+        console.warn('Failed to mark onboarding as complete:', apiError);
+      }
+
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Error skipping onboarding:', error);
+      navigate('/dashboard');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -185,10 +226,20 @@ export const OnboardingPage: React.FC = () => {
           <button
             type="button"
             onClick={handleSkip}
-            className="text-sm text-warm-gray hover:text-burnt-sienna transition-colors inline-flex items-center gap-1 font-medium"
+            disabled={isSubmitting}
+            className="text-sm text-warm-gray hover:text-burnt-sienna transition-colors inline-flex items-center gap-1 font-medium disabled:opacity-50"
           >
-            <X className="w-4 h-4" />
-            Skip for now
+            {isSubmitting ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Skipping...
+              </>
+            ) : (
+              <>
+                <X className="w-4 h-4" />
+                Skip for now
+              </>
+            )}
           </button>
         </div>
 
@@ -484,10 +535,18 @@ export const OnboardingPage: React.FC = () => {
             <Button
               type="button"
               onClick={handleSkip}
+              disabled={isSubmitting}
               variant="outline"
               className="flex-1 text-charcoal border-2 border-soft-amber/30 hover:bg-soft-amber/10 hover:border-soft-amber/50"
             >
-              Skip and Complete Later
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                  Skipping...
+                </>
+              ) : (
+                'Skip and Complete Later'
+              )}
             </Button>
             <Button
               type="submit"
