@@ -22,8 +22,8 @@ COPY backend/ .
 # Stage 2: Production stage
 FROM node:20-alpine
 
-# Install dumb-init for proper signal handling
-RUN apk add --no-cache dumb-init
+# Install dumb-init and wget for health checks
+RUN apk add --no-cache dumb-init wget
 
 # Create non-root user
 RUN addgroup -g 1001 -S nodejs && \
@@ -50,9 +50,9 @@ EXPOSE 3000
 # Switch to non-root user
 USER nodejs
 
-# Health check
+# Health check - Use wget for simpler, more reliable check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-    CMD node healthcheck.js || exit 1
+    CMD wget --no-verbose --tries=1 --spider http://localhost:3000/health || exit 1
 
 # Use dumb-init to handle signals properly
 ENTRYPOINT ["dumb-init", "--"]
