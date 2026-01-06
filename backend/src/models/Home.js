@@ -186,12 +186,11 @@ homeSchema.virtual('isModular').get(function() {
 });
 
 // Pre-save middleware to conditionally validate modular info
-homeSchema.pre('save', function(next) {
+homeSchema.pre('save', function() {
   if (this.details.homeType !== 'modular') {
     // Clear modular info if home type is not modular
     this.modularInfo = undefined;
   }
-  next();
 });
 
 // Instance method to archive home
