@@ -90,7 +90,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultTa
       case 'fair': return 'bg-orange-500';
       case 'good': return 'bg-amber-500';
       case 'strong': return 'bg-emerald-500';
-      default: return 'bg-stone-600';
+      default: return 'bg-warm-gray';
     }
   };
 
@@ -100,25 +100,25 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultTa
     <div className="fixed inset-0 z-50 overflow-y-auto">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-stone-950/80 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-charcoal/60 backdrop-blur-md transition-opacity"
         onClick={onClose}
       />
 
       {/* Modal */}
       <div className="flex min-h-full items-center justify-center p-4">
         <div className="relative w-full max-w-md transform transition-all">
-          <div className="bg-stone-900 border border-stone-800 rounded-2xl shadow-2xl">
+          <div className="bg-gradient-to-br from-warm-white to-cream border-2 border-soft-amber/30 rounded-2xl shadow-2xl">
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 p-2 text-stone-400 hover:text-stone-300 hover:bg-stone-800 rounded-lg transition-colors"
+              className="absolute top-4 right-4 p-2 text-warm-gray hover:text-charcoal hover:bg-soft-beige/50 rounded-lg transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
 
             {/* Tabs */}
-            <div className="border-b border-stone-800 px-6 pt-6">
-              <div className="flex gap-1 bg-stone-800 rounded-lg p-1">
+            <div className="border-b border-soft-amber/20 px-6 pt-6">
+              <div className="flex gap-1 bg-soft-beige/40 rounded-lg p-1">
                 <button
                   onClick={() => {
                     setActiveTab('login');
@@ -126,8 +126,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultTa
                   }}
                   className={`flex-1 px-4 py-2.5 text-sm font-semibold rounded-md transition-all ${
                     activeTab === 'login'
-                      ? 'bg-amber-700 text-stone-50 shadow-lg'
-                      : 'text-stone-400 hover:text-stone-300'
+                      ? 'bg-gradient-to-r from-burnt-sienna to-warm-orange text-white shadow-lg'
+                      : 'text-warm-gray hover:text-charcoal'
                   }`}
                 >
                   Sign In
@@ -139,8 +139,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultTa
                   }}
                   className={`flex-1 px-4 py-2.5 text-sm font-semibold rounded-md transition-all ${
                     activeTab === 'register'
-                      ? 'bg-amber-700 text-stone-50 shadow-lg'
-                      : 'text-stone-400 hover:text-stone-300'
+                      ? 'bg-gradient-to-r from-burnt-sienna to-warm-orange text-white shadow-lg'
+                      : 'text-warm-gray hover:text-charcoal'
                   }`}
                 >
                   Create Account
@@ -193,10 +193,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultTa
 
               <div className="relative mb-6">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-stone-800" />
+                  <div className="w-full border-t border-soft-amber/20" />
                 </div>
                 <div className="relative flex justify-center text-xs">
-                  <span className="px-2 bg-stone-900 text-stone-500">Or continue with email</span>
+                  <span className="px-2 bg-gradient-to-br from-warm-white to-cream text-warm-gray">Or continue with email</span>
                 </div>
               </div>
 
@@ -204,7 +204,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultTa
               {activeTab === 'login' && (
                 <form onSubmit={loginForm.handleSubmit(onLoginSubmit)} className="space-y-4">
                   <div>
-                    <label htmlFor="login-email" className="block text-sm font-medium text-stone-300 mb-2">
+                    <label htmlFor="login-email" className="block text-sm font-medium text-charcoal mb-2">
                       Email address
                     </label>
                     <input
@@ -212,9 +212,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultTa
                       type="email"
                       autoComplete="email"
                       {...loginForm.register('email')}
-                      className={`w-full px-4 py-3 bg-stone-800 border ${
-                        loginForm.formState.errors.email ? 'border-red-800/50' : 'border-stone-700'
-                      } text-stone-100 placeholder-stone-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-600 focus:border-transparent transition-all`}
+                      className={`w-full px-4 py-3 bg-white border-2 ${
+                        loginForm.formState.errors.email ? 'border-warm-orange/50' : 'border-soft-amber/30'
+                      } text-charcoal placeholder-warm-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-warm-orange focus:border-transparent transition-all`}
                       placeholder="you@example.com"
                     />
                     {loginForm.formState.errors.email && (
@@ -223,7 +223,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultTa
                   </div>
 
                   <div>
-                    <label htmlFor="login-password" className="block text-sm font-medium text-stone-300 mb-2">
+                    <label htmlFor="login-password" className="block text-sm font-medium text-charcoal mb-2">
                       Password
                     </label>
                     <div className="relative">
@@ -232,15 +232,15 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultTa
                         type={showPassword ? 'text' : 'password'}
                         autoComplete="current-password"
                         {...loginForm.register('password')}
-                        className={`w-full px-4 py-3 bg-stone-800 border ${
-                          loginForm.formState.errors.password ? 'border-red-800/50' : 'border-stone-700'
-                        } text-stone-100 placeholder-stone-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-600 focus:border-transparent transition-all pr-12`}
+                        className={`w-full px-4 py-3 bg-white border-2 ${
+                          loginForm.formState.errors.password ? 'border-warm-orange/50' : 'border-soft-amber/30'
+                        } text-charcoal placeholder-warm-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-warm-orange focus:border-transparent transition-all pr-12`}
                         placeholder="Enter your password"
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute inset-y-0 right-0 pr-4 flex items-center text-stone-400 hover:text-stone-300 transition-colors"
+                        className="absolute inset-y-0 right-0 pr-4 flex items-center text-warm-gray hover:text-charcoal transition-colors"
                       >
                         {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                       </button>
@@ -256,13 +256,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultTa
                         id="remember-me"
                         type="checkbox"
                         {...loginForm.register('rememberMe')}
-                        className="h-4 w-4 bg-stone-800 border-stone-700 rounded text-amber-600 focus:ring-amber-600 focus:ring-offset-stone-900"
+                        className="h-4 w-4 bg-white border-soft-amber/30 rounded text-warm-orange focus:ring-warm-orange focus:ring-offset-cream"
                       />
-                      <label htmlFor="remember-me" className="ml-2 block text-sm text-stone-300">
+                      <label htmlFor="remember-me" className="ml-2 block text-sm text-warm-gray">
                         Remember me
                       </label>
                     </div>
-                    <button type="button" className="text-sm font-medium text-amber-400 hover:text-amber-300 transition-colors">
+                    <button type="button" className="text-sm font-medium text-warm-orange hover:text-burnt-sienna transition-colors">
                       Forgot password?
                     </button>
                   </div>
@@ -270,7 +270,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultTa
                   <button
                     type="submit"
                     disabled={loginForm.formState.isSubmitting}
-                    className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-amber-700 hover:bg-amber-600 disabled:bg-stone-700 disabled:cursor-not-allowed text-stone-50 font-semibold rounded-lg transition-all duration-200 shadow-lg shadow-amber-900/30 hover:shadow-amber-900/50"
+                    className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-gradient-to-r from-burnt-sienna to-warm-orange hover:from-warm-orange hover:to-burnt-sienna disabled:from-warm-gray disabled:to-warm-gray disabled:cursor-not-allowed text-white font-semibold rounded-lg transition-all duration-200 shadow-lg shadow-warm-orange/30 hover:shadow-warm-orange/50"
                   >
                     {loginForm.formState.isSubmitting ? (
                       <>
@@ -288,7 +288,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultTa
               {activeTab === 'register' && (
                 <form onSubmit={registerForm.handleSubmit(onRegisterSubmit)} className="space-y-4">
                   <div>
-                    <label htmlFor="register-email" className="block text-sm font-medium text-stone-300 mb-2">
+                    <label htmlFor="register-email" className="block text-sm font-medium text-charcoal mb-2">
                       Email address <span className="text-red-400">*</span>
                     </label>
                     <input
@@ -296,9 +296,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultTa
                       type="email"
                       autoComplete="email"
                       {...registerForm.register('email')}
-                      className={`w-full px-4 py-3 bg-stone-800 border ${
-                        registerForm.formState.errors.email ? 'border-red-800/50' : 'border-stone-700'
-                      } text-stone-100 placeholder-stone-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-600 focus:border-transparent transition-all`}
+                      className={`w-full px-4 py-3 bg-white border-2 ${
+                        registerForm.formState.errors.email ? 'border-warm-orange/50' : 'border-soft-amber/30'
+                      } text-charcoal placeholder-warm-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-warm-orange focus:border-transparent transition-all`}
                       placeholder="you@example.com"
                     />
                     {registerForm.formState.errors.email && (
@@ -307,7 +307,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultTa
                   </div>
 
                   <div>
-                    <label htmlFor="register-password" className="block text-sm font-medium text-stone-300 mb-2">
+                    <label htmlFor="register-password" className="block text-sm font-medium text-charcoal mb-2">
                       Password <span className="text-red-400">*</span>
                     </label>
                     <div className="relative">
@@ -316,15 +316,15 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultTa
                         type={showPassword ? 'text' : 'password'}
                         autoComplete="new-password"
                         {...registerForm.register('password')}
-                        className={`w-full px-4 py-3 bg-stone-800 border ${
-                          registerForm.formState.errors.password ? 'border-red-800/50' : 'border-stone-700'
-                        } text-stone-100 placeholder-stone-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-600 focus:border-transparent transition-all pr-12`}
+                        className={`w-full px-4 py-3 bg-white border-2 ${
+                          registerForm.formState.errors.password ? 'border-warm-orange/50' : 'border-soft-amber/30'
+                        } text-charcoal placeholder-warm-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-warm-orange focus:border-transparent transition-all pr-12`}
                         placeholder="Create a strong password"
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute inset-y-0 right-0 pr-4 flex items-center text-stone-400 hover:text-stone-300 transition-colors"
+                        className="absolute inset-y-0 right-0 pr-4 flex items-center text-warm-gray hover:text-charcoal transition-colors"
                       >
                         {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                       </button>
@@ -334,9 +334,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultTa
                     )}
 
                     {passwordStrength && (
-                      <div className="mt-3 p-3 bg-stone-800 border border-stone-700 rounded-lg">
+                      <div className="mt-3 p-3 bg-soft-beige/30 border border-soft-amber/20 rounded-lg">
                         <div className="flex items-center justify-between mb-2">
-                          <span className="text-xs text-stone-400">Password strength:</span>
+                          <span className="text-xs text-warm-gray">Password strength:</span>
                           <span className={`text-xs font-semibold ${
                             passwordStrength.level === 'strong' ? 'text-emerald-400' :
                             passwordStrength.level === 'good' ? 'text-amber-400' :
@@ -346,7 +346,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultTa
                             {passwordStrength.level.toUpperCase()}
                           </span>
                         </div>
-                        <div className="w-full bg-stone-700 rounded-full h-2">
+                        <div className="w-full bg-soft-beige/50 rounded-full h-2">
                           <div
                             className={`h-2 rounded-full transition-all ${getStrengthColor(passwordStrength.level)}`}
                             style={{ width: `${(passwordStrength.score / 7) * 100}%` }}
@@ -357,7 +357,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultTa
                   </div>
 
                   <div>
-                    <label htmlFor="register-confirm-password" className="block text-sm font-medium text-stone-300 mb-2">
+                    <label htmlFor="register-confirm-password" className="block text-sm font-medium text-charcoal mb-2">
                       Confirm password <span className="text-red-400">*</span>
                     </label>
                     <div className="relative">
@@ -366,15 +366,15 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultTa
                         type={showConfirmPassword ? 'text' : 'password'}
                         autoComplete="new-password"
                         {...registerForm.register('confirmPassword')}
-                        className={`w-full px-4 py-3 bg-stone-800 border ${
-                          registerForm.formState.errors.confirmPassword ? 'border-red-800/50' : 'border-stone-700'
-                        } text-stone-100 placeholder-stone-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-600 focus:border-transparent transition-all pr-12`}
+                        className={`w-full px-4 py-3 bg-white border-2 ${
+                          registerForm.formState.errors.confirmPassword ? 'border-warm-orange/50' : 'border-soft-amber/30'
+                        } text-charcoal placeholder-warm-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-warm-orange focus:border-transparent transition-all pr-12`}
                         placeholder="Re-enter your password"
                       />
                       <button
                         type="button"
                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        className="absolute inset-y-0 right-0 pr-4 flex items-center text-stone-400 hover:text-stone-300 transition-colors"
+                        className="absolute inset-y-0 right-0 pr-4 flex items-center text-warm-gray hover:text-charcoal transition-colors"
                       >
                         {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                       </button>
@@ -387,7 +387,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultTa
                   <button
                     type="submit"
                     disabled={registerForm.formState.isSubmitting}
-                    className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-amber-700 hover:bg-amber-600 disabled:bg-stone-700 disabled:cursor-not-allowed text-stone-50 font-semibold rounded-lg transition-all duration-200 shadow-lg shadow-amber-900/30 hover:shadow-amber-900/50"
+                    className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-gradient-to-r from-burnt-sienna to-warm-orange hover:from-warm-orange hover:to-burnt-sienna disabled:from-warm-gray disabled:to-warm-gray disabled:cursor-not-allowed text-white font-semibold rounded-lg transition-all duration-200 shadow-lg shadow-warm-orange/30 hover:shadow-warm-orange/50"
                   >
                     {registerForm.formState.isSubmitting ? (
                       <>
