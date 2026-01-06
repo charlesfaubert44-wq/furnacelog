@@ -10,6 +10,7 @@ import ClimateTimeMachine from './pages/ClimateTimeMachine';
 import Settings from './pages/Settings';
 import Wiki from './pages/Wiki';
 import Onboarding from './pages/Onboarding';
+import HeroMockupPage from './pages/HeroMockupPage';
 
 /**
  * Main App Component
@@ -24,6 +25,7 @@ function App() {
           <Routes>
             {/* Public routes */}
             <Route path="/" element={<HomePage />} />
+            <Route path="/hero-mockup" element={<HeroMockupPage />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
 
             {/* Auth routes - redirect to homepage if already logged in */}
