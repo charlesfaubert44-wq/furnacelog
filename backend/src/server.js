@@ -103,7 +103,7 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 
 // CSRF Protection (SECURITY FIX)
 const {
-  generateToken, // Use this in route to generate a CSRF token
+  generateCsrfToken, // Use this in route to generate a CSRF token (correct property name from csrf-csrf v4)
   doubleCsrfProtection, // Apply this to routes you want protected
 } = doubleCsrf({
   getSecret: () => process.env.CSRF_SECRET || 'furnacelog-csrf-secret-change-in-production',
@@ -138,7 +138,7 @@ app.get('/health', (req, res) => {
 
 // CSRF token endpoint (SECURITY FIX)
 app.get('/api/v1/auth/csrf-token', (req, res) => {
-  const csrfToken = generateToken(req, res);
+  const csrfToken = generateCsrfToken(req, res);
   res.json({ csrfToken });
 });
 
