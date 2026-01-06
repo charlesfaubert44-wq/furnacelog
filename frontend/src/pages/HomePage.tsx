@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Home, Calendar, AlertTriangle, Snowflake, Flame, TrendingDown, LogOut, User, BookOpen, Settings, Check, Smartphone, BarChart3, Star } from 'lucide-react';
+import { Home, Calendar, AlertTriangle, Snowflake, Flame, ArrowRight, TrendingDown, LogOut, User, BookOpen, Settings, Check, Smartphone, BarChart3, Star } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import { AuthModal } from '@/components/auth/AuthModal';
 import { useScrollPosition } from '@/hooks/useScrollAnimation';
 import logger from '@/utils/logger';
 import { Logo } from '@/components/furnacelog/Logo';
-import ArcticSunriseHero from '@/components/hero-designs/ArcticSunriseHero';
 
 interface HealthStatus {
   status: string;
@@ -174,26 +173,130 @@ function HomePage() {
         </div>
       </nav>
 
-          {/* Hero Section - ArcticSunriseHero (Most Spectacular Design) */}
-          <ArcticSunriseHero
-            headline={{
-              normal: 'Track Your Heat,',
-              highlight: 'Embrace the Warmth'
-            }}
-            subtitle="Monitor your wood stove, furnace, and home comfort with intelligent tracking. Built for the Arctic, designed for simplicity."
-            ctaPrimary={{
-              text: 'Get Started Free',
-              onClick: () => {
-                setAuthModalTab('register');
-                setAuthModalOpen(true);
+          {/* Hero Section - Don't Let Poor Maintenance Cost You Thousands */}
+          <section className="py-16 md:py-24 bg-gradient-fireplace border-b border-soft-beige/30 relative overflow-hidden">
+            {/* Northern Lights Animation */}
+            <div className="absolute inset-0 overflow-hidden">
+              {/* Aurora Layer 1 - Green */}
+              <div
+                className="absolute inset-0 opacity-20"
+                style={{
+                  background: 'linear-gradient(90deg, transparent 0%, rgba(16, 185, 129, 0.4) 30%, rgba(52, 211, 153, 0.5) 50%, rgba(16, 185, 129, 0.4) 70%, transparent 100%)',
+                  animation: 'aurora1 25s ease-in-out infinite',
+                  transformOrigin: 'center',
+                }}
+              />
+              {/* Aurora Layer 2 - Blue */}
+              <div
+                className="absolute inset-0 opacity-15"
+                style={{
+                  background: 'linear-gradient(90deg, transparent 0%, rgba(59, 130, 246, 0.3) 25%, rgba(96, 165, 250, 0.4) 50%, rgba(59, 130, 246, 0.3) 75%, transparent 100%)',
+                  animation: 'aurora2 30s ease-in-out infinite',
+                  animationDelay: '5s',
+                  transformOrigin: 'center',
+                }}
+              />
+              {/* Aurora Layer 3 - Purple */}
+              <div
+                className="absolute inset-0 opacity-10"
+                style={{
+                  background: 'linear-gradient(90deg, transparent 0%, rgba(139, 92, 246, 0.3) 35%, rgba(167, 139, 250, 0.4) 50%, rgba(139, 92, 246, 0.3) 65%, transparent 100%)',
+                  animation: 'aurora3 35s ease-in-out infinite',
+                  animationDelay: '10s',
+                  transformOrigin: 'center',
+                }}
+              />
+              {/* Subtle stars overlay */}
+              <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20" />
+            </div>
+
+            {/* CSS Keyframes for Aurora Animation */}
+            <style>{`
+              @keyframes aurora1 {
+                0%, 100% {
+                  transform: translateX(-10%) translateY(0%) scaleY(1);
+                  opacity: 0.2;
+                }
+                33% {
+                  transform: translateX(10%) translateY(-3%) scaleY(1.1);
+                  opacity: 0.25;
+                }
+                66% {
+                  transform: translateX(-5%) translateY(3%) scaleY(0.95);
+                  opacity: 0.15;
+                }
               }
-            }}
-            ctaSecondary={{
-              text: 'Learn More',
-              href: '#features'
-            }}
-            tagline="Proudly serving Yellowknife, Northwest Territories"
-          />
+
+              @keyframes aurora2 {
+                0%, 100% {
+                  transform: translateX(5%) translateY(0%) scaleY(1);
+                  opacity: 0.15;
+                }
+                33% {
+                  transform: translateX(-8%) translateY(2%) scaleY(1.05);
+                  opacity: 0.2;
+                }
+                66% {
+                  transform: translateX(8%) translateY(-2%) scaleY(0.98);
+                  opacity: 0.12;
+                }
+              }
+
+              @keyframes aurora3 {
+                0%, 100% {
+                  transform: translateX(0%) translateY(-2%) scaleY(1);
+                  opacity: 0.1;
+                }
+                33% {
+                  transform: translateX(-12%) translateY(1%) scaleY(1.08);
+                  opacity: 0.15;
+                }
+                66% {
+                  transform: translateX(7%) translateY(-1%) scaleY(0.93);
+                  opacity: 0.08;
+                }
+              }
+            `}</style>
+
+            <div className="relative max-w-4xl mx-auto px-6 text-center space-y-8">
+              <h1 className="text-4xl md:text-6xl font-black text-white leading-tight">
+                Don't Let Poor Maintenance Cost You Thousands
+              </h1>
+
+              <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto leading-relaxed">
+                One forgotten furnace filter or missed heat trace check can cost $3,000-$5,000+ in emergency repairs. FurnaceLog helps northern homeowners prevent costly failures—completely free.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+                <button
+                  onClick={() => {
+                    setAuthModalTab('register');
+                    setAuthModalOpen(true);
+                  }}
+                  className="inline-flex items-center justify-center gap-2.5 px-10 py-5 bg-white hover:bg-cream text-charcoal text-lg font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-2xl"
+                >
+                  Start Protecting Your Home
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+                <a
+                  href="#features"
+                  className="inline-flex items-center justify-center gap-2.5 px-10 py-5 bg-white/10 hover:bg-white/20 border-2 border-white/30 text-white text-lg font-bold rounded-xl transition-all duration-300 backdrop-blur-sm"
+                >
+                  See How It Works
+                </a>
+              </div>
+
+              {/* Yellowknife Tagline */}
+              <div className="flex items-center justify-center pt-8">
+                <div className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full">
+                  <svg className="w-5 h-5 text-white/90" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                  </svg>
+                  <span className="text-white/90 text-sm font-medium">Built with love in Yellowknife, Northwest Territories</span>
+                </div>
+              </div>
+            </div>
+          </section>
 
           {/* Northern Territories Section */}
           <section className="py-16 bg-cream border-b border-soft-beige/30 relative overflow-hidden">
