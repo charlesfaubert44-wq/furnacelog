@@ -36,14 +36,13 @@ const homeSchema = new mongoose.Schema({
     coordinates: {
       type: {
         type: String,
-        enum: ['Point'],
-        default: 'Point'
+        enum: ['Point']
       },
       coordinates: {
         type: [Number], // [longitude, latitude]
         validate: {
           validator: function(coords) {
-            return coords.length === 2 && 
+            return coords.length === 2 &&
                    coords[0] >= -180 && coords[0] <= 180 &&
                    coords[1] >= -90 && coords[1] <= 90;
           },
@@ -164,8 +163,8 @@ const homeSchema = new mongoose.Schema({
   toObject: { virtuals: true }
 });
 
-// Create geospatial index for location-based queries
-homeSchema.index({ 'address.coordinates': '2dsphere' });
+// Create geospatial index for location-based queries (sparse to allow missing coordinates)
+homeSchema.index({ 'address.coordinates': '2dsphere' }, { sparse: true });
 
 // Compound index for user's homes query
 homeSchema.index({ userId: 1, archived: 1 });
