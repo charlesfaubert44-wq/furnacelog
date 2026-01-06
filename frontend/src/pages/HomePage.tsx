@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Home, Calendar, AlertTriangle, Snowflake, Flame, ArrowRight, TrendingDown, LogOut, User, BookOpen, Settings, Check, Smartphone, BarChart3, Star } from 'lucide-react';
+import { Home, Calendar, AlertTriangle, Snowflake, Flame, TrendingDown, LogOut, User, BookOpen, Settings, Check, Smartphone, BarChart3, Star } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import { AuthModal } from '@/components/auth/AuthModal';
