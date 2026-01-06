@@ -28,9 +28,9 @@ const systems = [
 ];
 
 const priorities = [
-  { value: 'high' as const, label: 'High', color: 'text-[#d45d4e]' },
-  { value: 'medium' as const, label: 'Medium', color: 'text-[#f7931e]' },
-  { value: 'low' as const, label: 'Low', color: 'text-[#6a994e]' },
+  { value: 'high' as const, label: 'High', color: 'text-warm-coral' },
+  { value: 'medium' as const, label: 'Medium', color: 'text-warm-orange' },
+  { value: 'low' as const, label: 'Low', color: 'text-sage' },
 ];
 
 export const LogMaintenanceModal: React.FC<LogMaintenanceModalProps> = ({
@@ -120,22 +120,22 @@ export const LogMaintenanceModal: React.FC<LogMaintenanceModalProps> = ({
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 animate-fade-in"
+        className="fixed inset-0 bg-charcoal/60 backdrop-blur-md z-50 animate-fade-in"
         onClick={handleClose}
       />
 
       {/* Modal */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#d4a373]/20 rounded-2xl p-8 max-w-2xl w-full shadow-2xl animate-scale-in max-h-[90vh] overflow-y-auto">
+        <div className="bg-gradient-to-br from-warm-white to-cream border-2 border-soft-amber/30 rounded-2xl p-8 max-w-2xl w-full shadow-2xl animate-scale-in max-h-[90vh] overflow-y-auto">
           {/* Header */}
           <div className="flex items-start justify-between mb-6">
             <div>
-              <h2 className="text-3xl font-bold text-[#f4e8d8] mb-2">Log Maintenance Task</h2>
-              <p className="text-[#d4a373]">Record a completed or scheduled maintenance activity</p>
+              <h2 className="text-3xl font-bold text-charcoal mb-2">Log Maintenance Task</h2>
+              <p className="text-warm-gray">Record a completed or scheduled maintenance activity</p>
             </div>
             <button
               onClick={handleClose}
-              className="text-[#d4a373] hover:text-[#f4e8d8] transition-colors p-2 hover:bg-[#2a2a2a]/50 rounded-lg"
+              className="text-warm-gray hover:text-burnt-sienna transition-colors p-2 hover:bg-soft-amber/10 rounded-lg"
             >
               <X className="w-6 h-6" />
             </button>
@@ -145,7 +145,7 @@ export const LogMaintenanceModal: React.FC<LogMaintenanceModalProps> = ({
           <div className="space-y-6">
             {/* System Selection */}
             <div>
-              <label className="block text-sm font-medium text-[#f4e8d8] mb-3">
+              <label className="block text-sm font-medium text-charcoal mb-3">
                 System *
               </label>
               <div className="grid grid-cols-2 gap-3">
@@ -161,8 +161,8 @@ export const LogMaintenanceModal: React.FC<LogMaintenanceModalProps> = ({
                       }}
                       className={`flex items-center gap-3 px-4 py-3 rounded-xl border-2 transition-all duration-300 ${
                         formData.system === system.name
-                          ? 'border-[#ff6a00] bg-[#ff6a00]/10 text-[#f4e8d8]'
-                          : 'border-[#d4a373]/20 bg-[#2a2a2a]/40 text-[#d4a373] hover:border-[#ff6a00]/40'
+                          ? 'border-burnt-sienna bg-burnt-sienna/10 text-charcoal'
+                          : 'border-soft-amber/30 bg-white text-warm-gray hover:border-burnt-sienna/50 hover:bg-soft-amber/5'
                       }`}
                     >
                       <Icon className="w-5 h-5" />
@@ -172,7 +172,7 @@ export const LogMaintenanceModal: React.FC<LogMaintenanceModalProps> = ({
                 })}
               </div>
               {errors.system && (
-                <p className="mt-2 text-sm text-[#d45d4e] flex items-center gap-1">
+                <p className="mt-2 text-sm text-warm-coral flex items-center gap-1">
                   <AlertCircle className="w-4 h-4" />
                   {errors.system}
                 </p>
@@ -181,7 +181,7 @@ export const LogMaintenanceModal: React.FC<LogMaintenanceModalProps> = ({
 
             {/* Task Title */}
             <div>
-              <label htmlFor="title" className="block text-sm font-medium text-[#f4e8d8] mb-2">
+              <label htmlFor="title" className="block text-sm font-medium text-charcoal mb-2">
                 Task Title *
               </label>
               <input
@@ -193,12 +193,12 @@ export const LogMaintenanceModal: React.FC<LogMaintenanceModalProps> = ({
                   setErrors({ ...errors, title: '' });
                 }}
                 placeholder="e.g., Replace furnace filter"
-                className={`w-full px-4 py-3 bg-[#2a2a2a]/60 border-b-2 ${
-                  errors.title ? 'border-[#d45d4e]' : 'border-[#d4a373]/30'
-                } text-[#f4e8d8] placeholder-[#d4a373]/50 rounded-t-xl focus:outline-none focus:border-[#ff4500] focus:shadow-[0_4px_12px_rgba(255,107,53,0.15)] transition-all duration-300`}
+                className={`w-full px-4 py-3 bg-white border-2 ${
+                  errors.title ? 'border-warm-coral' : 'border-soft-amber/30'
+                } text-charcoal placeholder-warm-gray/50 rounded-xl focus:outline-none focus:border-burnt-sienna focus:ring-2 focus:ring-burnt-sienna/20 transition-all duration-300`}
               />
               {errors.title && (
-                <p className="mt-2 text-sm text-[#d45d4e] flex items-center gap-1">
+                <p className="mt-2 text-sm text-warm-coral flex items-center gap-1">
                   <AlertCircle className="w-4 h-4" />
                   {errors.title}
                 </p>
@@ -207,7 +207,7 @@ export const LogMaintenanceModal: React.FC<LogMaintenanceModalProps> = ({
 
             {/* Description */}
             <div>
-              <label htmlFor="description" className="block text-sm font-medium text-[#f4e8d8] mb-2">
+              <label htmlFor="description" className="block text-sm font-medium text-charcoal mb-2">
                 Description (Optional)
               </label>
               <textarea
@@ -216,7 +216,7 @@ export const LogMaintenanceModal: React.FC<LogMaintenanceModalProps> = ({
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 placeholder="Add any notes or details about this maintenance task..."
                 rows={4}
-                className="w-full px-4 py-3 bg-[#2a2a2a]/60 border-b-2 border-[#d4a373]/30 text-[#f4e8d8] placeholder-[#d4a373]/50 rounded-t-xl focus:outline-none focus:border-[#ff4500] focus:shadow-[0_4px_12px_rgba(255,107,53,0.15)] transition-all duration-300 resize-none"
+                className="w-full px-4 py-3 bg-white border-2 border-soft-amber/30 text-charcoal placeholder-warm-gray/50 rounded-xl focus:outline-none focus:border-burnt-sienna focus:ring-2 focus:ring-burnt-sienna/20 transition-all duration-300 resize-none"
               />
             </div>
 
@@ -224,11 +224,11 @@ export const LogMaintenanceModal: React.FC<LogMaintenanceModalProps> = ({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Due Date */}
               <div>
-                <label htmlFor="dueDate" className="block text-sm font-medium text-[#f4e8d8] mb-2">
+                <label htmlFor="dueDate" className="block text-sm font-medium text-charcoal mb-2">
                   Due Date *
                 </label>
                 <div className="relative">
-                  <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#d4a373]" />
+                  <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-warm-gray" />
                   <input
                     id="dueDate"
                     type="date"
@@ -237,13 +237,13 @@ export const LogMaintenanceModal: React.FC<LogMaintenanceModalProps> = ({
                       setFormData({ ...formData, dueDate: e.target.value });
                       setErrors({ ...errors, dueDate: '' });
                     }}
-                    className={`w-full pl-12 pr-4 py-3 bg-[#2a2a2a]/60 border-b-2 ${
-                      errors.dueDate ? 'border-[#d45d4e]' : 'border-[#d4a373]/30'
-                    } text-[#f4e8d8] rounded-t-xl focus:outline-none focus:border-[#ff4500] focus:shadow-[0_4px_12px_rgba(255,107,53,0.15)] transition-all duration-300`}
+                    className={`w-full pl-12 pr-4 py-3 bg-white border-2 ${
+                      errors.dueDate ? 'border-warm-coral' : 'border-soft-amber/30'
+                    } text-charcoal rounded-xl focus:outline-none focus:border-burnt-sienna focus:ring-2 focus:ring-burnt-sienna/20 transition-all duration-300`}
                   />
                 </div>
                 {errors.dueDate && (
-                  <p className="mt-2 text-sm text-[#d45d4e] flex items-center gap-1">
+                  <p className="mt-2 text-sm text-warm-coral flex items-center gap-1">
                     <AlertCircle className="w-4 h-4" />
                     {errors.dueDate}
                   </p>
@@ -252,7 +252,7 @@ export const LogMaintenanceModal: React.FC<LogMaintenanceModalProps> = ({
 
               {/* Priority */}
               <div>
-                <label className="block text-sm font-medium text-[#f4e8d8] mb-2">
+                <label className="block text-sm font-medium text-charcoal mb-2">
                   Priority
                 </label>
                 <div className="flex gap-2">
@@ -263,8 +263,8 @@ export const LogMaintenanceModal: React.FC<LogMaintenanceModalProps> = ({
                       onClick={() => setFormData({ ...formData, priority: priority.value })}
                       className={`flex-1 px-4 py-3 rounded-xl border-2 transition-all duration-300 font-medium ${
                         formData.priority === priority.value
-                          ? 'border-[#ff6a00] bg-[#ff6a00]/10 text-[#f4e8d8]'
-                          : `border-[#d4a373]/20 bg-[#2a2a2a]/40 ${priority.color} hover:border-[#ff6a00]/40`
+                          ? 'border-burnt-sienna bg-burnt-sienna/10 text-charcoal'
+                          : `border-soft-amber/30 bg-white ${priority.color} hover:border-burnt-sienna/50`
                       }`}
                     >
                       {priority.label}
@@ -275,17 +275,17 @@ export const LogMaintenanceModal: React.FC<LogMaintenanceModalProps> = ({
             </div>
 
             {/* Action Buttons */}
-            <div className="flex items-center justify-end gap-4 pt-4 border-t border-[#d4a373]/10">
+            <div className="flex items-center justify-end gap-4 pt-4 border-t border-soft-amber/20">
               <button
                 onClick={handleClose}
-                className="px-6 py-3 text-[#d4a373] hover:text-[#f4e8d8] hover:bg-[#2a2a2a]/50 rounded-xl transition-all duration-300 font-medium"
+                className="px-6 py-3 text-warm-gray hover:text-charcoal hover:bg-soft-amber/10 rounded-xl transition-all duration-300 font-medium"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSave}
                 disabled={isSaving}
-                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#ff4500] to-[#ff6a00] hover:shadow-[0_8px_32px_rgba(255,107,53,0.5)] disabled:opacity-50 disabled:cursor-not-allowed text-[#f4e8d8] font-bold rounded-xl transition-all duration-300 shadow-[0_4px_16px_rgba(255,107,53,0.35)]"
+                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-burnt-sienna to-warm-orange hover:from-warm-orange hover:to-burnt-sienna hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-all duration-300 shadow-md"
               >
                 <Save className="w-4 h-4" />
                 {isSaving ? 'Saving...' : 'Save Task'}
