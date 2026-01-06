@@ -175,8 +175,88 @@ function HomePage() {
 
           {/* Hero Section - Don't Let Poor Maintenance Cost You Thousands */}
           <section className="py-16 md:py-24 bg-gradient-fireplace border-b border-soft-beige/30 relative overflow-hidden">
-            {/* Decorative elements */}
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20" />
+            {/* Northern Lights Animation */}
+            <div className="absolute inset-0 overflow-hidden">
+              {/* Aurora Layer 1 - Green */}
+              <div
+                className="absolute inset-0 opacity-20"
+                style={{
+                  background: 'linear-gradient(90deg, transparent 0%, rgba(16, 185, 129, 0.4) 30%, rgba(52, 211, 153, 0.5) 50%, rgba(16, 185, 129, 0.4) 70%, transparent 100%)',
+                  animation: 'aurora1 25s ease-in-out infinite',
+                  transformOrigin: 'center',
+                }}
+              />
+              {/* Aurora Layer 2 - Blue */}
+              <div
+                className="absolute inset-0 opacity-15"
+                style={{
+                  background: 'linear-gradient(90deg, transparent 0%, rgba(59, 130, 246, 0.3) 25%, rgba(96, 165, 250, 0.4) 50%, rgba(59, 130, 246, 0.3) 75%, transparent 100%)',
+                  animation: 'aurora2 30s ease-in-out infinite',
+                  animationDelay: '5s',
+                  transformOrigin: 'center',
+                }}
+              />
+              {/* Aurora Layer 3 - Purple */}
+              <div
+                className="absolute inset-0 opacity-10"
+                style={{
+                  background: 'linear-gradient(90deg, transparent 0%, rgba(139, 92, 246, 0.3) 35%, rgba(167, 139, 250, 0.4) 50%, rgba(139, 92, 246, 0.3) 65%, transparent 100%)',
+                  animation: 'aurora3 35s ease-in-out infinite',
+                  animationDelay: '10s',
+                  transformOrigin: 'center',
+                }}
+              />
+              {/* Subtle stars overlay */}
+              <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20" />
+            </div>
+
+            {/* CSS Keyframes for Aurora Animation */}
+            <style>{`
+              @keyframes aurora1 {
+                0%, 100% {
+                  transform: translateX(-10%) translateY(0%) scaleY(1);
+                  opacity: 0.2;
+                }
+                33% {
+                  transform: translateX(10%) translateY(-3%) scaleY(1.1);
+                  opacity: 0.25;
+                }
+                66% {
+                  transform: translateX(-5%) translateY(3%) scaleY(0.95);
+                  opacity: 0.15;
+                }
+              }
+
+              @keyframes aurora2 {
+                0%, 100% {
+                  transform: translateX(5%) translateY(0%) scaleY(1);
+                  opacity: 0.15;
+                }
+                33% {
+                  transform: translateX(-8%) translateY(2%) scaleY(1.05);
+                  opacity: 0.2;
+                }
+                66% {
+                  transform: translateX(8%) translateY(-2%) scaleY(0.98);
+                  opacity: 0.12;
+                }
+              }
+
+              @keyframes aurora3 {
+                0%, 100% {
+                  transform: translateX(0%) translateY(-2%) scaleY(1);
+                  opacity: 0.1;
+                }
+                33% {
+                  transform: translateX(-12%) translateY(1%) scaleY(1.08);
+                  opacity: 0.15;
+                }
+                66% {
+                  transform: translateX(7%) translateY(-1%) scaleY(0.93);
+                  opacity: 0.08;
+                }
+              }
+            `}</style>
 
             <div className="relative max-w-4xl mx-auto px-6 text-center space-y-8">
               <h1 className="text-4xl md:text-6xl font-black text-white leading-tight">
@@ -206,21 +286,13 @@ function HomePage() {
                 </a>
               </div>
 
-              {/* Cost Warnings */}
-              <div className="flex flex-wrap items-center justify-center gap-8 pt-8 text-white/90 text-sm font-medium">
-                <div className="flex items-center gap-2">
-                  <Shield className="w-5 h-5" />
-                  <span>Open Source & Free Forever</span>
-                </div>
-                <div className="w-1 h-1 rounded-full bg-white/40" />
-                <div className="flex items-center gap-2">
-                  <Check className="w-5 h-5" />
-                  <span>No Payments Required</span>
-                </div>
-                <div className="w-1 h-1 rounded-full bg-white/40" />
-                <div className="flex items-center gap-2">
-                  <Home className="w-5 h-5" />
-                  <span>Built for Northern Homes</span>
+              {/* Yellowknife Tagline */}
+              <div className="flex items-center justify-center pt-8">
+                <div className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full">
+                  <svg className="w-5 h-5 text-white/90" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                  </svg>
+                  <span className="text-white/90 text-sm font-medium">Built with love in Yellowknife, Northwest Territories</span>
                 </div>
               </div>
             </div>
