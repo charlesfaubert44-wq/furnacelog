@@ -5,11 +5,11 @@
 
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 // Create axios instance
 const api = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: `${API_BASE_URL}/api/v1`,
   withCredentials: true, // Important for httpOnly cookies
   headers: {
     'Content-Type': 'application/json'
@@ -26,7 +26,7 @@ api.interceptors.request.use(
 
       if (!csrfToken) {
         try {
-          const response = await axios.get(`${API_BASE_URL}/auth/csrf-token`, {
+          const response = await axios.get(`${API_BASE_URL}/api/v1/auth/csrf-token`, {
             withCredentials: true
           });
           csrfToken = response.data.csrfToken;
