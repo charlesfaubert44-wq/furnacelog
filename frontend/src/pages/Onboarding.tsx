@@ -169,19 +169,19 @@ export const OnboardingPage: React.FC = () => {
       const minimalData = {
         home: {
           name: 'My Home',
-          homeType: 'other',
+          homeType: 'other' as const,
           community: 'Unknown',
-          territory: 'Other',
+          territory: 'Other' as const,
         },
         systems: {
           heating: {
-            primaryHeating: 'oil-furnace',
+            primaryHeating: 'oil-furnace' as const,
           },
           water: {
-            waterSource: 'municipal',
+            waterSource: 'municipal' as const,
           },
           sewage: {
-            sewageSystem: 'municipal',
+            sewageSystem: 'municipal' as const,
           },
         },
         preferences: {
