@@ -34,8 +34,8 @@ function HomePage() {
   useEffect(() => {
     const checkHealth = async () => {
       try {
-        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1';
-        const response = await fetch(`${apiUrl}/health`);
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+        const response = await fetch(`${apiUrl}/api/v1/health`);
         const data = await response.json();
         setHealth(data);
       } catch (err) {
