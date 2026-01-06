@@ -458,7 +458,7 @@ const FireplaceHearthHero: React.FC = () => {
       />
 
       {/* Custom animations */}
-      <style jsx>{`
+      <style>{`
         @keyframes flicker {
           0%, 100% { opacity: 1; }
           50% { opacity: 0.8; }

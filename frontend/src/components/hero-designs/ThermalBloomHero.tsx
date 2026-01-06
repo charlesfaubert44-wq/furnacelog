@@ -255,7 +255,7 @@ export const ThermalBloomHero: React.FC<ThermalBloomHeroProps> = ({ className })
       </div>
 
       {/* Custom Animations Styles */}
-      <style jsx>{`
+      <style>{`
         @keyframes thermal-bloom-1 {
           0%, 100% {
             transform: scale(1);
