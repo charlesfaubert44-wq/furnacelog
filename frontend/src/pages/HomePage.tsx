@@ -7,7 +7,7 @@ import { AuthModal } from '@/components/auth/AuthModal';
 import { useScrollPosition } from '@/hooks/useScrollAnimation';
 import logger from '@/utils/logger';
 import { Logo } from '@/components/furnacelog/Logo';
-import EmberParticlesHero from '@/components/hero-designs/EmberParticlesHero';
+import ArcticSunriseHero from '@/components/hero-designs/ArcticSunriseHero';
 
 interface HealthStatus {
   status: string;
@@ -174,16 +174,25 @@ function HomePage() {
         </div>
       </nav>
 
-          {/* Hero Section - EmberParticlesHero (Top Recommended Design) */}
-          <EmberParticlesHero
-            onGetStarted={() => {
-              setAuthModalTab('register');
-              setAuthModalOpen(true);
+          {/* Hero Section - ArcticSunriseHero (Most Spectacular Design) */}
+          <ArcticSunriseHero
+            headline={{
+              normal: 'Track Your Heat,',
+              highlight: 'Embrace the Warmth'
             }}
-            onLearnMore={() => {
-              const featuresSection = document.getElementById('features');
-              featuresSection?.scrollIntoView({ behavior: 'smooth' });
+            subtitle="Monitor your wood stove, furnace, and home comfort with intelligent tracking. Built for the Arctic, designed for simplicity."
+            ctaPrimary={{
+              text: 'Get Started Free',
+              onClick: () => {
+                setAuthModalTab('register');
+                setAuthModalOpen(true);
+              }
             }}
+            ctaSecondary={{
+              text: 'Learn More',
+              href: '#features'
+            }}
+            tagline="Proudly serving Yellowknife, Northwest Territories"
           />
 
           {/* Northern Territories Section */}
