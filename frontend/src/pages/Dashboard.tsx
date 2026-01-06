@@ -420,8 +420,14 @@ export function Dashboard() {
                   {systems.length === 0 ? (
                     <div className="text-center py-8">
                       <SettingsIcon className="w-12 h-12 text-soft-amber mx-auto mb-3" />
-                      <p className="text-warm-gray text-sm">No systems configured yet</p>
-                      <p className="text-warm-gray/70 text-xs mt-1">Complete onboarding to add systems</p>
+                      <p className="text-warm-gray text-sm mb-3">No systems configured yet</p>
+                      <button
+                        onClick={() => navigate('/onboarding')}
+                        className="px-6 py-3 bg-gradient-to-r from-burnt-sienna to-warm-orange hover:from-warm-orange hover:to-burnt-sienna text-white text-sm font-semibold rounded-xl transition-all duration-300 shadow-md hover:shadow-lg inline-flex items-center gap-2"
+                      >
+                        <Plus className="w-4 h-4" />
+                        Complete Onboarding
+                      </button>
                     </div>
                   ) : (
                     systems.map((system) => (
