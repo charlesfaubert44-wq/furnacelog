@@ -33,7 +33,10 @@ const startServer = async () => {
     await connectDB();
     await connectRedis();
 
-    // Initialize IoT service (MQTT connection)
+    // DISABLED: Initialize IoT service (MQTT connection)
+    // Temporarily disabled to prevent container crashes from unhandled promise rejections
+    // TODO: Re-enable once MQTT broker is configured and error handling is improved
+    /*
     try {
       await iotService.connect();
 
@@ -47,6 +50,8 @@ const startServer = async () => {
       logger.warn('IoT service initialization failed (non-critical):', iotError.message);
       // Continue even if MQTT fails - system can still function without real-time sensors
     }
+    */
+    logger.info('IoT services disabled (MQTT not configured)');
   } catch (error) {
     console.error('Failed to connect to databases:', error);
     process.exit(1);
@@ -189,7 +194,9 @@ startServer().then(async () => {
   // Initialize WebSocket server
   websocketService.initialize(server);
 
-  // Connect IoT service events to WebSocket broadcasting
+  // DISABLED: Connect IoT service events to WebSocket broadcasting
+  // Temporarily disabled - IoT service not initialized
+  /*
   iotService.on('reading', async (sensorData) => {
     try {
       // Get home to find userId
@@ -213,6 +220,7 @@ startServer().then(async () => {
       logger.error('Error broadcasting alert:', error);
     }
   });
+  */
 
   // Handle graceful shutdown
   const gracefulShutdown = async (signal) => {
@@ -221,8 +229,8 @@ startServer().then(async () => {
     // Close WebSocket connections
     websocketService.close();
 
-    // Close MQTT connection
-    await iotService.disconnect();
+    // DISABLED: Close MQTT connection (IoT service not running)
+    // await iotService.disconnect();
 
     // Close HTTP server
     server.close(() => {
