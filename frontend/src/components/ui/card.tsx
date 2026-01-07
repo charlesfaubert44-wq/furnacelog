@@ -5,6 +5,7 @@ const Card = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & {
     elevation?: 'surface' | 'elevated' | 'floating';
+    variant?: 'territorial' | 'warm';
     interactive?: boolean;
     selected?: boolean;
     critical?: boolean;
@@ -14,6 +15,7 @@ const Card = React.forwardRef<
     {
       className,
       elevation = 'elevated',
+      variant = 'territorial',
       interactive = false,
       selected = false,
       critical = false,
@@ -21,20 +23,29 @@ const Card = React.forwardRef<
     },
     ref
   ) => {
-    // Territorial Homestead - Warm gradient backgrounds with organic feel
-    const elevationClasses = {
+    // Territorial Homestead - Dark gradient backgrounds with organic feel
+    const territorialElevation = {
       surface: 'bg-gradient-to-br from-rich-umber to-deep-charcoal border border-wool-cream/8 shadow-sm rounded-[20px]',
       elevated: 'bg-gradient-to-br from-rich-umber to-deep-charcoal border border-wool-cream/8 shadow-md shadow-black/20 rounded-[20px]',
       floating: 'bg-gradient-to-br from-rich-umber to-deep-charcoal shadow-lg shadow-black/30 rounded-[20px]',
     };
+
+    // Warm - Light backgrounds for onboarding and forms
+    const warmElevation = {
+      surface: 'bg-white/90 backdrop-blur-sm border-2 border-soft-amber/20 shadow-sm rounded-[20px]',
+      elevated: 'bg-white/95 backdrop-blur-sm border-2 border-soft-amber/30 shadow-xl rounded-[20px]',
+      floating: 'bg-white backdrop-blur-sm border-2 border-burnt-sienna/20 shadow-2xl rounded-[20px]',
+    };
+
+    const elevationClasses = variant === 'warm' ? warmElevation : territorialElevation;
 
     return (
       <div
         ref={ref}
         className={cn(
           elevationClasses[elevation],
-          // Add subtle inset highlight for depth
-          'relative before:absolute before:inset-0 before:rounded-[20px] before:p-[1px] before:bg-gradient-to-b before:from-wool-cream/10 before:to-transparent before:pointer-events-none',
+          // Add subtle inset highlight for depth (adjust for variant)
+          variant === 'territorial' && 'relative before:absolute before:inset-0 before:rounded-[20px] before:p-[1px] before:bg-gradient-to-b before:from-wool-cream/10 before:to-transparent before:pointer-events-none',
           interactive && 'cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-glow-sm',
           selected && 'ring-2 ring-ember-glow shadow-glow-md',
           critical && 'ring-2 ring-brick-red animate-pulse-critical',

@@ -245,7 +245,7 @@ export const OnboardingPage: React.FC = () => {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Question 1: Home Location */}
-          <Card className="bg-white/95 backdrop-blur-sm border-2 border-soft-amber/30 shadow-xl overflow-hidden">
+          <Card variant="warm" className="overflow-hidden">
             <div className="p-6 sm:p-8">
               <div className="flex items-start gap-4 mb-6">
                 <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-burnt-sienna to-warm-orange shadow-md flex items-center justify-center flex-shrink-0">
@@ -326,7 +326,7 @@ export const OnboardingPage: React.FC = () => {
           </Card>
 
           {/* Question 2: Home Type */}
-          <Card className="bg-white/95 backdrop-blur-sm border-2 border-soft-amber/30 shadow-xl overflow-hidden">
+          <Card variant="warm" className="overflow-hidden">
             <div className="p-6 sm:p-8">
               <div className="flex items-start gap-4 mb-6">
                 <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-burnt-sienna to-warm-orange shadow-md flex items-center justify-center flex-shrink-0">
@@ -387,7 +387,7 @@ export const OnboardingPage: React.FC = () => {
           </Card>
 
           {/* Question 3: Heating System */}
-          <Card className="bg-white/95 backdrop-blur-sm border-2 border-soft-amber/30 shadow-xl overflow-hidden">
+          <Card variant="warm" className="overflow-hidden">
             <div className="p-6 sm:p-8">
               <div className="flex items-start gap-4 mb-6">
                 <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-burnt-sienna to-warm-orange shadow-md flex items-center justify-center flex-shrink-0">
@@ -433,7 +433,7 @@ export const OnboardingPage: React.FC = () => {
           </Card>
 
           {/* Question 4: Water Source */}
-          <Card className="bg-white/95 backdrop-blur-sm border-2 border-soft-amber/30 shadow-xl overflow-hidden">
+          <Card variant="warm" className="overflow-hidden">
             <div className="p-6 sm:p-8">
               <div className="flex items-start gap-4 mb-6">
                 <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-burnt-sienna to-warm-orange shadow-md flex items-center justify-center flex-shrink-0">
@@ -482,7 +482,7 @@ export const OnboardingPage: React.FC = () => {
           </Card>
 
           {/* Question 5: Sewage System */}
-          <Card className="bg-white/95 backdrop-blur-sm border-2 border-soft-amber/30 shadow-xl overflow-hidden">
+          <Card variant="warm" className="overflow-hidden">
             <div className="p-6 sm:p-8">
               <div className="flex items-start gap-4 mb-6">
                 <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-burnt-sienna to-warm-orange shadow-md flex items-center justify-center flex-shrink-0">
