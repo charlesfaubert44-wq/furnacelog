@@ -1,4 +1,5 @@
 import Home from '../models/Home.js';
+import mongoose from 'mongoose';
 
 /**
  * @desc    Create a new home
@@ -281,7 +282,7 @@ export const getHomeStats = async (req, res) => {
     const userId = req.userId;
 
     const stats = await Home.aggregate([
-      { $match: { userId: mongoose.Types.ObjectId(userId) } },
+      { $match: { userId: new mongoose.Types.ObjectId(userId) } },
       {
         $group: {
           _id: null,
