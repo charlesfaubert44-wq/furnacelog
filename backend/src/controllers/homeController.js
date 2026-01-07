@@ -1,5 +1,7 @@
 import Home from '../models/Home.js';
 import mongoose from 'mongoose';
+import logger from '../utils/logger.js';
+import { sendSuccess, handleError, sendNotFound, sendError, ErrorCodes } from '../utils/responses.js';
 
 /**
  * @desc    Create a new home
@@ -9,34 +11,19 @@ import mongoose from 'mongoose';
 export const createHome = async (req, res) => {
   try {
     const userId = req.userId;
-    
+
     // Create home with user ID
     const home = await Home.create({
       ...req.body,
       userId
     });
 
-    res.status(201).json({
-      success: true,
-      data: home
-    });
+    logger.info(`User ${userId} created home ${home._id}`);
+
+    return sendSuccess(res, 201, home);
   } catch (error) {
-    console.error('Create home error:', error);
-
-    // Handle validation errors
-    if (error.name === 'ValidationError') {
-      const messages = Object.values(error.errors).map(err => err.message);
-      return res.status(400).json({
-        success: false,
-        error: 'Validation error',
-        details: messages
-      });
-    }
-
-    res.status(500).json({
-      success: false,
-      error: 'Failed to create home'
-    });
+    logger.error('Create home error:', error);
+    return handleError(res, error, 'Failed to create home');
   }
 };
 
@@ -52,7 +39,7 @@ export const getHomes = async (req, res) => {
 
     // Build query
     const query = { userId };
-    
+
     // By default, exclude archived homes
     if (includeArchived !== 'true') {
       query.archived = false;
@@ -62,17 +49,10 @@ export const getHomes = async (req, res) => {
       .sort({ createdAt: -1 })
       .lean();
 
-    res.status(200).json({
-      success: true,
-      count: homes.length,
-      data: homes
-    });
+    return sendSuccess(res, 200, homes, { count: homes.length });
   } catch (error) {
-    console.error('Get homes error:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Failed to retrieve homes'
-    });
+    logger.error('Get homes error:', error);
+    return handleError(res, error, 'Failed to retrieve homes');
   }
 };
 
@@ -86,16 +66,10 @@ export const getHome = async (req, res) => {
     // Home is already attached to req by ownership middleware
     const home = req.home;
 
-    res.status(200).json({
-      success: true,
-      data: home
-    });
+    return sendSuccess(res, 200, home);
   } catch (error) {
-    console.error('Get home error:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Failed to retrieve home'
-    });
+    logger.error('Get home error:', error);
+    return handleError(res, error, 'Failed to retrieve home');
   }
 };
 
@@ -107,10 +81,10 @@ export const getHome = async (req, res) => {
 export const updateHome = async (req, res) => {
   try {
     const { homeId } = req.params;
-    
+
     // Fields that should not be updated
     const restrictedFields = ['userId', '_id', 'createdAt'];
-    
+
     // Remove restricted fields from update
     restrictedFields.forEach(field => delete req.body[field]);
 
@@ -125,33 +99,15 @@ export const updateHome = async (req, res) => {
     );
 
     if (!home) {
-      return res.status(404).json({
-        success: false,
-        error: 'Home not found'
-      });
+      return sendNotFound(res, 'Home');
     }
 
-    res.status(200).json({
-      success: true,
-      data: home
-    });
+    logger.info(`Home ${homeId} updated`);
+
+    return sendSuccess(res, 200, home);
   } catch (error) {
-    console.error('Update home error:', error);
-
-    // Handle validation errors
-    if (error.name === 'ValidationError') {
-      const messages = Object.values(error.errors).map(err => err.message);
-      return res.status(400).json({
-        success: false,
-        error: 'Validation error',
-        details: messages
-      });
-    }
-
-    res.status(500).json({
-      success: false,
-      error: 'Failed to update home'
-    });
+    logger.error('Update home error:', error);
+    return handleError(res, error, 'Failed to update home');
   }
 };
 
@@ -168,11 +124,9 @@ export const deleteHome = async (req, res) => {
     if (permanent === 'true') {
       // Permanent deletion
       await Home.findByIdAndDelete(homeId);
-      
-      return res.status(200).json({
-        success: true,
-        message: 'Home permanently deleted'
-      });
+      logger.warn(`Home ${homeId} permanently deleted`);
+
+      return sendSuccess(res, 200, null, { message: 'Home permanently deleted' });
     } else {
       // Soft delete (archive)
       const home = await Home.findByIdAndUpdate(
@@ -181,18 +135,13 @@ export const deleteHome = async (req, res) => {
         { new: true }
       );
 
-      res.status(200).json({
-        success: true,
-        message: 'Home archived successfully',
-        data: home
-      });
+      logger.info(`Home ${homeId} archived`);
+
+      return sendSuccess(res, 200, home, { message: 'Home archived successfully' });
     }
   } catch (error) {
-    console.error('Delete home error:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Failed to delete home'
-    });
+    logger.error('Delete home error:', error);
+    return handleError(res, error, 'Failed to delete home');
   }
 };
 
@@ -212,23 +161,15 @@ export const restoreHome = async (req, res) => {
     );
 
     if (!home) {
-      return res.status(404).json({
-        success: false,
-        error: 'Home not found'
-      });
+      return sendNotFound(res, 'Home');
     }
 
-    res.status(200).json({
-      success: true,
-      message: 'Home restored successfully',
-      data: home
-    });
+    logger.info(`Home ${homeId} restored`);
+
+    return sendSuccess(res, 200, home, { message: 'Home restored successfully' });
   } catch (error) {
-    console.error('Restore home error:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Failed to restore home'
-    });
+    logger.error('Restore home error:', error);
+    return handleError(res, error, 'Failed to restore home');
   }
 };
 
@@ -240,13 +181,10 @@ export const restoreHome = async (req, res) => {
 export const uploadCoverPhoto = async (req, res) => {
   try {
     const { homeId } = req.params;
-    
+
     // File upload handled by multer middleware
     if (!req.file) {
-      return res.status(400).json({
-        success: false,
-        error: 'No file uploaded'
-      });
+      return sendError(res, 400, ErrorCodes.BAD_REQUEST, 'No file uploaded');
     }
 
     // URL to the uploaded file (set by MinIO upload middleware)
@@ -258,17 +196,12 @@ export const uploadCoverPhoto = async (req, res) => {
       { new: true }
     );
 
-    res.status(200).json({
-      success: true,
-      message: 'Cover photo uploaded successfully',
-      data: home
-    });
+    logger.info(`Cover photo uploaded for home ${homeId}`);
+
+    return sendSuccess(res, 200, home, { message: 'Cover photo uploaded successfully' });
   } catch (error) {
-    console.error('Upload photo error:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Failed to upload cover photo'
-    });
+    logger.error('Upload photo error:', error);
+    return handleError(res, error, 'Failed to upload cover photo');
   }
 };
 
@@ -300,16 +233,12 @@ export const getHomeStats = async (req, res) => {
       }
     ]);
 
-    res.status(200).json({
-      success: true,
-      data: stats[0] || { total: 0, active: 0, archived: 0, byType: [] }
-    });
+    const data = stats[0] || { total: 0, active: 0, archived: 0, byType: [] };
+
+    return sendSuccess(res, 200, data);
   } catch (error) {
-    console.error('Get home stats error:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Failed to retrieve statistics'
-    });
+    logger.error('Get home stats error:', error);
+    return handleError(res, error, 'Failed to retrieve statistics');
   }
 };
 
