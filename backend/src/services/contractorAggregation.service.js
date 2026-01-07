@@ -13,7 +13,7 @@ import mongoose from 'mongoose';
 export async function getUserRecentContractors(userId, homeId, limit = 10) {
   // Get all logs with providers for this home
   const logs = await MaintenanceLog.find({
-    homeId: mongoose.Types.ObjectId(homeId),
+    homeId: new mongoose.Types.ObjectId(homeId),
     'execution.performedBy': 'provider',
     'execution.providerId': { $exists: true, $ne: null }
   })
@@ -101,8 +101,8 @@ export async function getContractorWithUserStats(userId, homeId, contractorId) {
 
   // Get user's history with this contractor
   const logs = await MaintenanceLog.find({
-    homeId: mongoose.Types.ObjectId(homeId),
-    'execution.providerId': mongoose.Types.ObjectId(contractorId)
+    homeId: new mongoose.Types.ObjectId(homeId),
+    'execution.providerId': new mongoose.Types.ObjectId(contractorId)
   })
     .populate('systemId', 'name category')
     .sort({ 'execution.date': -1 })

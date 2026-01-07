@@ -18,7 +18,7 @@ export async function getUserCostData(userId, homeId) {
 
   // Get all logs for this year
   const logs = await MaintenanceLog.find({
-    homeId: mongoose.Types.ObjectId(homeId),
+    homeId: new mongoose.Types.ObjectId(homeId),
     'execution.date': { $gte: startOfYear }
   })
     .populate('systemId', 'category')
