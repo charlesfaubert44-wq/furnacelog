@@ -30,15 +30,22 @@ export interface SystemStatus {
 }
 
 export interface WeatherData {
-  temperature: number;
-  conditions: string;
-  windSpeed: number;
-  windDirection: string;
-  windChill?: number;
-  humidity?: number;
+  current: {
+    temperature: number;
+    conditions: string;
+    windSpeed: number;
+    windChill?: number;
+    humidity?: number;
+  };
+  forecast: Array<{
+    day: string;
+    high: number;
+    low: number;
+    conditions: string;
+  }>;
   alerts: Array<{
     type: string;
-    severity: string;
+    severity: 'low' | 'medium' | 'high' | 'critical';
     description: string;
   }>;
   recommendations: Array<{
@@ -46,7 +53,6 @@ export interface WeatherData {
     message: string;
     priority: 'low' | 'medium' | 'high' | 'critical';
   }>;
-  lastUpdated: string;
 }
 
 export interface SeasonalChecklist {
@@ -54,13 +60,21 @@ export interface SeasonalChecklist {
   season: 'spring' | 'summer' | 'fall' | 'winter';
   year: number;
   items: Array<{
+    id: string;
     system?: string;
     task: string;
     completed: boolean;
+    priority: 'critical' | 'high' | 'normal' | 'low';
+    difficulty: 'diy-easy' | 'diy-moderate' | 'professional';
+    estimatedTime?: string;
+    estimatedCost?: { diy?: string; professional?: string };
+    tutorialUrl?: string;
   }>;
   totalItems: number;
   completedItems: number;
   progressPercent: number;
+  streak?: number;
+  badge?: string;
 }
 
 export interface CostData {

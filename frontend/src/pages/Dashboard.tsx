@@ -12,6 +12,10 @@ import { CriticalAlertsBanner, type Alert } from '@/components/dashboard/Critica
 import { QuickStatsCards } from '@/components/dashboard/QuickStatsCards';
 import { EnhancedMaintenanceWidget } from '@/components/dashboard/EnhancedMaintenanceWidget';
 import { EnhancedSystemStatusWidget } from '@/components/dashboard/EnhancedSystemStatusWidget';
+import { CostTrackerWidget } from '@/components/dashboard/CostTrackerWidget';
+import { RecentContractorsWidget } from '@/components/dashboard/RecentContractorsWidget';
+import { EnhancedWeatherWidget } from '@/components/dashboard/EnhancedWeatherWidget';
+import { EnhancedSeasonalChecklistWidget } from '@/components/dashboard/EnhancedSeasonalChecklistWidget';
 
 /**
  * Dashboard Page
@@ -129,6 +133,67 @@ export function Dashboard() {
     setIsMaintenanceModalOpen(true);
   };
 
+  // Cost Tracker handlers
+  const handleExportCostReport = () => {
+    // TODO: Implement export functionality
+    console.log('Export cost report');
+    alert('Export functionality coming soon! This will generate a downloadable PDF or CSV report.');
+  };
+
+  const handleViewCostDetails = () => {
+    // TODO: Navigate to detailed cost analytics page
+    console.log('View cost details');
+    alert('Detailed cost analytics page coming soon!');
+  };
+
+  // Contractor handlers
+  const handleContractorClick = (contractorId: string) => {
+    // TODO: Open contractor detail modal
+    console.log('Contractor clicked:', contractorId);
+    alert('Contractor details coming soon!');
+  };
+
+  const handleContactContractor = (contractorId: string, method: 'phone' | 'email') => {
+    // TODO: Implement contact functionality
+    console.log('Contact contractor:', contractorId, 'via', method);
+    if (method === 'phone') {
+      alert('Phone dialer integration coming soon!');
+    } else {
+      alert('Email integration coming soon!');
+    }
+  };
+
+  const handleViewAllContractors = () => {
+    // TODO: Navigate to contractors page
+    console.log('View all contractors');
+    navigate('/contractors');
+  };
+
+  const handleAddContractor = () => {
+    // TODO: Open add contractor modal
+    console.log('Add contractor');
+    alert('Add contractor functionality coming soon!');
+  };
+
+  // Seasonal checklist handlers
+  const handleChecklistItemToggle = (itemId: string) => {
+    // TODO: Update checklist item status
+    console.log('Toggle checklist item:', itemId);
+    alert('Checklist update functionality coming soon!');
+  };
+
+  const handleHireForChecklistTask = (itemId: string) => {
+    // TODO: Open contractor hiring for specific task
+    console.log('Hire for checklist task:', itemId);
+    alert('Contractor hiring for this task coming soon!');
+  };
+
+  const handleViewTutorial = (url: string) => {
+    // TODO: Open tutorial in modal or new tab
+    console.log('View tutorial:', url);
+    window.open(url, '_blank');
+  };
+
   // Transform API tasks to component format
   const tasks: MaintenanceTask[] = dashboardData?.maintenanceSummary.upcomingTasks.map(task => ({
     id: task.id,
@@ -200,6 +265,12 @@ export function Dashboard() {
   };
 
   const activeAlerts = criticalAlerts.filter(alert => !dismissedAlerts.includes(alert.id));
+
+  // Transform contractor data to ensure lastUsed is a Date
+  const contractors = dashboardData?.recentContractors?.map(contractor => ({
+    ...contractor,
+    lastUsed: typeof contractor.lastUsed === 'string' ? new Date(contractor.lastUsed) : contractor.lastUsed
+  })) || [];
 
   return (
     <div className="min-h-screen bg-warm-white">
@@ -484,6 +555,58 @@ export function Dashboard() {
                   onLogMaintenance={handleLogMaintenanceForSystem}
                 />
               </div>
+            </div>
+
+            {/* Cost & Weather Grid */}
+            <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
+              {/* Cost Tracker Widget - Spans 2 columns on XL */}
+              {dashboardData.costData && (
+                <div className="xl:col-span-2">
+                  <CostTrackerWidget
+                    data={dashboardData.costData}
+                    onExport={handleExportCostReport}
+                    onViewDetails={handleViewCostDetails}
+                  />
+                </div>
+              )}
+
+              {/* Weather Widget */}
+              {dashboardData.weather && (
+                <div>
+                  <EnhancedWeatherWidget
+                    data={dashboardData.weather}
+                    location={dashboardData.home ? `${dashboardData.home.community}, ${dashboardData.home.territory}` : undefined}
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* Seasonal Checklist & Contractors Grid */}
+            <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
+              {/* Seasonal Checklist Widget - Spans 2 columns on XL */}
+              {dashboardData.seasonalChecklist && (
+                <div className="xl:col-span-2">
+                  <EnhancedSeasonalChecklistWidget
+                    data={dashboardData.seasonalChecklist}
+                    onItemToggle={handleChecklistItemToggle}
+                    onHireForTask={handleHireForChecklistTask}
+                    onViewTutorial={handleViewTutorial}
+                  />
+                </div>
+              )}
+
+              {/* Recent Contractors Widget */}
+              {contractors.length > 0 && (
+                <div>
+                  <RecentContractorsWidget
+                    contractors={contractors}
+                    onContractorClick={handleContractorClick}
+                    onContactClick={handleContactContractor}
+                    onViewAll={handleViewAllContractors}
+                    onAddContractor={handleAddContractor}
+                  />
+                </div>
+              )}
             </div>
           </div>
           )}
