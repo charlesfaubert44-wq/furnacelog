@@ -263,20 +263,35 @@ async function getWeatherData(home) {
     // Get weather with recommendations
     const weatherData = await weatherService.getWeatherWithRecommendations(community, systems);
 
+    // Generate 7-day forecast (mock data for now - can be enhanced with real forecast API)
+    const forecast = [];
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    for (let i = 0; i < 7; i++) {
+      const date = new Date();
+      date.setDate(date.getDate() + i);
+      forecast.push({
+        day: days[date.getDay()],
+        high: weatherData.weather.temperature.max || weatherData.weather.temperature.mean + 2,
+        low: weatherData.weather.temperature.min || weatherData.weather.temperature.mean - 2,
+        conditions: weatherData.weather.conditions
+      });
+    }
+
     return {
-      temperature: weatherData.weather.temperature.mean,
-      conditions: weatherData.weather.conditions,
-      windSpeed: weatherData.weather.wind.speed,
-      windDirection: weatherData.weather.wind.direction,
-      windChill: weatherData.weather.wind.chill,
-      humidity: weatherData.weather.humidity || null,
+      current: {
+        temperature: weatherData.weather.temperature.mean,
+        conditions: weatherData.weather.conditions,
+        windSpeed: weatherData.weather.wind.speed,
+        windChill: weatherData.weather.wind.chill,
+        humidity: weatherData.weather.humidity || null
+      },
+      forecast,
       alerts: weatherData.alerts.map(alert => ({
         type: alert.type,
-        severity: alert.severity,
+        severity: alert.severity || 'medium',
         description: alert.description
       })),
-      recommendations: weatherData.recommendations,
-      lastUpdated: weatherData.weather.date
+      recommendations: weatherData.recommendations
     };
   } catch (error) {
     logger.error(`Error fetching weather for ${home.address.community}:`, error);
@@ -296,7 +311,9 @@ async function getSeasonalChecklist(homeId) {
     homeId,
     season: currentSeason,
     year: currentYear
-  }).lean();
+  })
+    .populate('items.taskId', 'title category priority difficulty estimatedTime estimatedCost tutorialUrl')
+    .lean();
 
   if (!checklist) {
     return {
@@ -309,16 +326,32 @@ async function getSeasonalChecklist(homeId) {
     };
   }
 
+  // Transform items to match frontend interface
+  const transformedItems = (checklist.items || []).map(item => {
+    const task = item.taskId || {};
+    return {
+      id: item._id?.toString() || String(Math.random()),
+      system: task.category || 'general',
+      task: item.customDescription || task.title || 'Seasonal Task',
+      completed: item.status === 'completed' || item.status === 'not-applicable',
+      priority: task.priority || 'normal',
+      difficulty: task.difficulty || 'diy-moderate',
+      estimatedTime: task.estimatedTime,
+      estimatedCost: task.estimatedCost,
+      tutorialUrl: task.tutorialUrl
+    };
+  });
+
   // Calculate progress
-  const totalItems = checklist.items ? checklist.items.length : 0;
-  const completedItems = checklist.items ? checklist.items.filter(i => i.completed).length : 0;
+  const totalItems = transformedItems.length;
+  const completedItems = transformedItems.filter(i => i.completed).length;
   const progressPercent = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
 
   return {
     id: checklist._id,
     season: checklist.season,
     year: checklist.year,
-    items: checklist.items || [],
+    items: transformedItems,
     totalItems,
     completedItems,
     progressPercent
