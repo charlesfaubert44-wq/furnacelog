@@ -9,6 +9,8 @@ import ScheduledMaintenance from '../models/ScheduledMaintenance.js';
 import MaintenanceLog from '../models/MaintenanceLog.js';
 import SeasonalChecklist from '../models/SeasonalChecklist.js';
 import weatherService from '../services/weatherService.js';
+import { getUserCostData } from '../services/costAggregation.service.js';
+import { getUserRecentContractors } from '../services/contractorAggregation.service.js';
 import logger from '../utils/logger.js';
 
 /**
@@ -56,11 +58,13 @@ export async function getDashboardData(req, res) {
     }
 
     // Fetch all dashboard data in parallel
-    const [maintenanceSummary, systemsStatus, weatherData, seasonalChecklist] = await Promise.all([
+    const [maintenanceSummary, systemsStatus, weatherData, seasonalChecklist, costData, recentContractors] = await Promise.all([
       getMaintenanceSummary(home._id),
       getSystemsStatus(home._id),
       getWeatherData(home),
-      getSeasonalChecklist(home._id)
+      getSeasonalChecklist(home._id),
+      getUserCostData(userId, home._id),
+      getUserRecentContractors(userId, home._id, 10)
     ]);
 
     res.json({
@@ -76,6 +80,8 @@ export async function getDashboardData(req, res) {
         systemsStatus,
         weather: weatherData,
         seasonalChecklist,
+        costData,
+        recentContractors,
         needsOnboarding: false
       }
     });

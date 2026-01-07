@@ -8,6 +8,13 @@ import cookieParser from 'cookie-parser';
 import passport from './config/passport.js';
 import healthRoutes from './routes/health.js';
 import authRoutes from './routes/auth.routes.js';
+import dashboardRoutes from './routes/dashboard.routes.js';
+import contractorRoutes from './routes/contractor.routes.js';
+import homeRoutes from './routes/homeRoutes.js';
+import systemRoutes from './routes/systemRoutes.js';
+import maintenanceRoutes from './routes/maintenanceRoutes.js';
+import userRoutes from './routes/user.routes.js';
+import onboardingRoutes from './routes/onboarding.routes.js';
 import logger from './utils/logger.js';
 
 const app = express();
@@ -95,6 +102,13 @@ if (process.env.NODE_ENV === 'development') {
 // API Routes
 app.use('/api/v1', healthRoutes);
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/dashboard', dashboardRoutes);
+app.use('/api/v1/contractors', contractorRoutes);
+app.use('/api/v1/homes', homeRoutes);
+app.use('/api/v1/systems', systemRoutes);
+app.use('/api/v1/maintenance', maintenanceRoutes);
+app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/onboarding', onboardingRoutes);
 
 // Root endpoint
 app.get('/', (req, res) => {

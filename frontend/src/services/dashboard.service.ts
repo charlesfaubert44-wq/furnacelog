@@ -63,6 +63,39 @@ export interface SeasonalChecklist {
   progressPercent: number;
 }
 
+export interface CostData {
+  thisMonth: number;
+  lastMonth: number;
+  thisYear: number;
+  byCategory: Array<{
+    category: string;
+    amount: number;
+    percentage: number;
+  }>;
+  byType: {
+    diy: number;
+    professional: number;
+  };
+  monthlyData: Array<{
+    month: string;
+    amount: number;
+  }>;
+}
+
+export interface ContractorData {
+  id: string;
+  businessName: string;
+  contactName?: string;
+  phone?: string;
+  email?: string;
+  specialties: string[];
+  timesHired: number;
+  averageCost: number;
+  rating: number;
+  lastUsed: Date | string;
+  wouldHireAgain?: boolean;
+}
+
 export interface DashboardData {
   home: {
     id: string;
@@ -85,6 +118,8 @@ export interface DashboardData {
   };
   weather: WeatherData | null;
   seasonalChecklist: SeasonalChecklist;
+  costData?: CostData;
+  recentContractors?: ContractorData[];
   needsOnboarding?: boolean;
 }
 

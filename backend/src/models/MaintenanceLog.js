@@ -119,6 +119,41 @@ const maintenanceLogSchema = new Schema({
     },
     followUpNotes: String
   },
+  // Provider Rating (for professional services)
+  providerRating: {
+    overall: {
+      type: Number,
+      min: 1,
+      max: 5
+    },
+    quality: {
+      type: Number,
+      min: 1,
+      max: 5
+    },
+    timeliness: {
+      type: Number,
+      min: 1,
+      max: 5
+    },
+    communication: {
+      type: Number,
+      min: 1,
+      max: 5
+    },
+    value: {
+      type: Number,
+      min: 1,
+      max: 5
+    },
+    wouldHireAgain: {
+      type: Boolean
+    },
+    review: {
+      type: String,
+      maxlength: 1000
+    }
+  },
   photos: [{
     url: String,
     caption: String,

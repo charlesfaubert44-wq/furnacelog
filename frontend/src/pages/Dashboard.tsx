@@ -1,12 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Home, LogOut, User, Plus, AlertTriangle, CheckCircle2, Clock, Flame, Droplets, Wind, Zap, BookOpen, Settings as SettingsIcon, Loader2 } from 'lucide-react';
+import { Home, LogOut, User, Plus, AlertTriangle, CheckCircle2, Flame, Droplets, Wind, Zap, BookOpen, Settings as SettingsIcon, Loader2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import { useScrollPosition } from '@/hooks/useScrollAnimation';
 import { LogMaintenanceModal, type MaintenanceTaskInput } from '@/components/modals/LogMaintenanceModal';
 import { getDashboardData, type DashboardData } from '@/services/dashboard.service';
 import { Logo } from '@/components/furnacelog/Logo';
+import { HealthScoreGauge } from '@/components/dashboard/HealthScoreGauge';
+import { CriticalAlertsBanner, type Alert } from '@/components/dashboard/CriticalAlertsBanner';
+import { QuickStatsCards } from '@/components/dashboard/QuickStatsCards';
+import { EnhancedMaintenanceWidget } from '@/components/dashboard/EnhancedMaintenanceWidget';
+import { EnhancedSystemStatusWidget } from '@/components/dashboard/EnhancedSystemStatusWidget';
 
 /**
  * Dashboard Page
@@ -29,6 +34,7 @@ interface SystemStatus {
   status: 'healthy' | 'warning' | 'critical';
   lastService: string;
   health: number;
+  category: string;
 }
 
 // Helper function to get icon for system category
@@ -93,6 +99,36 @@ export function Dashboard() {
     alert('Task details coming soon! This will show full task information, allow editing, and mark as complete.');
   };
 
+  const handleMarkComplete = (taskId: string) => {
+    // TODO: Implement mark complete functionality
+    console.log('Mark complete:', taskId);
+    alert('Mark complete functionality coming soon!');
+  };
+
+  const handleHireContractor = (taskId: string) => {
+    // TODO: Implement hire contractor functionality
+    console.log('Hire contractor:', taskId);
+    alert('Contractor hiring functionality coming soon!');
+  };
+
+  const handleReschedule = (taskId: string) => {
+    // TODO: Implement reschedule functionality
+    console.log('Reschedule:', taskId);
+    alert('Reschedule functionality coming soon!');
+  };
+
+  const handleSystemClick = (systemId: string) => {
+    // TODO: Open system detail modal
+    console.log('System clicked:', systemId);
+    alert('System details coming soon!');
+  };
+
+  const handleLogMaintenanceForSystem = (systemId: string) => {
+    // TODO: Open log maintenance modal with system pre-selected
+    console.log('Log maintenance for system:', systemId);
+    setIsMaintenanceModalOpen(true);
+  };
+
   // Transform API tasks to component format
   const tasks: MaintenanceTask[] = dashboardData?.maintenanceSummary.upcomingTasks.map(task => ({
     id: task.id,
@@ -111,11 +147,59 @@ export function Dashboard() {
     status: system.statusColor === 'green' ? 'healthy' : system.statusColor === 'yellow' ? 'warning' : 'critical',
     lastService: system.lastServiceDate ? new Date(system.lastServiceDate).toLocaleDateString() : 'Never',
     health: system.healthScore,
+    category: system.category,
   })) || [];
 
   const overdueCount = dashboardData?.maintenanceSummary.overdue || 0;
   const dueSoonCount = dashboardData?.maintenanceSummary.dueSoon || 0;
-  const upcomingCount = dashboardData?.maintenanceSummary.upcoming || 0;
+
+  // Generate critical alerts
+  const criticalAlerts: Alert[] = [];
+
+  // Add overdue tasks alert
+  if (overdueCount > 0) {
+    criticalAlerts.push({
+      id: 'overdue-tasks',
+      type: 'overdue',
+      title: `${overdueCount} ${overdueCount === 1 ? 'Task' : 'Tasks'} Overdue`,
+      message: `You have ${overdueCount} overdue maintenance ${overdueCount === 1 ? 'task' : 'tasks'} that need immediate attention to keep your home safe and efficient.`,
+      priority: 'critical',
+      actionLabel: 'View Tasks',
+      onAction: () => {
+        // Scroll to maintenance widget or filter to overdue
+        document.getElementById('maintenance-widget')?.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  }
+
+  // Add critical system alerts
+  const criticalSystems = systems.filter(s => s.status === 'critical');
+  if (criticalSystems.length > 0) {
+    criticalAlerts.push({
+      id: 'critical-systems',
+      type: 'system',
+      title: `${criticalSystems.length} ${criticalSystems.length === 1 ? 'System' : 'Systems'} Need Immediate Attention`,
+      message: `${criticalSystems.map(s => s.name).join(', ')} ${criticalSystems.length === 1 ? 'is' : 'are'} in critical condition. Schedule maintenance as soon as possible.`,
+      priority: 'critical',
+      actionLabel: 'View Systems',
+      onAction: () => {
+        document.getElementById('systems-widget')?.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  }
+
+  // Calculate stats for Quick Stats Cards
+  const healthySystemsCount = systems.filter(s => s.status === 'healthy').length;
+  const nextTask = tasks.length > 0 ? tasks[0] : null;
+  const daysUntilNext = nextTask ? Math.ceil((nextTask.dueDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)) : 0;
+
+  const [dismissedAlerts, setDismissedAlerts] = useState<string[]>([]);
+
+  const handleDismissAlert = (alertId: string) => {
+    setDismissedAlerts(prev => [...prev, alertId]);
+  };
+
+  const activeAlerts = criticalAlerts.filter(alert => !dismissedAlerts.includes(alert.id));
 
   return (
     <div className="min-h-screen bg-warm-white">
@@ -320,175 +404,85 @@ export function Dashboard() {
           {!isLoading && !error && dashboardData && !dashboardData.needsOnboarding && (
           <div className="space-y-8">
             {/* Dashboard Header */}
-            <div className="flex items-start justify-between gap-4">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
               <div>
                 <p className="text-warm-gray text-sm font-medium mb-2">
                   {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
                 </p>
-                <h2 className="text-4xl font-bold text-charcoal tracking-tight">
+                <h2 className="text-3xl md:text-4xl font-bold text-charcoal tracking-tight">
                   Welcome Home
                 </h2>
                 <p className="text-warm-gray mt-2">
-                  Your home is warm and protected. Here's your maintenance overview.
+                  {dashboardData.home?.name || 'Your home'} is being monitored. Here's your maintenance overview.
                 </p>
               </div>
               <button
                 onClick={() => setIsMaintenanceModalOpen(true)}
-                className="px-6 py-3 bg-gradient-to-r from-burnt-sienna to-warm-orange hover:from-warm-orange hover:to-burnt-sienna text-white text-sm font-semibold rounded-xl transition-all duration-300 flex items-center gap-2 shadow-md hover:shadow-lg"
+                className="px-6 py-3 bg-gradient-to-r from-burnt-sienna to-warm-orange hover:from-warm-orange hover:to-burnt-sienna text-white text-sm font-semibold rounded-xl transition-all duration-300 flex items-center gap-2 shadow-md hover:shadow-lg whitespace-nowrap"
               >
                 <Plus className="h-4 w-4" />
                 Log Maintenance
               </button>
             </div>
 
-            {/* Dashboard Grid */}
-            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
-              {/* Maintenance Summary */}
-              <div className="xl:col-span-2 bg-white border border-soft-amber/20 rounded-2xl p-8 shadow-md transition-all duration-300">
-                <div className="mb-6">
-                  <h3 className="text-xl font-semibold text-charcoal">Maintenance Summary</h3>
-                  <p className="text-sm text-warm-gray mt-1">Track your upcoming and overdue tasks</p>
-                </div>
-                <div className="grid grid-cols-3 gap-4 mb-6">
-                  <div className="bg-warm-coral/10 border-2 border-warm-coral/30 rounded-xl p-4">
-                    <div className="flex items-center justify-center gap-2 mb-2">
-                      <AlertTriangle className="h-5 w-5 text-warm-coral" />
-                      <span className="text-3xl font-bold text-charcoal">{overdueCount}</span>
-                    </div>
-                    <p className="text-center text-sm text-warm-coral font-semibold">Overdue</p>
-                  </div>
-                  <div className="bg-warm-orange/10 border-2 border-warm-orange/30 rounded-xl p-4">
-                    <div className="flex items-center justify-center gap-2 mb-2">
-                      <Clock className="h-5 w-5 text-warm-orange" />
-                      <span className="text-3xl font-bold text-charcoal">{dueSoonCount}</span>
-                    </div>
-                    <p className="text-center text-sm text-warm-orange font-semibold">Due Soon</p>
-                  </div>
-                  <div className="bg-soft-amber/10 border-2 border-soft-amber/30 rounded-xl p-4">
-                    <div className="flex items-center justify-center gap-2 mb-2">
-                      <CheckCircle2 className="h-5 w-5 text-soft-amber" />
-                      <span className="text-3xl font-bold text-charcoal">{upcomingCount}</span>
-                    </div>
-                    <p className="text-center text-sm text-soft-amber font-semibold">Upcoming</p>
-                  </div>
-                </div>
+            {/* Critical Alerts Banner */}
+            {activeAlerts.length > 0 && (
+              <CriticalAlertsBanner
+                alerts={activeAlerts}
+                onDismiss={handleDismissAlert}
+              />
+            )}
 
-                {/* Task List */}
-                <div className="space-y-3">
-                  {tasks.length === 0 ? (
-                    <div className="text-center py-8">
-                      <CheckCircle2 className="w-12 h-12 text-sage mx-auto mb-3" />
-                      <p className="text-warm-gray text-sm">No upcoming maintenance tasks</p>
-                      <p className="text-warm-gray/70 text-xs mt-1">You're all caught up!</p>
-                    </div>
-                  ) : (
-                    tasks.map((task) => (
-                    <div
-                      key={task.id}
-                      onClick={() => handleTaskClick(task.id)}
-                      className={cn(
-                        "group p-4 rounded-xl border-2 transition-all duration-300 cursor-pointer hover:shadow-md",
-                        task.status === 'overdue' && 'bg-warm-coral/5 border-warm-coral/30 hover:border-warm-coral/50 hover:bg-warm-coral/10',
-                        task.status === 'due-soon' && 'bg-warm-orange/5 border-warm-orange/30 hover:border-warm-orange/50 hover:bg-warm-orange/10',
-                        task.status === 'upcoming' && 'bg-soft-amber/5 border-soft-amber/20 hover:border-soft-amber/40 hover:bg-soft-amber/10'
-                      )}
-                    >
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="flex-1">
-                          <h4 className="text-sm font-semibold text-charcoal mb-1">{task.title}</h4>
-                          <p className="text-xs text-warm-gray">{task.system}</p>
-                        </div>
-                        <span className={cn(
-                          "text-xs px-2 py-1 rounded-lg border font-semibold",
-                          task.status === 'overdue' && 'bg-warm-coral/20 text-warm-coral border-warm-coral/30',
-                          task.status === 'due-soon' && 'bg-warm-orange/20 text-warm-orange border-warm-orange/30',
-                          task.status === 'upcoming' && 'bg-soft-amber/20 text-soft-amber border-soft-amber/30'
-                        )}>
-                          {task.dueDate.toLocaleDateString('en-CA', { month: 'short', day: 'numeric' })}
-                        </span>
-                      </div>
-                    </div>
-                  ))
-                  )}
-                </div>
+            {/* Overall Health & Quick Stats */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Health Score Gauge */}
+              <div className="bg-white border border-soft-amber/20 rounded-2xl p-8 shadow-md transition-all duration-300 flex items-center justify-center">
+                <HealthScoreGauge
+                  score={dashboardData.systemsStatus.overallHealth}
+                  size="lg"
+                  showLabel={true}
+                />
               </div>
 
-              {/* System Status */}
-              <div className="bg-white border border-soft-amber/20 rounded-2xl p-8 shadow-md">
-                <h3 className="text-xl font-semibold text-charcoal mb-6">System Status</h3>
-                <div className="space-y-4">
-                  {systems.length === 0 ? (
-                    <div className="text-center py-8">
-                      <SettingsIcon className="w-12 h-12 text-soft-amber mx-auto mb-3" />
-                      <p className="text-warm-gray text-sm mb-3">No systems configured yet</p>
-                      <button
-                        onClick={() => navigate('/onboarding')}
-                        className="px-6 py-3 bg-gradient-to-r from-burnt-sienna to-warm-orange hover:from-warm-orange hover:to-burnt-sienna text-white text-sm font-semibold rounded-xl transition-all duration-300 shadow-md hover:shadow-lg inline-flex items-center gap-2"
-                      >
-                        <Plus className="w-4 h-4" />
-                        Complete Onboarding
-                      </button>
-                    </div>
-                  ) : (
-                    systems.map((system) => (
-                    <div key={system.id} className="group p-4 bg-cream/50 hover:bg-cream border-2 border-soft-amber/20 hover:border-soft-amber/40 rounded-xl transition-all duration-300 cursor-pointer hover:shadow-md">
-                      <div className="flex items-center gap-4">
-                        <div className={cn(
-                          "w-12 h-12 rounded-xl flex items-center justify-center shadow-md",
-                          system.status === 'healthy' && 'bg-gradient-to-br from-sage to-soft-sage',
-                          system.status === 'warning' && 'bg-gradient-to-br from-warm-orange to-soft-amber',
-                          system.status === 'critical' && 'bg-gradient-to-br from-warm-coral to-burnt-sienna'
-                        )}>
-                          <system.icon className="h-7 w-7 text-white" />
-                        </div>
-                        <div className="flex-1">
-                          <h4 className="text-sm font-semibold text-charcoal">{system.name}</h4>
-                          <p className="text-xs text-warm-gray">{system.lastService}</p>
-                        </div>
-                        <div className="flex flex-col items-end gap-1">
-                          <div className="relative w-12 h-12">
-                            <svg className="w-12 h-12 transform -rotate-90">
-                              <circle
-                                cx="24"
-                                cy="24"
-                                r="15"
-                                stroke="#E8DCC4"
-                                strokeWidth="3"
-                                fill="none"
-                              />
-                              <circle
-                                cx="24"
-                                cy="24"
-                                r="15"
-                                className={cn(
-                                  system.status === 'healthy' && 'stroke-sage',
-                                  system.status === 'warning' && 'stroke-warm-orange',
-                                  system.status === 'critical' && 'stroke-warm-coral'
-                                )}
-                                strokeWidth="3"
-                                strokeDasharray={`${system.health * 0.942} 100`}
-                                strokeLinecap="round"
-                                fill="none"
-                              />
-                            </svg>
-                            <span className="absolute inset-0 flex items-center justify-center text-xs font-bold text-charcoal">
-                              {system.health}%
-                            </span>
-                          </div>
-                          <span className={cn(
-                            "text-xs px-2 py-0.5 rounded-lg border font-semibold",
-                            system.status === 'healthy' && 'bg-sage/20 text-sage border-sage/30',
-                            system.status === 'warning' && 'bg-warm-orange/20 text-warm-orange border-warm-orange/30',
-                            system.status === 'critical' && 'bg-warm-coral/20 text-warm-coral border-warm-coral/30'
-                          )}>
-                            {system.status}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                  )}
-                </div>
+              {/* Quick Stats Cards */}
+              <div className="lg:col-span-2">
+                <QuickStatsCards
+                  overdueCount={overdueCount}
+                  healthySystems={{
+                    current: healthySystemsCount,
+                    total: systems.length
+                  }}
+                  nextMaintenance={nextTask ? {
+                    daysUntil: Math.max(0, daysUntilNext),
+                    taskName: nextTask.title
+                  } : undefined}
+                />
+              </div>
+            </div>
+
+            {/* Main Content Grid */}
+            <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
+              {/* Maintenance Widget - Spans 2 columns on XL */}
+              <div id="maintenance-widget" className="xl:col-span-2">
+                <EnhancedMaintenanceWidget
+                  tasks={tasks}
+                  overdueCount={overdueCount}
+                  dueSoonCount={dueSoonCount}
+                  onTaskClick={handleTaskClick}
+                  onMarkComplete={handleMarkComplete}
+                  onHireContractor={handleHireContractor}
+                  onReschedule={handleReschedule}
+                />
+              </div>
+
+              {/* System Status Widget */}
+              <div id="systems-widget">
+                <EnhancedSystemStatusWidget
+                  systems={systems}
+                  onSystemClick={handleSystemClick}
+                  onAddSystem={() => navigate('/onboarding')}
+                  onLogMaintenance={handleLogMaintenanceForSystem}
+                />
               </div>
             </div>
           </div>
