@@ -59,38 +59,9 @@ export async function completeOnboarding(req, res) {
 
     logger.info(`Home created for user ${userId}: ${newHome._id}`);
 
-    // Create System documents for configured systems
-    const createdSystems = [];
-
-    // Create heating system(s)
-    if (systemsData.heating) {
-      const heatingSystems = await createHeatingSystems(newHome._id, systemsData.heating);
-      createdSystems.push(...heatingSystems);
-    }
-
-    // Create water systems
-    if (systemsData.water) {
-      const waterSystems = await createWaterSystems(newHome._id, systemsData.water);
-      createdSystems.push(...waterSystems);
-    }
-
-    // Create sewage systems
-    if (systemsData.sewage) {
-      const sewageSystems = await createSewageSystems(newHome._id, systemsData.sewage);
-      createdSystems.push(...sewageSystems);
-    }
-
-    // Create electrical systems
-    if (systemsData.electrical) {
-      const electricalSystems = await createElectricalSystems(newHome._id, systemsData.electrical);
-      createdSystems.push(...electricalSystems);
-    }
-
-    // Create additional systems (appliances, specialized, fuel storage)
-    if (systemsData.additional) {
-      const additionalSystems = await createAdditionalSystems(newHome._id, systemsData.additional);
-      createdSystems.push(...additionalSystems);
-    }
+    // Create comprehensive set of default systems for immediate dashboard functionality
+    // Users can edit/delete systems they don't need
+    const createdSystems = await createDefaultSystems(newHome._id, systemsData);
 
     logger.info(`Created ${createdSystems.length} systems for home ${newHome._id}`);
 
@@ -163,7 +134,281 @@ export async function completeOnboarding(req, res) {
 }
 
 /**
- * Create heating system documents
+ * Create comprehensive default system set for immediate dashboard functionality
+ * Creates all standard northern home systems with data from onboarding
+ * Users can edit/configure or delete systems they don't need
+ */
+async function createDefaultSystems(homeId, systemsData) {
+  const systems = [];
+
+  // 1. PRIMARY HEATING SYSTEM (from onboarding data or default)
+  const primaryHeating = systemsData.heating?.primaryHeating || 'oil-furnace';
+  const heatingSystem = await System.create({
+    homeId,
+    category: 'heating',
+    type: primaryHeating,
+    name: `Primary ${formatSystemName(primaryHeating)}`,
+    details: {
+      make: systemsData.heating?.heatingBrand || null,
+      fuelType: mapHeatingToFuel(primaryHeating)
+    },
+    installation: {
+      date: systemsData.heating?.heatingAge
+        ? calculateInstallDate(systemsData.heating.heatingAge)
+        : null
+    },
+    status: 'active'
+  });
+  systems.push(heatingSystem);
+
+  // 2. HOT WATER TANK (standard for all homes)
+  const hotWaterSystem = await System.create({
+    homeId,
+    category: 'hot-water',
+    type: systemsData.water?.hotWaterSystem || 'hot-water-tank',
+    name: 'Hot Water Tank',
+    details: {
+      capacity: systemsData.water?.tankSize ? `${systemsData.water.tankSize} gallons` : null,
+      fuelType: systemsData.water?.tankFuel || null
+    },
+    installation: {
+      date: systemsData.water?.tankAge
+        ? calculateInstallDate(systemsData.water.tankAge)
+        : null
+    },
+    status: 'active'
+  });
+  systems.push(hotWaterSystem);
+
+  // 3. WATER SOURCE (from onboarding data)
+  const waterSource = systemsData.water?.waterSource || 'municipal';
+  if (waterSource === 'well' || waterSource === 'combination') {
+    const wellSystem = await System.create({
+      homeId,
+      category: 'plumbing',
+      type: 'well',
+      name: 'Well System',
+      details: {
+        capacity: systemsData.water?.wellDepth ? `${systemsData.water.wellDepth} ft depth` : null
+      },
+      status: 'active'
+    });
+    systems.push(wellSystem);
+  } else if (waterSource === 'trucked') {
+    const tankSystem = await System.create({
+      homeId,
+      category: 'plumbing',
+      type: 'trucked-water-tank',
+      name: 'Water Holding Tank',
+      northern: {
+        fuelStorage: {
+          capacity: systemsData.water?.tankCapacity || 500,
+          currentLevel: 100,
+          reorderPoint: 25
+        }
+      },
+      status: 'active'
+    });
+    systems.push(tankSystem);
+  } else {
+    // Municipal water connection
+    const municipalWater = await System.create({
+      homeId,
+      category: 'plumbing',
+      type: 'municipal-water',
+      name: 'Municipal Water Connection',
+      status: 'active'
+    });
+    systems.push(municipalWater);
+  }
+
+  // 4. SEWAGE SYSTEM (from onboarding data)
+  const sewageType = systemsData.sewage?.sewageSystem || 'municipal';
+  const sewageSystem = await System.create({
+    homeId,
+    category: 'sewage',
+    type: sewageType,
+    name: sewageType === 'municipal' ? 'Municipal Sewer Connection' :
+          sewageType === 'septic' ? 'Septic System' :
+          sewageType === 'holding-tank' ? 'Sewage Holding Tank' :
+          'Combination Sewage System',
+    details: {
+      capacity: systemsData.sewage?.tankCapacity
+        ? `${systemsData.sewage.tankCapacity} gallons`
+        : null,
+      lastPumped: systemsData.sewage?.lastPumped
+        ? new Date(systemsData.sewage.lastPumped)
+        : null
+    },
+    status: 'active'
+  });
+  systems.push(sewageSystem);
+
+  // 5. HRV/VENTILATION SYSTEM (standard for northern homes)
+  const hrvSystem = await System.create({
+    homeId,
+    category: 'ventilation',
+    type: 'hrv',
+    name: 'Heat Recovery Ventilator (HRV)',
+    details: {
+      make: systemsData.heating?.hrvBrand || null
+    },
+    installation: {
+      date: systemsData.heating?.hrvAge
+        ? calculateInstallDate(systemsData.heating.hrvAge)
+        : null
+    },
+    status: systemsData.heating?.hasHRV ? 'active' : 'not-installed'
+  });
+  systems.push(hrvSystem);
+
+  // 6. HEAT TRACE SYSTEM (common for northern homes)
+  const heatTraceSystem = await System.create({
+    homeId,
+    category: 'freeze-protection',
+    type: 'heat-trace',
+    name: 'Heat Trace Cables',
+    northern: {
+      heatTrace: {
+        zones: systemsData.heating?.heatTraceLocations?.map(location => ({
+          name: location.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+        })) || []
+      }
+    },
+    status: systemsData.heating?.hasHeatTrace ? 'active' : 'not-installed'
+  });
+  systems.push(heatTraceSystem);
+
+  // 7. BACKUP GENERATOR (common for northern homes)
+  const generatorSystem = await System.create({
+    homeId,
+    category: 'electrical',
+    type: 'generator',
+    subtype: systemsData.electrical?.generatorFuel || 'diesel',
+    name: systemsData.electrical?.generatorType === 'standby'
+      ? 'Standby Generator'
+      : 'Portable Generator',
+    details: {
+      make: systemsData.electrical?.generatorBrand || null,
+      fuelType: systemsData.electrical?.generatorFuel || 'diesel'
+    },
+    status: systemsData.electrical?.hasGenerator ? 'active' : 'not-installed'
+  });
+  systems.push(generatorSystem);
+
+  // 8. SUMP PUMP (if applicable)
+  const sumpPump = await System.create({
+    homeId,
+    category: 'plumbing',
+    type: 'sump-pump',
+    name: 'Sump Pump',
+    status: 'not-installed' // User can activate if they have one
+  });
+  systems.push(sumpPump);
+
+  // 9. WATER SOFTENER/TREATMENT (if applicable)
+  if (systemsData.water?.hasTreatment && systemsData.water?.treatmentSystems) {
+    for (const treatment of systemsData.water.treatmentSystems) {
+      const treatmentSystem = await System.create({
+        homeId,
+        category: 'plumbing',
+        type: treatment,
+        name: formatSystemName(treatment),
+        status: 'active'
+      });
+      systems.push(treatmentSystem);
+    }
+  } else {
+    // Add placeholder water softener
+    const softener = await System.create({
+      homeId,
+      category: 'plumbing',
+      type: 'water-softener',
+      name: 'Water Softener',
+      status: 'not-installed'
+    });
+    systems.push(softener);
+  }
+
+  // 10. SECONDARY HEATING (if provided)
+  if (systemsData.heating?.secondaryHeating && systemsData.heating.secondaryHeating.length > 0) {
+    for (const secondary of systemsData.heating.secondaryHeating) {
+      const secondarySystem = await System.create({
+        homeId,
+        category: 'heating',
+        type: secondary,
+        name: `Secondary ${formatSystemName(secondary)}`,
+        status: 'active'
+      });
+      systems.push(secondarySystem);
+    }
+  } else {
+    // Add placeholder wood stove
+    const woodStove = await System.create({
+      homeId,
+      category: 'heating',
+      type: 'wood-stove',
+      name: 'Secondary Wood Stove',
+      status: 'not-installed'
+    });
+    systems.push(woodStove);
+  }
+
+  // 11. SMOKE/CO DETECTORS (required for all homes)
+  const smokeDetector = await System.create({
+    homeId,
+    category: 'safety',
+    type: 'smoke-detector',
+    name: 'Smoke Detectors',
+    status: 'active'
+  });
+  systems.push(smokeDetector);
+
+  const coDetector = await System.create({
+    homeId,
+    category: 'safety',
+    type: 'co-detector',
+    name: 'Carbon Monoxide Detectors',
+    status: 'active'
+  });
+  systems.push(coDetector);
+
+  // 12. ADDITIONAL APPLIANCES/SYSTEMS (if provided)
+  if (systemsData.additional?.appliances) {
+    for (const appliance of systemsData.additional.appliances) {
+      const applianceSystem = await System.create({
+        homeId,
+        category: 'other',
+        type: appliance,
+        name: formatSystemName(appliance),
+        status: 'active'
+      });
+      systems.push(applianceSystem);
+    }
+  }
+
+  return systems;
+}
+
+/**
+ * Helper: Map heating system type to fuel type
+ */
+function mapHeatingToFuel(heatingType) {
+  const fuelMap = {
+    'oil-furnace': 'oil',
+    'propane-furnace': 'propane',
+    'natural-gas': 'natural-gas',
+    'electric-furnace': 'electric',
+    'wood-stove': 'wood',
+    'pellet-stove': 'wood',
+    'heat-pump': 'electric',
+    'boiler': 'oil'
+  };
+  return fuelMap[heatingType] || null;
+}
+
+/**
+ * Create heating system documents (LEGACY - kept for backwards compatibility)
  */
 async function createHeatingSystems(homeId, heatingData) {
   const systems = [];
