@@ -74,6 +74,12 @@ export async function completeOnboarding(req, res) {
       createdSystems.push(...waterSystems);
     }
 
+    // Create sewage systems
+    if (systemsData.sewage) {
+      const sewageSystems = await createSewageSystems(newHome._id, systemsData.sewage);
+      createdSystems.push(...sewageSystems);
+    }
+
     // Create electrical systems
     if (systemsData.electrical) {
       const electricalSystems = await createElectricalSystems(newHome._id, systemsData.electrical);
@@ -311,6 +317,34 @@ async function createWaterSystems(homeId, waterData) {
       });
       systems.push(treatmentSystem);
     }
+  }
+
+  return systems;
+}
+
+/**
+ * Create sewage system documents
+ */
+async function createSewageSystems(homeId, sewageData) {
+  const systems = [];
+
+  // Main sewage system
+  if (sewageData.sewageSystem) {
+    const sewageSystem = await System.create({
+      homeId,
+      category: 'sewage',
+      type: sewageData.sewageSystem,
+      name: sewageData.sewageSystem === 'municipal' ? 'Municipal Sewer Connection' :
+            sewageData.sewageSystem === 'septic' ? 'Septic System' :
+            sewageData.sewageSystem === 'holding-tank' ? 'Sewage Holding Tank' :
+            'Combination Sewage System',
+      details: {
+        capacity: sewageData.tankCapacity ? `${sewageData.tankCapacity} gallons` : undefined,
+        lastPumped: sewageData.lastPumped ? new Date(sewageData.lastPumped) : undefined
+      },
+      status: 'active'
+    });
+    systems.push(sewageSystem);
   }
 
   return systems;
