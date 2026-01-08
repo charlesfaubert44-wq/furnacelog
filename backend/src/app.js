@@ -15,6 +15,7 @@ import systemRoutes from './routes/systemRoutes.js';
 import maintenanceRoutes from './routes/maintenanceRoutes.js';
 import userRoutes from './routes/user.routes.js';
 import onboardingRoutes from './routes/onboarding.routes.js';
+import contactRoutes from './routes/contact.routes.js';
 import logger from './utils/logger.js';
 
 const app = express();
@@ -109,6 +110,7 @@ app.use('/api/v1/systems', systemRoutes);
 app.use('/api/v1/maintenance', maintenanceRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/onboarding', onboardingRoutes);
+app.use('/api/v1/contact', contactRoutes);
 
 // Root endpoint
 app.get('/', (req, res) => {

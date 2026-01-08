@@ -10,6 +10,8 @@ import ClimateTimeMachine from './pages/ClimateTimeMachine';
 import Settings from './pages/Settings';
 import Wiki from './pages/Wiki';
 import Onboarding from './pages/Onboarding';
+import { AboutPage } from './pages/About';
+import { ContactPage } from './pages/Contact';
 
 /**
  * Main App Component
@@ -24,6 +26,8 @@ function App() {
           <Routes>
             {/* Public routes */}
             <Route path="/" element={<HomePage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
 
             {/* Auth routes - redirect to homepage if already logged in */}
