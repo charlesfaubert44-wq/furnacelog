@@ -5,7 +5,7 @@
  * Replaces Epic E1-T4 with secure implementation
  */
 
-import { minioClient } from '../config/minio.js';
+import { getMinIOClient } from '../config/minio.js';
 import logger from '../utils/logger.js';
 import crypto from 'crypto';
 import path from 'path';
@@ -132,6 +132,11 @@ export async function uploadFile(fileBuffer, originalFilename, mimeType, bucket,
     const filename = generateUniqueFilename(originalFilename, userId);
     const objectName = `${userId}/${filename}`;
 
+    const minioClient = getMinIOClient();
+    if (!minioClient) {
+      throw new Error('MinIO client not initialized');
+    }
+
     const bucketExists = await minioClient.bucketExists(bucket);
     if (!bucketExists) {
       await minioClient.makeBucket(bucket);
@@ -166,6 +171,11 @@ export async function uploadFile(fileBuffer, originalFilename, mimeType, bucket,
  */
 export async function getPresignedDownloadUrl(bucket, objectName, expirySeconds = 3600) {
   try {
+    const minioClient = getMinIOClient();
+    if (!minioClient) {
+      throw new Error('MinIO client not initialized');
+    }
+
     if (!Object.values(BUCKETS).includes(bucket)) {
       throw new Error(`Invalid bucket: ${bucket}`);
     }
@@ -186,6 +196,11 @@ export async function getPresignedDownloadUrl(bucket, objectName, expirySeconds 
  */
 export async function getPresignedUploadUrl(bucket, objectName, expirySeconds = 900) {
   try {
+    const minioClient = getMinIOClient();
+    if (!minioClient) {
+      throw new Error('MinIO client not initialized');
+    }
+
     if (!Object.values(BUCKETS).includes(bucket)) {
       throw new Error(`Invalid bucket: ${bucket}`);
     }
@@ -206,6 +221,11 @@ export async function getPresignedUploadUrl(bucket, objectName, expirySeconds = 
  */
 export async function deleteFile(bucket, objectName, userId) {
   try {
+    const minioClient = getMinIOClient();
+    if (!minioClient) {
+      throw new Error('MinIO client not initialized');
+    }
+
     if (!objectName.startsWith(`${userId}/`)) {
       logger.warn(`SECURITY: User ${userId} attempted to delete file not owned: ${objectName}`);
       throw new Error('Unauthorized: Cannot delete file belonging to another user');
