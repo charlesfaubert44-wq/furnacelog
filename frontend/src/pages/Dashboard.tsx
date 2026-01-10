@@ -16,6 +16,7 @@ import { CostTrackerWidget } from '@/components/dashboard/CostTrackerWidget';
 import { RecentContractorsWidget } from '@/components/dashboard/RecentContractorsWidget';
 import { EnhancedWeatherWidget } from '@/components/dashboard/EnhancedWeatherWidget';
 import { EnhancedSeasonalChecklistWidget } from '@/components/dashboard/EnhancedSeasonalChecklistWidget';
+import SEO from '@/components/seo/SEO';
 
 /**
  * Dashboard Page
@@ -273,8 +274,17 @@ export function Dashboard() {
   })) || [];
 
   return (
-    <div className="min-h-screen bg-warm-white">
-      {/* Navigation */}
+    <>
+      <SEO
+        title="Dashboard - Track Your Northern Home Maintenance"
+        description="Monitor your home's health, track maintenance tasks, get weather alerts, and manage costs all in one place. Your northern home maintenance command center."
+        keywords="home maintenance dashboard, property tracking, system monitoring, maintenance logs"
+        url="https://furnacelog.com/dashboard"
+        noindex={true}
+      />
+
+      <div className="min-h-screen bg-warm-white">
+        {/* Navigation */}
       <nav className={cn(
         "sticky top-0 z-50 border-b transition-all duration-300",
         isScrolled
@@ -620,6 +630,7 @@ export function Dashboard() {
         onSave={handleSaveTask}
       />
     </div>
+    </>
   );
 }
 

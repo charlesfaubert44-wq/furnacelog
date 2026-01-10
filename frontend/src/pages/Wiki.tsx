@@ -27,6 +27,7 @@ import { AddArticleModal, type ArticleInput } from '@/components/modals/AddArtic
 import { Logo } from '@/components/furnacelog/Logo';
 import { cn } from '@/lib/utils';
 import { useScrollPosition } from '@/hooks/useScrollAnimation';
+import SEO from '@/components/seo/SEO';
 
 /**
  * Wiki Page Component
@@ -179,8 +180,17 @@ const Wiki: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-warm-white relative overflow-hidden">
-      {/* Subtle warm background texture */}
+    <>
+      <SEO
+        title="Northern Home Maintenance Wiki - Community Knowledge Base"
+        description="Comprehensive community-driven knowledge base for northern home maintenance. Learn from experts about heating systems, extreme cold protection, and home care in Canada's North."
+        keywords="home maintenance wiki, northern knowledge base, heating system guides, extreme cold maintenance, community knowledge"
+        url="https://furnacelog.com/wiki"
+        noindex={true}
+      />
+
+      <div className="min-h-screen bg-warm-white relative overflow-hidden">
+        {/* Subtle warm background texture */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-warm-white via-cream to-warm-white opacity-60" />
         <div className="absolute inset-0 opacity-[0.03]" style={{
@@ -502,6 +512,7 @@ const Wiki: React.FC = () => {
         onSave={handleSaveArticle}
       />
     </div>
+    </>
   );
 };
 

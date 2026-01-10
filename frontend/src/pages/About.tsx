@@ -19,10 +19,22 @@ import {
   Wind,
   Battery,
 } from 'lucide-react';
+import SEO from '@/components/seo/SEO';
+import { OrganizationSchema } from '@/components/seo/StructuredData';
 
 export const AboutPage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-warm-white via-cream to-warm-white">
+    <>
+      <SEO
+        title="About FurnaceLog - Northern Home Maintenance Experts"
+        description="Built by northern homeowners for northern homeowners. FurnaceLog helps protect homes in extreme cold climates across Yukon, NWT, and Nunavut. Learn our story and mission."
+        keywords="about furnacelog, northern home experts, yellowknife homeowners, canada north maintenance, extreme cold home care"
+        url="https://furnacelog.com/about"
+        type="website"
+      />
+      <OrganizationSchema />
+
+      <div className="min-h-screen bg-gradient-to-br from-warm-white via-cream to-warm-white">
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-burnt-sienna/10 via-warm-orange/5 to-transparent">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
@@ -354,5 +366,6 @@ export const AboutPage: React.FC = () => {
         </Card>
       </section>
     </div>
+    </>
   );
 };

@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import HomePage from './pages/HomePage';
@@ -20,15 +21,16 @@ import { ContactPage } from './pages/Contact';
 
 function App() {
   return (
-    <Router>
-      <AuthProvider>
-        <div className="min-h-screen bg-stone-950 text-stone-50">
-          <Routes>
-            {/* Public routes */}
-            <Route path="/" element={<HomePage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/auth/callback" element={<AuthCallback />} />
+    <HelmetProvider>
+      <Router>
+        <AuthProvider>
+          <div className="min-h-screen bg-stone-950 text-stone-50">
+            <Routes>
+              {/* Public routes */}
+              <Route path="/" element={<HomePage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/auth/callback" element={<AuthCallback />} />
 
             {/* Auth routes - redirect to homepage if already logged in */}
             <Route
@@ -96,6 +98,7 @@ function App() {
         </div>
       </AuthProvider>
     </Router>
+    </HelmetProvider>
   );
 }
 

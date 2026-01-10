@@ -7,6 +7,8 @@ import { AuthModal } from '@/components/auth/AuthModal';
 import { useScrollPosition } from '@/hooks/useScrollAnimation';
 import logger from '@/utils/logger';
 import { Logo } from '@/components/furnacelog/Logo';
+import SEO from '@/components/seo/SEO';
+import { OrganizationSchema, WebApplicationSchema } from '@/components/seo/StructuredData';
 
 interface HealthStatus {
   status: string;
@@ -57,8 +59,19 @@ function HomePage() {
 
 
   return (
-    <div className="min-h-screen bg-cream">
-      {/* Warm Navigation */}
+    <>
+      <SEO
+        title="Northern Home Maintenance Tracker - Prevent Costly Failures"
+        description="Protect your northern home from -40°C disasters. Track heating systems, get weather alerts, and prevent $5,000+ emergency repairs. Free for Yukon, NWT & Nunavut homeowners."
+        keywords="northern home maintenance, yellowknife home care, furnace maintenance tracker, extreme cold home protection, yukon home maintenance, northwest territories property care, nunavut housing, modular home tracking, northern canada homeowner"
+        url="https://furnacelog.com"
+        type="website"
+      />
+      <OrganizationSchema />
+      <WebApplicationSchema />
+
+      <div className="min-h-screen bg-cream">
+        {/* Warm Navigation */}
       <nav className={cn(
         "sticky top-0 z-50 border-b transition-all duration-300",
         isScrolled
@@ -811,6 +824,7 @@ function HomePage() {
         defaultTab={authModalTab}
       />
     </div>
+    </>
   );
 }
 

@@ -17,6 +17,8 @@ import {
   Send,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import SEO from '@/components/seo/SEO';
+import { FAQPageSchema } from '@/components/seo/StructuredData';
 
 const contactSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -107,8 +109,18 @@ export const ContactPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-warm-white via-cream to-warm-white">
-      {/* Hero Section */}
+    <>
+      <SEO
+        title="Contact FurnaceLog - Support for Northern Homeowners"
+        description="Get in touch with FurnaceLog. Questions about features, technical support, or want to share your story? We're here to help northern homeowners across Canada."
+        keywords="contact furnacelog, northern home support, yellowknife help, furnace tracker support, home maintenance assistance"
+        url="https://furnacelog.com/contact"
+        type="website"
+      />
+      <FAQPageSchema faqs={faqs} />
+
+      <div className="min-h-screen bg-gradient-to-br from-warm-white via-cream to-warm-white">
+        {/* Hero Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-r from-burnt-sienna to-warm-orange shadow-lg mb-4">
@@ -421,5 +433,6 @@ export const ContactPage: React.FC = () => {
         </Card>
       </section>
     </div>
+    </>
   );
 };
