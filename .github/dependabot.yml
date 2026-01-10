@@ -1,34 +1,100 @@
 version: 2
 updates:
-  # Frontend dependencies
-  - package-ecosystem: "npm"
-    directory: "/frontend"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-    open-pull-requests-limit: 10
-    reviewers:
-      - "charlesfaubert44-wq"
-    labels:
-      - "dependencies"
-      - "security"
-    # Auto-merge security updates
-    commit-message:
-      prefix: "security"
-      include: "scope"
-
-  # Backend dependencies
+  # Backend (Node.js/Express) dependencies
   - package-ecosystem: "npm"
     directory: "/backend"
     schedule:
       interval: "weekly"
       day: "monday"
+      time: "09:00"
+      timezone: "America/Edmonton"
     open-pull-requests-limit: 10
     reviewers:
       - "charlesfaubert44-wq"
     labels:
       - "dependencies"
+      - "backend"
       - "security"
     commit-message:
-      prefix: "security"
+      prefix: "chore(deps-backend)"
       include: "scope"
+    # Group patch and minor updates
+    groups:
+      production-dependencies:
+        dependency-type: "production"
+        update-types:
+          - "patch"
+          - "minor"
+      development-dependencies:
+        dependency-type: "development"
+        update-types:
+          - "patch"
+          - "minor"
+    versioning-strategy: increase
+
+  # Frontend (React/Vite) dependencies
+  - package-ecosystem: "npm"
+    directory: "/frontend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/Edmonton"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "charlesfaubert44-wq"
+    labels:
+      - "dependencies"
+      - "frontend"
+      - "security"
+    commit-message:
+      prefix: "chore(deps-frontend)"
+      include: "scope"
+    groups:
+      production-dependencies:
+        dependency-type: "production"
+        update-types:
+          - "patch"
+          - "minor"
+      development-dependencies:
+        dependency-type: "development"
+        update-types:
+          - "patch"
+          - "minor"
+    versioning-strategy: increase
+
+  # Docker base images
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+      time: "09:00"
+      timezone: "America/Edmonton"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "charlesfaubert44-wq"
+    labels:
+      - "dependencies"
+      - "docker"
+      - "security"
+    commit-message:
+      prefix: "chore(docker)"
+
+  # GitHub Actions workflows
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+      time: "09:00"
+      timezone: "America/Edmonton"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "charlesfaubert44-wq"
+    labels:
+      - "dependencies"
+      - "github-actions"
+      - "ci-cd"
+    commit-message:
+      prefix: "chore(ci)"

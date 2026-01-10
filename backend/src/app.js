@@ -16,7 +16,9 @@ import maintenanceRoutes from './routes/maintenanceRoutes.js';
 import userRoutes from './routes/user.routes.js';
 import onboardingRoutes from './routes/onboarding.routes.js';
 import contactRoutes from './routes/contact.routes.js';
+import sitemapRoutes from './routes/sitemap.routes.js';
 import logger from './utils/logger.js';
+import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 
 const app = express();
 
@@ -100,6 +102,9 @@ if (process.env.NODE_ENV === 'development') {
   }));
 }
 
+// SEO Routes (before API routes, no /api prefix)
+app.use('/', sitemapRoutes);
+
 // API Routes
 app.use('/api/v1', healthRoutes);
 app.use('/api/v1/auth', authRoutes);
@@ -123,27 +128,10 @@ app.get('/', (req, res) => {
   });
 });
 
-// 404 Handler
-app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    message: 'Route not found',
-    path: req.originalUrl,
-  });
-});
+// 404 Handler - SECURITY: Uses centralized handler
+app.use(notFoundHandler);
 
-// Global Error Handler
-app.use((err, req, res, next) => {
-  logger.error(`Error: ${err.message}`, { stack: err.stack });
-
-  const statusCode = err.statusCode || 500;
-  const message = err.message || 'Internal Server Error';
-
-  res.status(statusCode).json({
-    success: false,
-    message,
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
-  });
-});
+// Global Error Handler - SECURITY: Never exposes stack traces
+app.use(errorHandler);
 
 export default app;

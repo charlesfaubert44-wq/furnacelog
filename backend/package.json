@@ -14,6 +14,8 @@
     "test:watch": "jest --watch",
     "audit": "npm audit --audit-level=moderate",
     "audit:fix": "npm audit fix",
+    "audit:endpoints": "node scripts/audit-endpoints.js",
+    "audit:endpoints:verbose": "VERBOSE=true node scripts/audit-endpoints.js",
     "update:check": "npm outdated",
     "update:deps": "npm update && npm audit fix"
   },

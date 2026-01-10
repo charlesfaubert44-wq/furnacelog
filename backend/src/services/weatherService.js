@@ -8,6 +8,7 @@
 import axios from 'axios';
 import WeatherData from '../models/WeatherData.js';
 import logger from '../utils/logger.js';
+import { safeFetch } from '../utils/ssrfProtection.js';
 
 class WeatherService {
   constructor() {
@@ -46,6 +47,12 @@ class WeatherService {
       }
 
       // Fetch from Environment Canada (in production, use actual API)
+      // SECURITY: Use safeFetch for SSRF protection when implementing actual API
+      // Example:
+      // const url = `${this.baseUrl}/climate/daily?stationId=${station.stationId}&start=${startDate}&end=${endDate}`;
+      // const response = await safeFetch(axios, url, { method: 'GET' });
+      // const weatherData = this.parseWeatherApiResponse(response.data);
+
       // For now, we'll generate realistic sample data
       const weatherData = await this.generateSampleWeatherData(community, station, startDate, endDate);
 

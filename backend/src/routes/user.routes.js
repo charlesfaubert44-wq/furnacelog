@@ -13,6 +13,10 @@ import {
   updateProfileSchema,
   changePasswordSchema
 } from '../validators/auth.validators.js';
+import {
+  allowOnlyNested,
+  AllowLists
+} from '../middleware/sanitizeInput.js';
 
 const router = express.Router();
 
@@ -36,8 +40,13 @@ router.get('/me', getMe);
  * @route   PATCH /api/v1/users/me
  * @desc    Update current user profile
  * @access  Private
+ * @security Mass assignment protection via allowOnlyNested
  */
-router.patch('/me', validate(updateProfileSchema), updateMe);
+router.patch('/me',
+  validate(updateProfileSchema),
+  allowOnlyNested([...AllowLists.userProfile, ...AllowLists.userPreferences]),
+  updateMe
+);
 
 /**
  * @route   POST /api/v1/users/me/change-password

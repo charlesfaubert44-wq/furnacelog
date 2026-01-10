@@ -23,9 +23,15 @@ import alertService from './services/alertService.js';
 import websocketService from './services/websocketService.js';
 import Home from './models/Home.js';
 import logger from './utils/logger.js';
+import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
+import { validateEnvironment } from './utils/validateEnv.js';
 
 // Load environment variables
 dotenv.config();
+
+// SECURITY: Validate environment configuration on startup
+// This will exit the process if configuration is insecure
+validateEnvironment();
 
 // Connect to MongoDB, Redis, and IoT services
 const startServer = async () => {
@@ -162,24 +168,11 @@ app.use('/api/v1/homes/:homeId/components', doubleCsrfProtection, componentRoute
 app.use('/api/v1/iot', iotRoutes); // General IoT endpoints
 app.use('/api/v1/homes/:homeId/sensors', doubleCsrfProtection, iotRoutes); // Home-specific sensor endpoints
 
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    error: 'Route not found'
-  });
-});
+// 404 handler - SECURITY: Uses centralized handler
+app.use(notFoundHandler);
 
-// Global error handler
-app.use((err, req, res, next) => {
-  console.error('Server error:', err);
-  
-  res.status(err.statusCode || 500).json({
-    success: false,
-    error: err.message || 'Internal server error',
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
-  });
-});
+// Global error handler - SECURITY: Never exposes stack traces
+app.use(errorHandler);
 
 // Start server
 const PORT = process.env.PORT || 3000;

@@ -1,0 +1,115 @@
+# Pre-commit hooks for FurnaceLog
+# SECURITY: Prevents committing secrets, credentials, and sensitive data
+#
+# Installation:
+#   pip install pre-commit
+#   pre-commit install
+#
+# Usage:
+#   pre-commit run --all-files  # Run on all files
+#   git commit                  # Runs automatically on commit
+
+repos:
+  # Detect secrets and credentials
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.4.0
+    hooks:
+      - id: detect-secrets
+        name: Detect secrets
+        args: ['--baseline', '.secrets.baseline']
+        exclude: package-lock.json
+
+  # General file checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      # Prevent large files from being committed
+      - id: check-added-large-files
+        name: Check for large files
+        args: ['--maxkb=500']
+        exclude: ^(package-lock\.json|.*\.png|.*\.jpg|.*\.jpeg|.*\.gif|.*\.pdf)$
+
+      # Prevent direct commits to main/master
+      - id: no-commit-to-branch
+        name: Prevent commits to main/master
+        args: ['--branch', 'main', '--branch', 'master']
+
+      # Check for merge conflicts
+      - id: check-merge-conflict
+        name: Check for merge conflicts
+
+      # Check YAML syntax
+      - id: check-yaml
+        name: Check YAML syntax
+        exclude: ^(docker-compose\.yml)$  # Docker compose has custom syntax
+
+      # Check JSON syntax
+      - id: check-json
+        name: Check JSON syntax
+
+      # Trim trailing whitespace
+      - id: trailing-whitespace
+        name: Trim trailing whitespace
+
+      # Ensure files end with newline
+      - id: end-of-file-fixer
+        name: Fix end of files
+
+      # Check for private keys
+      - id: detect-private-key
+        name: Detect private keys
+
+  # JavaScript/Node.js specific checks
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v8.56.0
+    hooks:
+      - id: eslint
+        name: ESLint (JavaScript)
+        files: \.(js|jsx|ts|tsx)$
+        types: [file]
+        additional_dependencies:
+          - eslint@^8.56.0
+        args: ['--fix', '--max-warnings=0']
+
+  # Security: npm audit on package.json changes
+  - repo: local
+    hooks:
+      - id: npm-audit
+        name: npm audit (check for vulnerabilities)
+        entry: bash -c 'cd backend && npm audit --audit-level=moderate || true; cd ../frontend && npm audit --audit-level=moderate || true'
+        language: system
+        files: package(-lock)?\.json$
+        pass_filenames: false
+
+  # Security: Check for exposed environment variables
+  - repo: local
+    hooks:
+      - id: check-env-files
+        name: Prevent .env files from being committed
+        entry: bash -c 'if git diff --cached --name-only | grep -q "^\.env$"; then echo "ERROR: .env file should not be committed"; exit 1; fi'
+        language: system
+        pass_filenames: false
+
+  # Security: Validate docker-compose.yml has no default passwords
+  - repo: local
+    hooks:
+      - id: check-docker-compose
+        name: Check docker-compose for default passwords
+        entry: bash -c 'if grep -q "changeme\|password123\|admin123" docker-compose.yml 2>/dev/null; then echo "ERROR: Default passwords found in docker-compose.yml"; exit 1; fi'
+        language: system
+        files: docker-compose\.yml$
+        pass_filenames: false
+
+# Global exclusions
+exclude: |
+  (?x)^(
+    node_modules/.*|
+    \.git/.*|
+    \.venv/.*|
+    venv/.*|
+    dist/.*|
+    build/.*|
+    \.next/.*|
+    coverage/.*|
+    \.secrets\.baseline$
+  )$
