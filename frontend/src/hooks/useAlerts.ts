@@ -63,7 +63,7 @@ export function useAlerts() {
   const [unreadCount, setUnreadCount] = useState(0);
   const [isConnected, setIsConnected] = useState(false);
   const wsRef = useRef<WebSocket | null>(null);
-  const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const reconnectTimeoutRef = useRef<number | null>(null);
   const reconnectAttemptsRef = useRef(0);
   const queryClient = useQueryClient();
 
@@ -162,7 +162,7 @@ export function useAlerts() {
 
           reconnectTimeoutRef.current = setTimeout(() => {
             connectWebSocket();
-          }, RECONNECT_INTERVAL);
+          }, RECONNECT_INTERVAL) as unknown as number;
         } else {
           console.error('[Alerts] Max reconnection attempts reached');
           toast.error('Lost connection to alert system. Please refresh the page.');
