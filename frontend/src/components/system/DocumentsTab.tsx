@@ -3,7 +3,7 @@
  * Manage manuals, warranties, and other documents for a system
  */
 
-import { useQuery, useMutation, useQueryClient } from '@tantml:function_calls>
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { FileText, Download, Trash2, Upload, ExternalLink } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import api from '@/lib/api';

@@ -206,7 +206,7 @@ export function QuickLogModal({
 
   const selectedSystem = systems?.find(s => s.id === formData.systemId);
   const availableTaskTypes = selectedSystem
-    ? (TASK_TYPES_BY_CATEGORY[selected System.category.toLowerCase()] || TASK_TYPES_BY_CATEGORY.default)
+    ? (TASK_TYPES_BY_CATEGORY[selectedSystem.category.toLowerCase()] || TASK_TYPES_BY_CATEGORY.default)
     : TASK_TYPES_BY_CATEGORY.default;
 
   const canProceedStep1 = !!formData.systemId;
