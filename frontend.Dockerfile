@@ -42,10 +42,6 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # Copy built files from builder
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Copy PWA service worker and manifest
-COPY --from=builder /app/dist/sw.js /usr/share/nginx/html/sw.js
-COPY --from=builder /app/dist/manifest.json /usr/share/nginx/html/manifest.json
-
 # Create nginx cache directories with proper permissions
 RUN mkdir -p /var/cache/nginx/client_temp /var/run && \
     chown -R nginx:nginx /var/cache/nginx && \
