@@ -9,7 +9,6 @@ import {
   AlertTriangle,
   Cloud,
   DollarSign,
-  Wrench,
   Calendar,
   X,
   Clock,
@@ -172,7 +171,7 @@ export function AlertCard({
           {/* Dismiss and snooze menu */}
           <div className="flex items-center gap-1">
             <DropdownMenu>
-              <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+              <DropdownMenuTrigger asChild onClick={(e: React.MouseEvent) => e.stopPropagation()}>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -182,13 +181,13 @@ export function AlertCard({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={(e) => handleSnooze(1, e)}>
+                <DropdownMenuItem onClick={(e: React.MouseEvent) => handleSnooze(1, e)}>
                   Snooze 1 day
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={(e) => handleSnooze(3, e)}>
+                <DropdownMenuItem onClick={(e: React.MouseEvent) => handleSnooze(3, e)}>
                   Snooze 3 days
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={(e) => handleSnooze(7, e)}>
+                <DropdownMenuItem onClick={(e: React.MouseEvent) => handleSnooze(7, e)}>
                   Snooze 1 week
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -215,7 +214,7 @@ export function AlertCard({
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Home className="h-4 w-4" />
             <span>
-              Related system{alert.systemIds?.length > 1 ? 's' : ''}
+              Related system{(alert.systemIds?.length ?? 0) > 1 ? 's' : ''}
             </span>
           </div>
         )}

@@ -74,11 +74,15 @@ export function useAlerts() {
       const response = await api.get('/alerts');
       return response.data;
     },
-    onSuccess: (data) => {
-      setAlerts(data.alerts || []);
-      setUnreadCount(data.alerts?.filter(a => !a.read).length || 0);
-    },
   });
+
+  // Update alerts when initial data is fetched
+  useEffect(() => {
+    if (initialAlerts?.alerts) {
+      setAlerts(initialAlerts.alerts);
+      setUnreadCount(initialAlerts.alerts.filter((a: Alert) => !a.read).length);
+    }
+  }, [initialAlerts]);
 
   // Connect to WebSocket
   const connectWebSocket = useCallback(() => {
