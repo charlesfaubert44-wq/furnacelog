@@ -54,7 +54,18 @@ interface WebSocketMessage {
   message?: string;
 }
 
-const WS_URL = import.meta.env.VITE_WS_URL || 'ws://localhost:3000';
+// WebSocket URL configuration
+// In production, use same host as window with ws/wss protocol
+// In development, use VITE_WS_URL or default to localhost
+const getWebSocketUrl = () => {
+  if (import.meta.env.PROD) {
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    return `${protocol}//${window.location.host}`;
+  }
+  return import.meta.env.VITE_WS_URL || 'ws://localhost:3000';
+};
+
+const WS_URL = getWebSocketUrl();
 const RECONNECT_INTERVAL = 5000; // 5 seconds
 const MAX_RECONNECT_ATTEMPTS = 10;
 

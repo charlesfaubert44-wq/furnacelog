@@ -5,7 +5,12 @@
 
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+// In production, use nginx proxy (relative URLs)
+// In development, use VITE_API_URL or default to localhost
+const isProduction = import.meta.env.PROD;
+const API_BASE_URL = isProduction
+  ? window.location.origin
+  : (import.meta.env.VITE_API_URL || 'http://localhost:3000');
 
 // Create axios instance
 const api = axios.create({
