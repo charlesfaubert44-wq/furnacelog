@@ -62,5 +62,5 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
 # Use dumb-init to handle signals properly
 ENTRYPOINT ["dumb-init", "--"]
 
-# Start nginx as non-root user
-CMD ["nginx", "-g", "daemon off;"]
+# Start nginx with verbose logging
+CMD ["sh", "-c", "echo 'Starting FurnaceLog frontend on port 8080...' && nginx -t && nginx -g 'daemon off;'"]
