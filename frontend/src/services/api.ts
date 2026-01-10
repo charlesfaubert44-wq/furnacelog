@@ -5,12 +5,19 @@
 
 import axios from 'axios';
 
-// In production, use nginx proxy (relative URLs)
-// In development, use VITE_API_URL or default to localhost
+// IMPORTANT: Always use same-origin in production for nginx proxy
+// This ensures API requests go through nginx proxy, not to external domains
 const isProduction = import.meta.env.PROD;
 const API_BASE_URL = isProduction
   ? window.location.origin
   : (import.meta.env.VITE_API_URL || 'http://localhost:3000');
+
+// Debug logging to verify correct URL
+if (isProduction) {
+  console.log('[API] Production mode - using nginx proxy at:', window.location.origin);
+} else {
+  console.log('[API] Development mode - using:', API_BASE_URL);
+}
 
 // Create axios instance
 const api = axios.create({

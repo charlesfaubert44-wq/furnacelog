@@ -34,20 +34,11 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
+        // Don't cache API calls - they should always go through nginx proxy
+        navigateFallbackDenylist: [/^\/api/],
         runtimeCaching: [
           {
-            urlPattern: /^https?:\/\/.*\/api\/.*/i,
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'api-cache',
-              expiration: {
-                maxEntries: 100,
-                maxAgeSeconds: 86400,
-              },
-              networkTimeoutSeconds: 10,
-            },
-          },
-          {
+            // Only cache images, not API calls
             urlPattern: /\.(?:png|jpg|jpeg|svg|gif)$/i,
             handler: 'CacheFirst',
             options: {
